@@ -105,6 +105,7 @@
         <li><a href="index.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-900 border-b border-blue-900 pb-1 whitespace-nowrap">Home</a></li>
         <li><a href="who-we-are.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-gray-950 transition-all whitespace-nowrap">Who We Are</a></li>
         <li><a href="activities.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-gray-950 transition-all whitespace-nowrap">Activities</a></li>
+        <li><a href="vmwf_brochure.pdf" target="_blank" class="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-600 hover:text-orange-700 transition-all whitespace-nowrap">About Us</a></li>
         <li><a href="#contact" class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-gray-950 transition-all whitespace-nowrap">Contact</a></li>
       </ul>
 
@@ -123,6 +124,7 @@
         <li><a href="index.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-white">Home</a></li>
         <li><a href="who-we-are.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Who We Are</a></li>
         <li><a href="activities.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Activities</a></li>
+        <li><a href="vmwf_brochure.pdf" target="_blank" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-400 hover:text-white transition-all">About Us</a></li>
         <li><a href="membership.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-all">Join Us</a></li>
         <li class="pt-8"><a href="access.html" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Member Login</a></li>
       </ul>
@@ -138,6 +140,7 @@
         <p class="text-lg md:text-xl mb-12 text-gray-300 max-w-2xl font-light leading-relaxed">Connecting our community through tradition, spirituality, and modern services. Join us to preserve and celebrate our rich heritage while building a supportive network for future generations.</p>
         <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8">
           <a href="membership.html" class="bg-orange-600 text-white px-10 py-5 font-bold text-xs uppercase tracking-luxury hover:bg-white hover:text-gray-900 transition-all text-center">Join Membership</a>
+          <a href="vmwf_brochure.pdf" target="_blank" class="bg-white text-gray-950 px-10 py-5 font-bold text-xs uppercase tracking-luxury hover:bg-orange-600 hover:text-white transition-all text-center">About Us</a>
           <button onclick="openListView('events')" class="border border-white/30 text-white px-10 py-5 font-bold text-xs uppercase tracking-luxury hover:bg-white hover:text-gray-900 transition-all">Explore Events</button>
         </div>
       </div>
@@ -710,96 +713,16 @@
     // Configuration
     const API_BASE = '/api';
 
-    async function apiFetch(endpoint) {
-      try {
-        const response = await fetch(`${API_BASE}${endpoint}`);
-        return await response.json();
-      } catch (error) {
-        console.error('API Error:', error);
-        return [];
-      }
-    }
-
-    async function loadSiteContent() {
-      // Site config still static for simplicity in this phase
-      const STORAGE_KEY = 'vmwf_site_content';
-      let content = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (!content) {
-         content = {
-           stats: [
-             { cat: "Empowerment", title: "Employment Portal", desc: "Job opportunities for our community.", link: "jobs" },
-             { cat: "Social", title: "Matrimonial Service", desc: "Find the perfect match.", link: "matrimony" },
-             { cat: "Connectivity", title: "Global Directory", desc: "Connect with members.", link: "members" },
-             { cat: "Updates", title: "Govt. Schemes & News", desc: "Stay updated.", link: "#" }
-           ],
-           actions: [
-             { subtitle: "Gatherings & Celebrations", title: "Events", link: "events" },
-             { subtitle: "Join Our Community", title: "Membership", link: "membership.html" },
-             { subtitle: "Sacred Journeys", title: "Spiritual Tours", link: "tours" }
-           ],
-           contact: { phone: "+91 96069 46623", email: "admin@vmwf.org" }
-         };
-         localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
-      }
-      
-      // Update UI with content (Simplified for now)
-      document.getElementById('contact-phone').innerText = content.contact.phone;
-      document.getElementById('contact-email').innerText = content.contact.email;
-    }
-
-    async function openListView(type) {
-      const endpoint = type === 'jobs' ? '/jobs' : type === 'matrimony' ? '/matrimony' : null;
-      if (!endpoint) return;
-
-      const items = await apiFetch(endpoint);
-      renderList(items, type);
-    }
-
-    function renderList(items, type) {
-       // Logic to show a modal with the list items
-       // For now, let's just alert or log (or I can implement a quick UI)
-       console.log(`Showing ${type}:`, items);
-       if (items.length === 0) {
-         alert(`No ${type} available at the moment.`);
-         return;
-       }
-       
-       // I'll add a simple overlay to show results
-       let overlay = document.getElementById('list-overlay');
-       if (!overlay) {
-          overlay = document.createElement('div');
-          overlay.id = 'list-overlay';
-          overlay.className = 'fixed inset-0 z-[300] bg-white overflow-y-auto p-12';
-          document.body.appendChild(overlay);
-       }
-       overlay.innerHTML = `
-          <div class="max-w-4xl mx-auto">
-            <button onclick="this.closest('#list-overlay').remove()" class="text-4xl font-light mb-12">&times; Close</button>
-            <h2 class="heading-font text-5xl font-bold mb-12 uppercase tracking-widest">${type}</h2>
-            <div class="space-y-12">
-               ${items.map(item => `
-                  <div class="border-b border-gray-100 pb-12">
-                     <h3 class="text-2xl font-bold mb-4">${item.title || item.name}</h3>
-                     <p class="text-gray-500 mb-6">${item.description}</p>
-                     <div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-orange-600">
-                        <span><i class="fas fa-map-marker-alt mr-2"></i> ${item.location}</span>
-                        <span><i class="fas fa-tag mr-2"></i> ${item.category || item.profession}</span>
-                     </div>
-                  </div>
-               `).join('')}
-            </div>
-          </div>
-       `;
-    }
-
     window.onload = () => {
       loadSiteContent();
       checkMainAuth();
     };
 
     function checkMainAuth() {
-       const token = localStorage.getItem('vmwf_admin_token');
-       if (token) {
+       const memberSession = sessionStorage.getItem('vmwf_member_active');
+       const adminSession = sessionStorage.getItem('vmwf_admin_active');
+       
+       if (memberSession || adminSession) {
           document.getElementById('auth-btn-main').classList.add('hidden');
           document.getElementById('logout-btn-main').classList.remove('hidden');
        } else {
@@ -809,7 +732,8 @@
     }
 
     function logoutMain() {
-       localStorage.removeItem('vmwf_admin_token');
+       sessionStorage.removeItem('vmwf_member_active');
+       sessionStorage.removeItem('vmwf_admin_active');
        window.location.reload();
     }
   </script>
