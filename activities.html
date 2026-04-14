@@ -48,7 +48,7 @@
 
       <!-- Action Items -->
       <div class="flex items-center h-full gap-4 md:gap-8">
-        <button id="auth-btn-act" onclick="openLoginModal()" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-blue-900 transition-all whitespace-nowrap">Member Login</button>
+        <a href="access.html" id="auth-btn-act" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-blue-900 transition-all whitespace-nowrap">Member Login</a>
         <button id="logout-btn-act" onclick="logoutAct()" class="hidden text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 hover:text-red-800 transition-all whitespace-nowrap">Sign Out</button>
         <a href="membership.html" class="bg-gray-950 text-white px-4 md:px-8 py-3.5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-blue-900 transition-all whitespace-nowrap shadow-sm">Join Us</a>
         <button id="menu-btn" class="hidden xl:hidden text-gray-950 text-xl"><i class="fas fa-bars"></i></button>
@@ -63,7 +63,7 @@
         <li><a href="who-we-are.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Who We Are</a></li>
         <li><a href="activities.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Activities</a></li>
         <li><a href="membership.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-all">Join Us</a></li>
-        <li class="pt-8"><button onclick="openLoginModal()" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Member Login</button></li>
+        <li class="pt-8"><a href="access.html" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Member Login</a></li>
       </ul>
     </div>
   </nav>
@@ -176,57 +176,6 @@
 
   <!-- Basic Modals -->
   <script>
-    function openLoginModal() {
-       const modal = document.createElement('div');
-       modal.id = 'l-m-o';
-       modal.className = 'fixed inset-0 z-[200] flex items-center justify-center bg-gray-900/95 backdrop-blur-sm p-4';
-       modal.innerHTML = `
-          <div class="bg-white p-16 max-w-md w-full relative">
-             <button onclick="this.closest('#l-m-o').remove()" class="absolute top-8 right-8 text-gray-300 hover:text-black transition-all"><i class="fas fa-times"></i></button>
-             <h3 class="heading-font text-4xl font-bold mb-10">Access Portal</h3>
-             <form class="space-y-10" id="portal-login-form">
-                <input type="text" id="portal-user" placeholder="Username" class="w-full border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 text-sm" required>
-                <input type="password" id="portal-pass" placeholder="Password" class="w-full border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 text-sm" required>
-                <button type="submit" class="w-full bg-orange-600 text-white py-6 text-[10px] font-black uppercase tracking-widest">Authenticate</button>
-             </form>
-             <div id="portal-message" class="mt-6 text-center text-xs font-bold uppercase tracking-widest hidden"></div>
-          </div>
-       `;
-       document.body.appendChild(modal);
-
-       document.getElementById('portal-login-form').addEventListener('submit', function(e) {
-          e.preventDefault();
-          const u = document.getElementById('portal-user').value;
-          const p = document.getElementById('portal-pass').value;
-          const msg = document.getElementById('portal-message');
-          
-          if (u === 'admin' && p === 'admin123') {
-             sessionStorage.setItem('vmwf_admin_active', 'active_' + Date.now());
-             window.location.href = 'admin.html';
-             return;
-          }
-
-          const members = JSON.parse(localStorage.getItem('vmwf_members_data')) || [];
-          const member = members.find(m => m.username === u && m.password === p);
-
-          if (member) {
-             if (member.status === 'Active') {
-                msg.innerText = `Welcome, ${member.firstName}! Access Granted.`;
-                msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-green-600";
-                msg.classList.remove('hidden');
-                setTimeout(() => { this.closest('#l-m-o').remove(); }, 2000);
-             } else {
-                msg.innerText = "Account Pending Admin Approval.";
-                msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-orange-600";
-                msg.classList.remove('hidden');
-             }
-          } else {
-             msg.innerText = "Invalid Credentials.";
-             msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-red-600";
-             msg.classList.remove('hidden');
-          }
-       });
-    }
 
     // Session & Auth Logic
     function checkActAuth() {
@@ -242,7 +191,7 @@
        }
     }
 
-    function openLoginModal() {
+    function openLoginModalAction() {
        window.location.href = 'access.html?redirect=activities.html';
     }
 
