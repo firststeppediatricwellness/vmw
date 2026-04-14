@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Activities - Vishwa Madhwamatha Welfare Foundation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --consulting-blue: #002e6d; --vmwf-orange: #f97316; }
+    body { font-family: 'Inter', sans-serif; color: #1a1a1a; line-height: 1.6; }
+    .heading-font { font-family: 'Playfair Display', serif; }
+    .section-padding { padding-top: 8rem; padding-bottom: 8rem; }
+    .tracking-luxury { letter-spacing: 0.1em; }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .sharp-mask { clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%); }
+
+    /* Login Overlay */
+    #login-overlay {
+       background: rgba(255, 255, 255, 0.98);
+       backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+<body class="bg-white">
+
+  <div id="act-content-wrapper">
+
+  <!-- Navbar -->
+  <nav class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+    <div class="container mx-auto flex items-center justify-between h-24 px-6 md:px-12">
+      <!-- Branding -->
+      <a href="index.html" class="flex items-center h-full group">
+        <img src="vmwf.jpeg" class="w-10 h-10 transition-transform duration-500 group-hover:scale-105">
+        <div class="ml-5 pl-5 border-l border-gray-200 hidden md:block">
+          <span class="heading-font font-bold text-gray-950 text-2xl tracking-tight leading-none">VMWF</span>
+          <p class="text-[9px] text-gray-400 uppercase tracking-[0.3em] font-bold mt-1">Vishwa Madhwamatha</p>
+        </div>
+      </a>
+      
+      <!-- Navigation Links -->
+      <ul class="hidden xl:flex items-center h-full gap-12">
+        <li><a href="activities.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-900 border-b border-blue-900 pb-1 whitespace-nowrap">Activities</a></li>
+      </ul>
+
+      <!-- Action Items -->
+      <div class="flex items-center h-full gap-4 md:gap-8">
+        <button id="auth-btn-act" onclick="openLoginModal()" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-blue-900 transition-all whitespace-nowrap">Member Login</button>
+        <button id="logout-btn-act" onclick="logoutAct()" class="hidden text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 hover:text-red-800 transition-all whitespace-nowrap">Sign Out</button>
+        <a href="membership.html" class="bg-gray-950 text-white px-4 md:px-8 py-3.5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-blue-900 transition-all whitespace-nowrap shadow-sm">Join Us</a>
+        <button id="menu-btn" class="hidden xl:hidden text-gray-950 text-xl"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-gray-950 z-[100] hidden flex flex-col items-center justify-center p-12 transition-all">
+      <button id="close-menu" class="absolute top-8 right-10 text-white text-2xl"><i class="fas fa-times"></i></button>
+      <ul class="space-y-12 text-center">
+        <li><a href="index.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-white">Home</a></li>
+        <li><a href="who-we-are.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Who We Are</a></li>
+        <li><a href="activities.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Activities</a></li>
+        <li><a href="membership.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-all">Join Us</a></li>
+        <li class="pt-8"><button onclick="openLoginModal()" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Member Login</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Premium Activity Header -->
+  <section class="bg-gray-50 py-32 border-b border-gray-100">
+    <div class="container mx-auto px-6 md:px-12 text-center">
+      <h4 class="text-xs font-bold uppercase tracking-[0.5em] text-orange-600 mb-8">Community Impact</h4>
+      <h1 class="heading-font text-6xl md:text-7xl font-bold text-gray-900 mb-10 leading-tight">Foundation Activities</h1>
+      <p class="text-gray-500 max-w-2xl mx-auto text-xl font-light leading-relaxed">Engaging our community through diverse spiritual, social, and cultural events across the globe.</p>
+    </div>
+  </section>
+
+  <!-- Activity Discovery Grid -->
+  <section class="section-padding bg-white">
+    <div class="container mx-auto px-6 md:px-12 max-w-7xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1px bg-gray-100 border border-gray-100">
+        
+        <!-- Activity 1 -->
+        <div class="gallery-item bg-white p-12 group transition-all duration-700 hover:bg-gray-950 hover:text-white">
+          <div class="relative overflow-hidden mb-12 aspect-[4/5] grayscale group-hover:grayscale-0 transition-all duration-1000">
+            <img src="vedic_workshop.png" class="w-full h-full object-cover transition-transform duration-1000">
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Education</span>
+          <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Vedic Workshops</h3>
+          <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Preserving our ancient knowledge through expert-led chanting, study sessions, and traditional teaching methods. Our workshops are designed to pass on the purity of our Vedas to the next generation.</p>
+        </div>
+
+        <!-- Activity 2 -->
+        <div class="gallery-item bg-white p-12 group transition-all duration-700 hover:bg-blue-950 hover:text-white border-r border-gray-100 last:border-0 relative cursor-pointer">
+          <div class="relative overflow-hidden mb-12 aspect-[4/5] grayscale group-hover:grayscale-0 transition-all duration-1000">
+            <img src="annadaana.png" class="w-full h-full object-cover transition-transform duration-1000">
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Welfare</span>
+          <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Annadaana Programs</h3>
+          <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Serving our community through regular mass feeding and charitable service. We believe in the power of 'Service to Humanity is Service to God'.</p>
+        </div>
+
+        <!-- Activity 3 -->
+        <div class="gallery-item bg-white p-12 group transition-all duration-700 hover:bg-gray-950 hover:text-white">
+          <div class="relative overflow-hidden mb-12 aspect-[4/5] grayscale group-hover:grayscale-0 transition-all duration-1000">
+            <img src="youth_convention.png" class="w-full h-full object-cover transition-transform duration-1000">
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Mentorship</span>
+          <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Youth Conventions</h3>
+          <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Empowering the next generation with networking, mentorship, and leadership skills through annual conferences and retreats.</p>
+        </div>
+
+        <!-- Activity 4 -->
+        <div class="gallery-item bg-white p-12 group transition-all duration-700 hover:bg-blue-950 hover:text-white">
+          <div class="relative overflow-hidden mb-12 aspect-[4/5] grayscale group-hover:grayscale-0 transition-all duration-1000">
+            <img src="pilgrimage.png" class="w-full h-full object-cover transition-transform duration-1000">
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Spiritual</span>
+          <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Pilgrimage Tours</h3>
+          <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Organizing sacred journeys to holy sites and temples, facilitating a deep spiritual experience for our community members.</p>
+        </div>
+
+        <!-- Activity 5 -->
+        <div class="gallery-item bg-white p-12 group transition-all duration-700 hover:bg-gray-950 hover:text-white border-x border-gray-100 md:border-x-0 lg:border-x">
+          <div class="relative overflow-hidden mb-12 aspect-[4/5] grayscale group-hover:grayscale-0 transition-all duration-1000">
+            <img src="festival.png" class="w-full h-full object-cover transition-transform duration-1000">
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Cultural</span>
+          <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Festival Celebrations</h3>
+          <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Grand celebrations of Madhwa festivals like Madhwa Navami, Purandara Dasa Aradhana, and more, bringing families together.</p>
+        </div>
+
+        <!-- Activity 6 -->
+        <div class="gallery-item bg-white p-12 group transition-all duration-700 hover:bg-blue-950 hover:text-white">
+          <div class="relative overflow-hidden mb-12 aspect-[4/5] grayscale group-hover:grayscale-0 transition-all duration-1000">
+            <img src="medical_camp.png" class="w-full h-full object-cover transition-transform duration-1000">
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Community</span>
+          <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Medical Camps</h3>
+          <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Providing healthcare access through free medical camps, blood donation drives, and wellness workshops for members.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Sharp Footer -->
+  <footer class="bg-gray-950 text-white py-24 border-t border-gray-900">
+    <div class="container mx-auto px-6 md:px-12 text-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24 text-left lg:px-24">
+        <div>
+           <div class="flex items-center space-x-4 mb-10">
+              <img src="vmwf.jpeg" class="w-12 h-12">
+              <span class="heading-font font-bold text-white text-3xl tracking-tight uppercase">VMWF</span>
+           </div>
+        </div>
+        
+        <div class="md:text-right">
+           <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-white mb-8">Quick Links</h5>
+           <ul class="text-xs space-y-4 font-bold uppercase tracking-widest text-gray-500">
+             <li><a href="index.html" class="hover:text-orange-600 transition-all">Homepage</a></li>
+             <li><a href="who-we-are.html" class="hover:text-orange-600 transition-all">Our Identity</a></li>
+             <li><a href="activities.html" class="hover:text-orange-600 transition-all">Engagement</a></li>
+             <li><a href="membership.html" class="hover:text-orange-600 transition-all">Registry</a></li>
+           </ul>
+        </div>
+      </div>
+      
+      
+      
+      <p class="text-[10px] text-gray-700 font-bold uppercase tracking-widest">&copy; 2024 VMWF INDIA. ALL RIGHTS RESERVED.</p>
+    </div>
+  </footer>
+
+  <!-- Basic Modals -->
+  <script>
+    function openLoginModal() {
+       const modal = document.createElement('div');
+       modal.id = 'l-m-o';
+       modal.className = 'fixed inset-0 z-[200] flex items-center justify-center bg-gray-900/95 backdrop-blur-sm p-4';
+       modal.innerHTML = `
+          <div class="bg-white p-16 max-w-md w-full relative">
+             <button onclick="this.closest('#l-m-o').remove()" class="absolute top-8 right-8 text-gray-300 hover:text-black transition-all"><i class="fas fa-times"></i></button>
+             <h3 class="heading-font text-4xl font-bold mb-10">Access Portal</h3>
+             <form class="space-y-10" id="portal-login-form">
+                <input type="text" id="portal-user" placeholder="Username" class="w-full border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 text-sm" required>
+                <input type="password" id="portal-pass" placeholder="Password" class="w-full border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 text-sm" required>
+                <button type="submit" class="w-full bg-orange-600 text-white py-6 text-[10px] font-black uppercase tracking-widest">Authenticate</button>
+             </form>
+             <div id="portal-message" class="mt-6 text-center text-xs font-bold uppercase tracking-widest hidden"></div>
+          </div>
+       `;
+       document.body.appendChild(modal);
+
+       document.getElementById('portal-login-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const u = document.getElementById('portal-user').value;
+          const p = document.getElementById('portal-pass').value;
+          const msg = document.getElementById('portal-message');
+          
+          if (u === 'admin' && p === 'admin123') {
+             sessionStorage.setItem('vmwf_admin_active', 'active_' + Date.now());
+             window.location.href = 'admin.html';
+             return;
+          }
+
+          const members = JSON.parse(localStorage.getItem('vmwf_members_data')) || [];
+          const member = members.find(m => m.username === u && m.password === p);
+
+          if (member) {
+             if (member.status === 'Active') {
+                msg.innerText = `Welcome, ${member.firstName}! Access Granted.`;
+                msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-green-600";
+                msg.classList.remove('hidden');
+                setTimeout(() => { this.closest('#l-m-o').remove(); }, 2000);
+             } else {
+                msg.innerText = "Account Pending Admin Approval.";
+                msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-orange-600";
+                msg.classList.remove('hidden');
+             }
+          } else {
+             msg.innerText = "Invalid Credentials.";
+             msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-red-600";
+             msg.classList.remove('hidden');
+          }
+       });
+    }
+
+    // Session & Auth Logic
+    function checkActAuth() {
+       const memberSession = sessionStorage.getItem('vmwf_member_active');
+       const adminSession = sessionStorage.getItem('vmwf_admin_active');
+       
+       if (memberSession || adminSession) {
+          document.getElementById('auth-btn-act').classList.add('hidden');
+          document.getElementById('logout-btn-act').classList.remove('hidden');
+       } else {
+          document.getElementById('auth-btn-act').classList.remove('hidden');
+          document.getElementById('logout-btn-act').classList.add('hidden');
+       }
+    }
+
+    function openLoginModal() {
+       window.location.href = 'access.html?redirect=activities.html';
+    }
+
+    function logoutAct() {
+       sessionStorage.removeItem('vmwf_member_active');
+       sessionStorage.removeItem('vmwf_admin_active');
+       window.location.reload();
+    }
+
+
+
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if(menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+      closeBtn.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+      });
+    }
+
+    checkActAuth();
+  </script>
+</div> <!-- End act-content-wrapper -->
+</body>
+</html>

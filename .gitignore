@@ -1,0 +1,9 @@
+node_modules/
+.env
+.DS_Store
+*.log
+data/
+migrate.js
+package-lock.json
+screencapture-*.png
+tunnel_url*.txt

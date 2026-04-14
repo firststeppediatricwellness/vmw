@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Portal - VMWF</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --vmwf-orange: #f97316; }
+    body { font-family: 'Inter', sans-serif; background: #fdfdfd; }
+    .heading-font { font-family: 'Playfair Display', serif; }
+    .bg-luxury { background: #fdfdfd; }
+  </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+
+  <div class="bg-white p-12 md:p-16 max-w-md w-full shadow-2xl border border-gray-100 relative">
+    <div class="text-center mb-12">
+      <div class="flex justify-center mb-10">
+         <img src="vmwf.jpeg" class="w-16 h-16 shadow-lg rounded-sm">
+      </div>
+      <h1 class="heading-font text-4xl font-bold text-gray-950 mb-4">Member Portal</h1>
+      <p class="text-gray-500 text-sm font-medium uppercase tracking-[0.2em]">Authentication Required</p>
+    </div>
+    
+    <form id="access-form" class="space-y-10">
+      <div class="relative">
+        <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">Username</label>
+        <input type="text" id="username" class="w-full bg-transparent border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 transition-all font-medium text-gray-900" required>
+      </div>
+      <div class="relative">
+        <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">Password</label>
+        <input type="password" id="password" class="w-full bg-transparent border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 transition-all font-medium text-gray-900" required>
+      </div>
+      <button type="submit" class="w-full bg-gray-950 text-white py-6 text-xs font-black uppercase tracking-[0.4em] hover:bg-orange-600 transition-all shadow-xl">Authenticate</button>
+    </form>
+    
+    <div id="login-msg" class="mt-8 text-center text-[10px] font-bold uppercase tracking-widest hidden"></div>
+    
+    <div class="mt-12 text-center border-t border-gray-100 pt-8">
+      <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-relaxed">
+        Forgot credentials or not a member?<br/>
+        <a href="membership.html" class="text-orange-600 hover:underline mt-2 inline-block">Visit Membership Registry</a>
+      </p>
+    </div>
+
+    <div class="mt-8 text-center">
+       <a href="index.html" class="text-[9px] font-black uppercase tracking-widest text-gray-300 hover:text-gray-600 transition-all">
+          <i class="fas fa-arrow-left mr-2"></i>Back to Website
+       </a>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = { members: 'vmwf_members_data' };
+
+    document.getElementById('access-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
+      const msg = document.getElementById('login-msg');
+      
+      // Admin Check
+      if (u === 'admin' && p === 'admin123') {
+        sessionStorage.setItem('vmwf_admin_active', 'active_' + Date.now());
+        handleSuccess();
+        return;
+      }
+
+      // Member Check
+      const members = JSON.parse(localStorage.getItem(STORAGE_KEYS.members)) || [];
+      const member = members.find(m => m.username === u && m.password === p);
+
+      if (member) {
+        if (member.status === 'Active') {
+          sessionStorage.setItem('vmwf_member_active', 'active_' + Date.now());
+          handleSuccess();
+        } else {
+          msg.innerText = "Account Pending Approval.";
+          msg.className = "mt-8 text-center text-[10px] font-bold uppercase tracking-widest text-orange-600";
+          msg.classList.remove('hidden');
+        }
+      } else {
+        msg.innerText = "Invalid Registry Credentials.";
+        msg.className = "mt-8 text-center text-[10px] font-bold uppercase tracking-widest text-red-600";
+        msg.classList.remove('hidden');
+      }
+    });
+
+    function handleSuccess() {
+      const msg = document.getElementById('login-msg');
+      msg.innerText = "Success. Redirecting...";
+      msg.className = "mt-8 text-center text-[10px] font-bold uppercase tracking-widest text-green-600";
+      msg.classList.remove('hidden');
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect') || 'index.html';
+      
+      setTimeout(() => {
+        window.location.href = redirect;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

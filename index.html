@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vishwa Madhwamatha Welfare Foundation - Preserving Tradition, Embracing Modernity</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --consulting-blue: #002e6d;
+      --consulting-gray: #f2f2f2;
+      --vmwf-orange: #f97316;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #1a1a1a; line-height: 1.6; }
+    .heading-font { font-family: 'Playfair Display', serif; }
+    
+    /* McKinsey/Deloitte Aesthetic */
+    .premium-border { border-top: 1px solid #e5e5e5; }
+    .sharp-card { border: 1px solid #eeeeee; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .sharp-card:hover { border-color: var(--vmwf-orange); transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+    
+    .bg-gradient-orange { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); }
+    .text-gradient-orange {
+      background: linear-gradient(to right, #f97316, #fb923c);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    
+    .hero-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');
+      background-size: cover; background-position: center;
+    }
+    
+    .section-padding { padding-top: 8rem; padding-bottom: 8rem; }
+    
+    .icon-box-premium {
+      width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+      background: #f8f9fa; color: var(--vmwf-orange); margin-bottom: 2rem;
+    }
+
+    .nav-link-premium {
+      position: relative; font-weight: 500; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .nav-link-premium::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+      background: var(--vmwf-orange); transition: width 0.3s ease;
+    }
+    .nav-link-premium:hover::after { width: 100%; }
+
+    .animate-scroll { animation: scroll 40s linear infinite; }
+    @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    .tracking-luxury { letter-spacing: 0.1em; }
+
+    /* Login Overlays */
+    #login-overlay {
+       background: rgba(255, 255, 255, 0.98);
+       backdrop-filter: blur(12px);
+    }
+
+    .locked-indicator {
+       position: absolute;
+       top: 1.5rem;
+       right: 1.5rem;
+       width: 30px;
+       height: 30px;
+       background: rgba(0,0,0,0.05);
+       border-radius: 50%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       color: #f97316;
+       font-size: 0.75rem;
+       border: 1px solid rgba(249, 115, 22, 0.2);
+    }
+    .group:hover .locked-indicator {
+       background: rgba(255,255,255,0.2);
+       color: white;
+       border-color: white;
+    }
+  </style>
+</head>
+<body class="bg-white">
+
+  <div id="main-content-wrapper">
+
+  <!-- Navbar -->
+  <nav class="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+    <div class="container mx-auto flex items-center justify-between h-24 px-6 md:px-12">
+      <!-- Branding -->
+      <a href="index.html" class="flex items-center h-full group">
+        <img src="vmwf.jpeg" class="w-10 h-10 transition-transform duration-500 group-hover:scale-105">
+        <div class="ml-5 pl-5 border-l border-gray-200 hidden md:block">
+          <span class="heading-font font-bold text-gray-900 text-2xl tracking-tight leading-none">VMWF</span>
+          <p class="text-[9px] text-gray-400 uppercase tracking-[0.3em] font-bold mt-1">Vishwa Madhwamatha</p>
+        </div>
+      </a>
+      
+      <!-- Navigation Links -->
+      <ul class="hidden xl:flex items-center h-full gap-12">
+        <li><a href="index.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-900 border-b border-blue-900 pb-1 whitespace-nowrap">Home</a></li>
+        <li><a href="who-we-are.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-gray-950 transition-all whitespace-nowrap">Who We Are</a></li>
+        <li><a href="activities.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-gray-950 transition-all whitespace-nowrap">Activities</a></li>
+        <li><a href="#contact" class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-gray-950 transition-all whitespace-nowrap">Contact</a></li>
+      </ul>
+
+      <!-- Action Items -->
+      <div class="flex items-center h-full gap-4 md:gap-8">
+        <button id="auth-btn-main" onclick="openLoginModal()" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-blue-900 transition-all whitespace-nowrap">Member Login</button>
+        <button id="logout-btn-main" onclick="logoutMain()" class="hidden text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 hover:text-red-800 transition-all whitespace-nowrap">Sign Out</button>
+        <a href="membership.html" class="bg-gray-950 text-white px-4 md:px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-blue-900 transition-all whitespace-nowrap shadow-sm">Join Us</a>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-gray-950 z-[100] hidden flex flex-col items-center justify-center p-12 transition-all">
+      <button id="close-menu" class="absolute top-8 right-10 text-white text-2xl"><i class="fas fa-times"></i></button>
+      <ul class="space-y-12 text-center">
+        <li><a href="index.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-white">Home</a></li>
+        <li><a href="who-we-are.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Who We Are</a></li>
+        <li><a href="activities.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Activities</a></li>
+        <li><a href="membership.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-all">Join Us</a></li>
+        <li class="pt-8"><button onclick="openLoginModal()" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Member Login</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-bg min-h-[90vh] flex items-center text-white relative overflow-hidden">
+    <div class="container mx-auto px-6 md:px-12 relative z-10 w-full">
+      <div class="max-w-4xl">
+        <div class="h-1 w-20 bg-orange-500 mb-10"></div>
+        <h1 class="heading-font text-5xl md:text-7xl font-bold mb-10 leading-[1.1]">Connecting Tradition <br/><span class="text-orange-500">Building Future.</span></h1>
+        <p class="text-lg md:text-xl mb-12 text-gray-300 max-w-2xl font-light leading-relaxed">Connecting our community through tradition, spirituality, and modern services. Join us to preserve and celebrate our rich heritage while building a supportive network for future generations.</p>
+        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8">
+          <a href="membership.html" class="bg-orange-600 text-white px-10 py-5 font-bold text-xs uppercase tracking-luxury hover:bg-white hover:text-gray-900 transition-all text-center">Join Membership</a>
+          <button onclick="openListView('events')" class="border border-white/30 text-white px-10 py-5 font-bold text-xs uppercase tracking-luxury hover:bg-white hover:text-gray-900 transition-all">Explore Events</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Updates (Consulting Style) -->
+  <div class="bg-orange-600 text-white py-4 overflow-hidden border-y border-orange-500 cursor-pointer" onclick="openLoginModal()">
+    <div class="container mx-auto flex items-center px-6">
+      <span class="text-[10px] uppercase tracking-luxury font-black mr-12 whitespace-nowrap">Updates:</span>
+      <div class="overflow-hidden flex-1 relative h-4">
+        <div id="update-text" class="animate-scroll absolute whitespace-nowrap text-xs font-medium uppercase tracking-wider">
+           <span id="ticker-content">🏆 Community Awards 2024 nominations open | 🎉 Udupi Temple Festival on 15th Nov | 📢 New Job Listings for Vipra Community</span>
+        </div>
+      </div>
+      <i id="ticker-lock" class="fas fa-lock text-[10px] ml-4 opacity-50"></i>
+    </div>
+  </div>
+
+  
+  <!-- Section: Stats Dashboard (Executive Metrics) -->
+  <section class="py-24 bg-gray-50 border-b border-gray-100">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="mb-16">
+        <h4 id="stats-subtitle" class="text-xs font-bold uppercase tracking-[0.4em] text-orange-600 mb-6">Executive Summary</h4>
+        <h2 id="stats-title" class="heading-font text-5xl font-bold text-gray-900 leading-tight">Impact at Scale</h2>
+      </div>
+      <div id="stats-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-200 border border-gray-200 shadow-xl">
+        <!-- Dashboard Card 1 -->
+        <div class="bg-white p-12 group hover:bg-orange-600 transition-all duration-700 border-r border-gray-100 last:border-0 relative cursor-pointer" onclick="openListView('jobs')">
+           <div class="locked-indicator guest-only"><i class="fas fa-lock"></i></div>
+           <h5 id="card-1-cat" class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 group-hover:text-white/60 mb-8">Empowerment</h5>
+           <h3 class="heading-font text-3xl font-bold text-gray-900 group-hover:text-white mb-6"><span id="card-1-title">Employment Portal</span></h3>
+           <div class="mb-4 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-white/60">
+              <span id="card-1-contact-name">Coordinator</span>: <span id="card-1-contact-phone">+91 00000 00000</span>
+           </div>
+           <p id="card-1-desc" class="text-sm text-gray-500 group-hover:text-white/80 font-light leading-relaxed mb-10">Exclusive job opportunities for our community members across various sectors.</p>
+           <button id="card-1-btn" class="text-[10px] font-black uppercase tracking-luxury text-gray-950 group-hover:text-white underline underline-offset-8 decoration-orange-500 group-hover:decoration-white">Explore Opportunities →</button>
+        </div>
+        <!-- Dashboard Card 2 -->
+        <div class="bg-white p-12 group hover:bg-orange-600 transition-all duration-700 border-r border-gray-100 last:border-0 relative cursor-pointer" onclick="openListView('matrimony')">
+           <div class="locked-indicator guest-only"><i class="fas fa-lock"></i></div>
+           <h5 id="card-2-cat" class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 group-hover:text-white/60 mb-8">Social</h5>
+           <h3 class="heading-font text-3xl font-bold text-gray-900 group-hover:text-white mb-6"><span id="card-2-title">Matrimonial Service</span></h3>
+           <div class="mb-4 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-white/60">
+              <span id="card-2-contact-name">Coordinator</span>: <span id="card-2-contact-phone">+91 00000 00000</span>
+           </div>
+           <p id="card-2-desc" class="text-sm text-gray-500 group-hover:text-white/80 font-light leading-relaxed mb-10">Find the perfect match from our community with our trusted matrimonial service.</p>
+           <button id="card-2-btn" class="text-[10px] font-black uppercase tracking-luxury text-gray-950 group-hover:text-white underline underline-offset-8 decoration-orange-500 group-hover:decoration-white">Find Your Match →</button>
+        </div>
+        <!-- Dashboard Card 3 -->
+        <div class="bg-white p-12 group hover:bg-orange-600 transition-all duration-700 border-r border-gray-100 last:border-0 relative cursor-pointer" onclick="openListView('members')">
+           <div class="locked-indicator guest-only"><i class="fas fa-lock"></i></div>
+           <h5 id="card-3-cat" class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 group-hover:text-white/60 mb-8">Connectivity</h5>
+           <h3 class="heading-font text-3xl font-bold text-gray-900 group-hover:text-white mb-6"><span id="card-3-title">Global Directory</span></h3>
+           <div class="mb-4 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-white/60">
+              <span id="card-3-contact-name">Coordinator</span>: <span id="card-3-contact-phone">+91 00000 00000</span>
+           </div>
+           <p id="card-3-desc" class="text-sm text-gray-500 group-hover:text-white/80 font-light leading-relaxed mb-10">Comprehensive directory of community members to help you connect and network.</p>
+           <button id="card-3-btn" class="text-[10px] font-black uppercase tracking-luxury text-gray-950 group-hover:text-white underline underline-offset-8 decoration-orange-500 group-hover:decoration-white">Connect Now →</button>
+        </div>
+        <!-- Dashboard Card 4 -->
+        <div class="bg-white p-12 group hover:bg-orange-600 transition-all duration-700 border-r border-gray-100 last:border-0 relative cursor-pointer">
+           <div class="locked-indicator guest-only"><i class="fas fa-lock"></i></div>
+           <h5 id="card-4-cat" class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 group-hover:text-white/60 mb-8">Intelligence</h5>
+           <h3 class="heading-font text-3xl font-bold text-gray-900 group-hover:text-white mb-6"><span id="card-4-title">Govt. Schemes & News</span></h3>
+           <div class="mb-4 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-white/60">
+              <span id="card-4-contact-name">Coordinator</span>: <span id="card-4-contact-phone">+91 00000 00000</span>
+           </div>
+           <p id="card-4-desc" class="text-sm text-gray-500 group-hover:text-white/80 font-light leading-relaxed mb-10">Stay updated on government schemes and community news that matters to you.</p>
+           <button id="card-4-btn" onclick="openLoginModal()" class="text-[10px] font-black uppercase tracking-luxury text-gray-950 group-hover:text-white underline underline-offset-8 decoration-orange-500 group-hover:decoration-white">Stay Informed →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Donation: Strategic Support -->
+  <section class="section-padding bg-white relative">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="max-w-xl mb-24">
+        <h4 class="text-xs font-bold uppercase tracking-[0.4em] text-orange-600 mb-6">Strategic Giving</h4>
+        <h2 class="heading-font text-5xl font-bold text-gray-900 mb-8">Support Our Cause</h2>
+        <p class="text-gray-500 text-lg leading-relaxed font-light">Your generous donations help us preserve our traditions, support community initiatives, and provide essential services to those in need.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <!-- SCAN MODULE 01 -->
+        <div class="bg-gray-50 p-12 border border-gray-200 group hover:border-orange-500 transition-all duration-700">
+           <div class="flex justify-between items-center mb-12">
+             <h3 class="text-2xl font-bold uppercase tracking-luxury">General Operations</h3>
+             <div class="w-12 h-12 bg-white flex items-center justify-center text-orange-600 border border-gray-100"><i class="fas fa-qrcode"></i></div>
+           </div>
+           
+           <div class="flex flex-col md:flex-row gap-12 items-center">
+              <div class="w-full md:w-1/2 bg-white p-4 shadow-xl">
+                 <img src="donation.jpeg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700">
+              </div>
+              <div class="w-full md:w-1/2 space-y-6">
+                 <div class="bg-orange-50 border-l-2 border-orange-500 p-4">
+                    <p class="text-[10px] font-bold text-orange-800 uppercase tracking-widest">KARNATAKA BANK</p>
+                    <p class="text-xs text-gray-600 font-medium">VPA: 9606946622@kbl</p>
+                 </div>
+                 <p class="text-sm text-gray-500 leading-relaxed italic">"Support community welfare programs & educational initiatives through secure UPI transfers."</p>
+              </div>
+           </div>
+        </div>
+
+        <!-- SCAN MODULE 02 -->
+        <div class="bg-gray-950 p-12 text-white group hover:bg-orange-600 transition-all duration-700">
+          <div class="flex justify-between items-center mb-12">
+            <h3 class="text-2xl font-bold uppercase tracking-luxury text-white">Membership Unit</h3>
+            <div class="w-12 h-12 bg-white/10 flex items-center justify-center text-orange-500"><i class="fas fa-user-plus"></i></div>
+          </div>
+          
+          <div class="flex flex-col md:flex-row gap-12 items-center">
+             <div class="w-full md:w-1/2 bg-white p-4">
+                <img src="membership.jpeg" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700">
+             </div>
+             <div class="w-full md:w-1/2 space-y-6">
+                <div class="bg-white/10 p-4 border-l-2 border-orange-500">
+                   <p class="text-[10px] font-bold text-orange-400 uppercase tracking-widest">KARNATAKA BANK</p>
+                   <p class="text-xs text-white/70 font-medium">VPA: 9606946623@kbl</p>
+                </div>
+                <p class="text-sm text-white/60 leading-relaxed">"Preserve and promote our spiritual and cultural heritage by becoming an active member."</p>
+             </div>
+          </div>
+       </div>
+      </div>
+      
+      <div class="mt-24 pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs tracking-widest font-bold uppercase">
+         <div class="flex items-center mb-4 md:mb-0">
+            <i class="fas fa-info-circle text-orange-500 mr-4"></i>
+            Tax exemption under Section 80G
+         </div>
+         <div class="text-center md:text-right">
+            Phone: <span id="contact-phone">+91 96069 46623</span> | Email: <span id="contact-email">admin@vmwf.org</span>
+         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Action Gateway (Strategic Engagement) -->
+  <section class="py-24 bg-white">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="mb-16 text-center max-w-2xl mx-auto">
+        <h4 id="action-subtitle" class="text-xs font-bold uppercase tracking-[0.4em] text-orange-600 mb-6">Strategic Initiatives</h4>
+        <h2 id="action-title" class="heading-font text-5xl font-bold text-gray-900 leading-tight">Elevate Your Engagement</h2>
+      </div>
+      <div id="action-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <!-- Action Card 1 -->
+        <div class="bg-gray-100 p-12 flex flex-col justify-between group hover:bg-gray-950 transition-all duration-500 min-h-[400px]">
+           <div>
+              <h3 id="card-action-1-title" class="heading-font text-4xl font-bold mb-6 group-hover:text-white transition-colors leading-tight">Events</h3>
+              <p id="card-action-1-subtitle" class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mb-4">Gatherings & Celebrations</p>
+              <div class="mb-8 text-[9px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-white/40">
+                 <span id="card-action-1-contact-name">Admin</span> | <span id="card-action-1-contact-phone">+91 96069 46623</span>
+              </div>
+           </div>
+           <button id="card-action-1-btn" onclick="openListView('events')" class="text-xs font-bold uppercase tracking-luxury text-gray-950 group-hover:text-orange-600 transition-colors border-b border-gray-950 group-hover:border-orange-600 pb-2 self-start">View All →</button>
+        </div>
+        <!-- Action Card 2 -->
+        <div class="bg-orange-600 p-12 flex flex-col justify-between hover:bg-orange-700 transition-all duration-500 min-h-[400px]">
+           <div>
+              <h3 id="card-action-2-title" class="heading-font text-4xl font-bold mb-6 text-white leading-tight">Membership</h3>
+              <p id="card-action-2-subtitle" class="text-[10px] font-black uppercase tracking-[0.4em] text-white/60 mb-4">Join Our Community</p>
+              <div class="mb-8 text-[9px] font-bold uppercase tracking-widest text-white/40">
+                 <span id="card-action-2-contact-name">Admin</span> | <span id="card-action-2-contact-phone">+91 96069 46623</span>
+              </div>
+           </div>
+           <a id="card-action-2-btn" href="membership.html" class="text-xs font-bold uppercase tracking-luxury text-white border-b border-white pb-2 self-start">Join Now →</a>
+        </div>
+        <!-- Action Card 3 -->
+        <div class="bg-gray-950 p-12 flex flex-col justify-between hover:bg-blue-900 transition-all duration-500 min-h-[400px]">
+           <div>
+              <h3 id="card-action-3-title" class="heading-font text-4xl font-bold mb-6 text-white leading-tight font-display break-words">Spiritual <br/>Tours</h3>
+              <p id="card-action-3-subtitle" class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-500 mb-4">Sacred Journeys</p>
+              <div class="mb-8 text-[9px] font-bold uppercase tracking-widest text-white/40">
+                 <span id="card-action-3-contact-name">Admin</span> | <span id="card-action-3-contact-phone">+91 96069 46623</span>
+              </div>
+           </div>
+           <button id="card-action-3-btn" onclick="openListView('tours')" class="text-xs font-bold uppercase tracking-luxury text-white border-b border-white hover:text-orange-500 hover:border-orange-500 transition-all pb-2 self-start">Book Now →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact & Global Access -->
+  <section id="contact" class="section-padding bg-gray-950 text-white relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-orange-600/5 -skew-x-12 transform translate-x-1/2"></div>
+    <div class="container mx-auto px-6 md:px-12 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+        <div>
+           <h4 class="text-xs font-bold uppercase tracking-[0.4em] text-orange-500 mb-8">Communications</h4>
+           <h2 class="heading-font text-5xl md:text-6xl font-bold mb-12">Get in Touch</h2>
+           <p class="text-gray-400 text-lg font-light leading-relaxed mb-16 max-w-lg">Have questions about membership or our services? Our global response team is ready to assist you via WhatsApp.</p>
+           
+           <div class="space-y-10">
+              <div class="flex items-center group cursor-pointer">
+                 <div class="w-16 h-16 rounded-full border border-gray-800 flex items-center justify-center mr-8 group-hover:bg-orange-600 group-hover:border-orange-600 transition-all">
+                    <i class="fab fa-whatsapp text-2xl"></i>
+                 </div>
+                 <div>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-luxury mb-1">WhatsApp Channel</p>
+                    <p id="contact-phone-2" class="text-xl font-bold tracking-luxury">+91 96069 46623</p>
+                 </div>
+              </div>
+              <div class="flex items-center group cursor-pointer">
+                <div class="w-16 h-16 rounded-full border border-gray-800 flex items-center justify-center mr-8 group-hover:bg-orange-600 group-hover:border-orange-600 transition-all">
+                   <i class="fas fa-envelope text-xl"></i>
+                </div>
+                <div>
+                   <p class="text-[10px] text-gray-500 uppercase tracking-luxury mb-1">Email Corporate</p>
+                   <p class="text-xl font-bold tracking-luxury">admin@vmwf.org</p>
+                </div>
+             </div>
+           </div>
+        </div>
+
+        <div class="bg-white p-12 md:p-20 shadow-2xl">
+           <form class="space-y-12" onsubmit="sendWhatsApp(event)">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="relative">
+                   <input type="text" id="contact-name" placeholder="Name" required class="w-full bg-transparent border-b border-gray-200 py-4 text-gray-900 focus:outline-none focus:border-orange-500 transition-all font-medium">
+                </div>
+                <div class="relative">
+                   <input type="text" id="contact-subject" placeholder="Subject" required class="w-full bg-transparent border-b border-gray-200 py-4 text-gray-900 focus:outline-none focus:border-orange-500 transition-all font-medium">
+                </div>
+              </div>
+              <div class="relative">
+                 <textarea id="contact-message" rows="3" placeholder="How can we help?" required class="w-full bg-transparent border-b border-gray-200 py-4 text-gray-900 focus:outline-none focus:border-orange-500 transition-all font-medium"></textarea>
+              </div>
+              <button type="submit" class="w-full bg-gray-950 text-white py-6 text-xs font-bold uppercase tracking-[0.3em] hover:bg-orange-600 transition-all">
+                 Initiate WhatsApp Request
+              </button>
+           </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Corporate Footer -->
+  <footer class="bg-white py-20 border-t border-gray-100">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+        <div>
+           <div class="flex items-center space-x-4 mb-10">
+              <img src="vmwf.jpeg" class="w-10 h-10">
+              <span class="heading-font font-bold text-gray-900 text-xl tracking-tight uppercase">VMWF</span>
+           </div>
+        </div>
+        
+        <div class="md:text-right">
+           <h5 class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-900 mb-8">Quick Links</h5>
+           <ul class="text-xs space-y-4 font-bold uppercase tracking-widest text-gray-500">
+             <li><a href="index.html" class="hover:text-orange-600 transition-all underline decoration-transparent hover:decoration-orange-600 underline-offset-8">Homepage</a></li>
+             <li><a href="who-we-are.html" class="hover:text-orange-600 transition-all underline decoration-transparent hover:decoration-orange-600 underline-offset-8">Our Identity</a></li>
+             <li><a href="activities.html" class="hover:text-orange-600 transition-all underline decoration-transparent hover:decoration-orange-600 underline-offset-8">Engagement</a></li>
+             <li><a href="membership.html" class="hover:text-orange-600 transition-all underline decoration-transparent hover:decoration-orange-600 underline-offset-8">Registry</a></li>
+           </ul>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300">
+        <p>&copy; 2024 VMWF India. All Rights Reserved.</p>
+        <div class="flex space-x-10 mt-6 md:mt-0">
+           <a href="#" class="hover:text-orange-600 transition-all">Privacy</a>
+           <a href="#" class="hover:text-orange-600 transition-all">Legal</a>
+           <a href="#" class="hover:text-orange-600 transition-all">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modals (Kept for functionality) -->
+  <!-- Global List Modal -->
+  <div id="list-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-gray-900/60 backdrop-blur-md p-4 transition-all">
+    <div class="bg-white shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col border border-gray-100">
+      <div class="p-10 bg-gray-950 text-white flex justify-between items-center">
+        <div>
+          <h2 id="modal-list-title" class="heading-font text-3xl font-bold">List View</h2>
+          <p id="modal-list-subtitle" class="text-gray-500 text-[10px] uppercase font-bold tracking-luxury mt-2">Executive Overview</p>
+        </div>
+        <button onclick="closeListView()" class="w-12 h-12 flex items-center justify-center border border-white/10 hover:bg-white hover:text-black transition-all">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="p-6 bg-gray-50 border-b flex items-center">
+        <div class="relative flex-1">
+          <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <input type="text" id="modal-search" placeholder="Filter records..." class="w-full pl-16 pr-6 py-5 bg-white border-0 focus:ring-0 text-sm font-medium">
+        </div>
+      </div>
+      <div id="modal-list-content" class="flex-1 overflow-y-auto p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- Dyn content -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration & Data handling preserved exactly as is
+    const STORAGE_KEYS = {
+      jobs: 'vmwf_jobs_data',
+      matrimony: 'vmwf_matrimony_data',
+      events: 'vmwf_events_data',
+      tours: 'vmwf_tours_data',
+      members: 'vmwf_members_data',
+      updates: 'vmwf_updates_data',
+      siteContent: 'vmwf_site_content'
+    };
+
+    function seedData() {
+      // Dummy Members for Login
+      if (!localStorage.getItem(STORAGE_KEYS.members)) {
+        localStorage.setItem(STORAGE_KEYS.members, JSON.stringify([
+          { id: 'MEM001', firstName: 'Admin', lastName: 'User', username: 'admin', password: 'admin123', status: 'Active' },
+          { id: 'MEM002', firstName: 'Vishwa', lastName: 'Member', username: 'member1', password: 'pass123', status: 'Active' },
+          { id: 'MEM003', firstName: 'Admin', lastName: 'Kumar', username: 'vishwa_user', password: 'vmwf2024', status: 'Active' }
+        ]));
+      }
+
+      if (!localStorage.getItem(STORAGE_KEYS.jobs)) {
+        localStorage.setItem(STORAGE_KEYS.jobs, JSON.stringify([
+          { id: 1, title: "Senior Software Engineer", location: "Bangalore, India", category: "Technology", description: "Leading spiritual technology firm seeking a Full Stack developer. Must value cultural integration.", contactName: "Rahul Hegde", contactPhone: "+91 98450 12345" },
+          { id: 2, title: "Operations Director", location: "Dubai, UAE", category: "Management", description: "High-level operations role for community-backed logistics company in the Middle East.", contactName: "Sanjay Rao", contactPhone: "+971 50 123 4567" },
+          { id: 3, title: "Financial Controller", location: "London, UK", category: "Finance", description: "Qualified CA for managing European community investment portfolios.", contactName: "Venkatesh Bhat", contactPhone: "+44 20 7123 4567" }
+        ]));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.matrimony)) {
+        localStorage.setItem(STORAGE_KEYS.matrimony, JSON.stringify([
+          { id: 'M1', name: "Ananya Sharma", age: 26, profession: "Data Scientist", location: "Bangalore", category: "Professional", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150", description: "M.Tech graduate, looking for a partner with strong spiritual values and modern outlook.", contactName: "Sunil Sharma (Father)", contactPhone: "+91 99000 11223" },
+          { id: 'M2', name: "Raghavendra Kulkarni", age: 31, profession: "Architect", location: "Udupi", category: "Traditional", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&h=150", description: "Focused on heritage architecture. Seeding a companion who appreciates traditional arts.", contactName: "Self", contactPhone: "+91 98455 66778" },
+          { id: 'M3', name: "Sneha Madhwa", age: 24, profession: "Management Consultant", location: "Mumbai", category: "Corporate", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150", description: "MBA from IIM, working at a top-tier firm. Seeking match from professional background.", contactName: "Arundhati (Mother)", contactPhone: "+91 97311 22334" }
+        ]));
+      }
+
+      if (!localStorage.getItem(STORAGE_KEYS.events)) {
+        localStorage.setItem(STORAGE_KEYS.events, JSON.stringify([
+          { id: 'E1', title: "International Madhwa Summit 2024", location: "Mantralayam", category: "Conference", description: "A global gathering of scholars, professionals, and community leaders.", contactName: "Event Desk", contactPhone: "+91 96069 46623", date: "Nov 15, 2024" },
+          { id: 'E2', title: "Vedic Chanting Marathon", location: "Udupi Krishna Matha", category: "Traditional", description: "24-hour non-stop Sahasranama chanting for world peace.", contactName: "Organizing Committee", contactPhone: "+91 96060 11111", date: "Dec 05, 2024" }
+        ]));
+      }
+
+      if (!localStorage.getItem(STORAGE_KEYS.tours)) {
+        localStorage.setItem(STORAGE_KEYS.tours, JSON.stringify([
+          { id: 'T1', title: "Sacred South India Trail", location: "Across Karnataka", category: "Spiritual", description: "Guided tour covering Udupi, Mantralayam, and Gokarna.", contactName: "Tour Coordinator", contactPhone: "+91 96069 46623", date: "Monthly" },
+          { id: 'T2', title: "Kashi Yatra Special", location: "Varanasi", category: "Spiritual", description: "Luxury spiritual journey to the holy city with community guides.", contactName: "Admin", contactPhone: "+91 96069 46623", date: "Jan 2025" }
+        ]));
+      }
+
+      seedSiteContent();
+    }
+
+    function seedSiteContent() {
+      if (!localStorage.getItem(STORAGE_KEYS.siteContent)) {
+        const defaultContent = {
+          stats: [
+            { cat: "Empowerment", title: "Employment Portal", count: "220+", desc: "Exclusive job opportunities for our community members across various sectors with cultural compatibility in mind.", link: "jobs" },
+            { cat: "Social", title: "Matrimonial Service", count: "550+", desc: "Find the perfect match from our community with our trusted matrimonial service that respects tradition and values.", link: "matrimony" },
+            { cat: "Connectivity", title: "Global Directory", count: "10,000+", desc: "Comprehensive directory of community members to help you connect, network, and build meaningful relationships.", link: "members" },
+            { cat: "Updates", title: "Govt. Schemes & News", count: "Live", desc: "Stay updated on government schemes, assistance programs, and community news that matters to you.", link: "#" }
+          ],
+          actions: [
+            { subtitle: "Gatherings & Celebrations", title: "Events", link: "events" },
+            { subtitle: "Join Our Community", title: "Membership", link: "membership.html" },
+            { subtitle: "Sacred Journeys", title: "Spiritual Tours", link: "tours" }
+          ],
+          contact: { phone: "+91 96069 46623", email: "admin@vmwf.org" }
+        };
+        localStorage.setItem(STORAGE_KEYS.siteContent, JSON.stringify(defaultContent));
+      }
+    }
+
+    function loadSiteContent() {
+      const content = JSON.parse(localStorage.getItem(STORAGE_KEYS.siteContent));
+      if (!content) return;
+
+      // Apply Stats
+      content.stats.forEach((s, i) => {
+        const id = i + 1;
+        document.getElementById(`card-${id}-cat`).innerText = s.cat;
+        document.getElementById(`card-${id}-title`).innerText = s.title;
+        document.getElementById(`card-${id}-desc`).innerText = s.desc;
+        
+        // Contact Details
+        if (document.getElementById(`card-${id}-contact-name`)) {
+           document.getElementById(`card-${id}-contact-name`).innerText = s.contactName || "Coordinator";
+           document.getElementById(`card-${id}-contact-phone`).innerText = s.contactPhone || "";
+        }
+
+        // Images (specifically for Matrimony/Social)
+        const imgEl = document.getElementById(`card-${id}-img`);
+        if (imgEl && s.image) {
+           imgEl.src = s.image;
+           imgEl.classList.remove('hidden');
+        }
+
+        const btn = document.getElementById(`card-${id}-btn`);
+        if (s.link.includes('.html') || s.link.startsWith('#')) {
+           btn.onclick = () => { window.location.href = s.link; };
+        } else {
+           btn.onclick = () => { openListView(s.link); };
+        }
+      });
+
+      // Apply Actions
+      content.actions.forEach((a, i) => {
+        const id = i + 1;
+        document.getElementById(`card-action-${id}-title`).innerText = a.title;
+        document.getElementById(`card-action-${id}-subtitle`).innerText = a.subtitle;
+        
+        // Contact Details
+        if (document.getElementById(`card-action-${id}-contact-name`)) {
+           document.getElementById(`card-action-${id}-contact-name`).innerText = a.contactName || "Coordinator";
+           document.getElementById(`card-action-${id}-contact-phone`).innerText = a.contactPhone || "";
+        }
+
+        const btn = document.getElementById(`card-action-${id}-btn`);
+        if (a.link.includes('.html')) {
+           btn.href = a.link;
+           btn.onclick = null;
+        } else {
+           btn.onclick = () => { openListView(a.link); };
+        }
+      });
+
+      // Apply Contact
+      document.getElementById('contact-phone').innerText = content.contact.phone;
+      document.getElementById('contact-phone-2').innerText = content.contact.phone;
+      document.getElementById('contact-email').innerText = content.contact.email;
+      document.getElementById('contact-email-2').innerText = content.contact.email;
+      
+      // Update news card specific ticker sync if needed
+    }
+
+    function fetchStats() {
+      seedData();
+      Object.keys(STORAGE_KEYS).forEach(key => {
+        if(key === 'updates' || key === 'regs') return;
+        const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[key])) || [];
+        const el = document.getElementById(`${key}-count`);
+        if (el) el.innerText = `${items.length < 5 ? items.length : items.length + '+'}`;
+      });
+    }
+
+    let activeData = [];
+    let activeType = '';
+
+    function openListView(type) {
+      if (!sessionStorage.getItem('vmwf_member_active') && !sessionStorage.getItem('vmwf_admin_active')) {
+         window.location.href = 'access.html?redirect=index.html';
+         return;
+      }
+      activeType = type;
+      const content = JSON.parse(localStorage.getItem(STORAGE_KEYS.siteContent));
+      let sectionInfo = null;
+
+      if (content) {
+        // Find in stats or actions
+        sectionInfo = content.stats.find(s => s.link === type) || content.actions.find(a => a.link === type);
+      }
+
+      document.getElementById('list-modal').classList.remove('hidden');
+      document.getElementById('modal-list-title').innerText = type.charAt(0).toUpperCase() + type.slice(1);
+      
+      activeData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
+      renderModalList(activeData, sectionInfo);
+    }
+
+    function closeListView() { document.getElementById('list-modal').classList.add('hidden'); }
+
+    function renderModalList(items, sectionInfo) {
+      const container = document.getElementById('modal-list-content');
+      
+      if (items.length === 0) {
+        container.innerHTML = `<div class="col-span-2 text-center py-20 text-gray-400 font-medium tracking-widest text-xs uppercase">No Analytical Records Found</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        const title = item.title || item.name || (item.firstName + ' ' + item.lastName);
+        const meta = item.category || item.profession || item.membershipType;
+        const loc = item.location || 'Remote/Global';
+        
+        // Individual item contact - Styled prominently
+        const contact = item.contactPhone ? `
+          <div class="mt-10 pt-8 border-t border-gray-100 flex items-center justify-between">
+            <div>
+              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">Primary Contact</p>
+              <p class="text-sm font-bold text-gray-950">${item.contactName || 'Ananya B'}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Phone Number</p>
+              <p class="text-sm font-bold text-orange-600">${item.contactPhone}</p>
+            </div>
+          </div>
+        ` : '';
+
+        return `
+          <div class="bg-white p-12 border border-gray-100 group hover:border-orange-500 transition-all duration-500 relative">
+            <h3 class="font-bold text-2xl mb-4 text-gray-900 uppercase tracking-tight">${title}</h3>
+            <div class="flex flex-wrap gap-4 mb-8">
+              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-orange-600">${meta}</span>
+              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300">|</span>
+              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">${loc}</span>
+            </div>
+            <p class="text-sm text-gray-400 line-clamp-3 mb-10 font-light leading-relaxed">${item.description || "Corporate summary unavailable."}</p>
+            
+            ${contact}
+
+            <div class="mt-6 flex justify-between items-center">
+               <span class="text-[10px] font-bold text-gray-200 uppercase tracking-widest">${item.date || 'Active Record'}</span>
+               <button onclick='showDetail("${activeType}", "${item.id}")' class="text-gray-950 font-black text-[10px] uppercase tracking-luxury hover:text-orange-600 transition-all underline underline-offset-8">Details</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showDetail(type, id) {
+      const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
+      const item = items.find(i => i.id == id || i.id === id);
+      if (!item) return;
+
+      const title = item.title || item.name || (item.firstName + ' ' + item.lastName);
+      const detailOverlay = document.createElement('div');
+      detailOverlay.id = 'detail-overlay';
+      detailOverlay.className = 'fixed inset-0 z-[130] flex items-center justify-center bg-gray-900/40 backdrop-blur-sm p-4';
+      detailOverlay.innerHTML = `
+        <div class="bg-white p-12 max-w-lg w-full shadow-2xl relative">
+          <button onclick="this.closest('#detail-overlay').remove()" class="absolute top-8 right-8 text-gray-300 hover:text-orange-600"><i class="fas fa-times"></i></button>
+          <h4 class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mb-8">${type} Detailed View</h4>
+          <h3 class="heading-font text-4xl font-bold text-gray-900 mb-10 leading-tight">${title}</h3>
+          <p class="text-gray-500 text-lg leading-relaxed font-light mb-12">${item.description || 'Verified detailed record for VMWF community reference.'}</p>
+          
+          <div class="grid grid-cols-2 gap-10 text-[10px] font-black uppercase tracking-[0.2em] mb-12 pb-12 border-b border-gray-100">
+            <div><p class="text-gray-300 mb-2">Location</p><p class="text-gray-950">${item.location || 'Remote'}</p></div>
+            <div><p class="text-gray-300 mb-2">Category</p><p class="text-gray-950">${item.category || item.profession || 'Core'}</p></div>
+          </div>
+
+          ${item.contactPhone ? `
+          <div class="bg-gray-50 p-8 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">Primary Liaison</p>
+              <p class="text-lg font-bold text-gray-950">${item.contactName || 'Ananya B'}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Contact Number</p>
+              <p class="text-xl font-bold text-orange-600">${item.contactPhone}</p>
+            </div>
+          </div>
+          ` : ''}
+
+          <button onclick="this.closest('#detail-overlay').remove()" class="w-full mt-12 border border-gray-200 py-6 text-[10px] font-black uppercase tracking-luxury hover:bg-gray-50 transition-all font-bold text-gray-500">Close Access</button>
+        </div>
+      `;
+      document.body.appendChild(detailOverlay);
+    }
+
+    function openLoginModal() {
+       const modal = document.createElement('div');
+       modal.id = 'l-m-o';
+       modal.className = 'fixed inset-0 z-[200] flex items-center justify-center bg-gray-900/95 backdrop-blur-sm p-4';
+       modal.innerHTML = `
+          <div class="bg-white p-16 max-w-md w-full relative">
+             <button onclick="this.closest('#l-m-o').remove()" class="absolute top-8 right-8 text-gray-300 hover:text-black transition-all"><i class="fas fa-times"></i></button>
+             <h3 class="heading-font text-4xl font-bold mb-10">Access Portal</h3>
+             <form class="space-y-10" id="portal-login-form">
+                <input type="text" id="portal-user" placeholder="Username" class="w-full border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 text-sm" required>
+                <input type="password" id="portal-pass" placeholder="Password" class="w-full border-b border-gray-200 py-4 focus:outline-none focus:border-orange-500 text-sm" required>
+                <button type="submit" class="w-full bg-orange-600 text-white py-6 text-[10px] font-black uppercase tracking-widest">Authenticate</button>
+             </form>
+             <div id="portal-message" class="mt-6 text-center text-xs font-bold uppercase tracking-widest hidden"></div>
+          </div>
+       `;
+       document.body.appendChild(modal);
+
+       document.getElementById('portal-login-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const u = document.getElementById('portal-user').value;
+          const p = document.getElementById('portal-pass').value;
+          const msg = document.getElementById('portal-message');
+          
+          // 1. Admin Check
+          if (u === 'admin' && p === 'admin123') {
+             sessionStorage.setItem('vmwf_admin_active', 'active_' + Date.now());
+             window.location.href = 'admin.html';
+             return;
+          }
+
+          // 2. Member Check
+          const members = JSON.parse(localStorage.getItem('vmwf_members_data')) || [];
+          const member = members.find(m => m.username === u && m.password === p);
+
+          if (member) {
+             if (member.status === 'Active') {
+                msg.innerText = `Welcome, ${member.firstName}! Access Granted.`;
+                msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-green-600";
+                msg.classList.remove('hidden');
+                setTimeout(() => { this.closest('#l-m-o').remove(); }, 2000);
+             } else {
+                msg.innerText = "Account Pending Admin Approval.";
+                msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-orange-600";
+                msg.classList.remove('hidden');
+             }
+          } else {
+             msg.innerText = "Invalid Credentials.";
+             msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-red-600";
+             msg.classList.remove('hidden');
+          }
+       });
+    }
+
+    function sendWhatsApp(e) {
+      e.preventDefault();
+      const n = document.getElementById('contact-name').value;
+      const s = document.getElementById('contact-subject').value;
+      const m = document.getElementById('contact-message').value;
+      const t = `Hello VMWF, My name is ${n}. %0A%0A*Subject:* ${s}%0A%0A*Message:* ${m}`;
+      window.open(`https://wa.me/919606946623?text=${t}`, '_blank');
+    }
+
+    // Configuration
+    const API_BASE = '/api';
+
+    async function apiFetch(endpoint) {
+      try {
+        const response = await fetch(`${API_BASE}${endpoint}`);
+        return await response.json();
+      } catch (error) {
+        console.error('API Error:', error);
+        return [];
+      }
+    }
+
+    async function loadSiteContent() {
+      // Site config still static for simplicity in this phase
+      const STORAGE_KEY = 'vmwf_site_content';
+      let content = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (!content) {
+         content = {
+           stats: [
+             { cat: "Empowerment", title: "Employment Portal", desc: "Job opportunities for our community.", link: "jobs" },
+             { cat: "Social", title: "Matrimonial Service", desc: "Find the perfect match.", link: "matrimony" },
+             { cat: "Connectivity", title: "Global Directory", desc: "Connect with members.", link: "members" },
+             { cat: "Updates", title: "Govt. Schemes & News", desc: "Stay updated.", link: "#" }
+           ],
+           actions: [
+             { subtitle: "Gatherings & Celebrations", title: "Events", link: "events" },
+             { subtitle: "Join Our Community", title: "Membership", link: "membership.html" },
+             { subtitle: "Sacred Journeys", title: "Spiritual Tours", link: "tours" }
+           ],
+           contact: { phone: "+91 96069 46623", email: "admin@vmwf.org" }
+         };
+         localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+      }
+      
+      // Update UI with content (Simplified for now)
+      document.getElementById('contact-phone').innerText = content.contact.phone;
+      document.getElementById('contact-email').innerText = content.contact.email;
+    }
+
+    async function openListView(type) {
+      const endpoint = type === 'jobs' ? '/jobs' : type === 'matrimony' ? '/matrimony' : null;
+      if (!endpoint) return;
+
+      const items = await apiFetch(endpoint);
+      renderList(items, type);
+    }
+
+    function renderList(items, type) {
+       // Logic to show a modal with the list items
+       // For now, let's just alert or log (or I can implement a quick UI)
+       console.log(`Showing ${type}:`, items);
+       if (items.length === 0) {
+         alert(`No ${type} available at the moment.`);
+         return;
+       }
+       
+       // I'll add a simple overlay to show results
+       let overlay = document.getElementById('list-overlay');
+       if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.id = 'list-overlay';
+          overlay.className = 'fixed inset-0 z-[300] bg-white overflow-y-auto p-12';
+          document.body.appendChild(overlay);
+       }
+       overlay.innerHTML = `
+          <div class="max-w-4xl mx-auto">
+            <button onclick="this.closest('#list-overlay').remove()" class="text-4xl font-light mb-12">&times; Close</button>
+            <h2 class="heading-font text-5xl font-bold mb-12 uppercase tracking-widest">${type}</h2>
+            <div class="space-y-12">
+               ${items.map(item => `
+                  <div class="border-b border-gray-100 pb-12">
+                     <h3 class="text-2xl font-bold mb-4">${item.title || item.name}</h3>
+                     <p class="text-gray-500 mb-6">${item.description}</p>
+                     <div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-orange-600">
+                        <span><i class="fas fa-map-marker-alt mr-2"></i> ${item.location}</span>
+                        <span><i class="fas fa-tag mr-2"></i> ${item.category || item.profession}</span>
+                     </div>
+                  </div>
+               `).join('')}
+            </div>
+          </div>
+       `;
+    }
+
+    window.onload = () => {
+      loadSiteContent();
+      checkMainAuth();
+    };
+
+    function checkMainAuth() {
+       const token = localStorage.getItem('vmwf_admin_token');
+       if (token) {
+          document.getElementById('auth-btn-main').classList.add('hidden');
+          document.getElementById('logout-btn-main').classList.remove('hidden');
+       } else {
+          document.getElementById('auth-btn-main').classList.remove('hidden');
+          document.getElementById('logout-btn-main').classList.add('hidden');
+       }
+    }
+
+    function logoutMain() {
+       localStorage.removeItem('vmwf_admin_token');
+       window.location.reload();
+    }
+  </script>
+</div> <!-- End main-content-wrapper -->
+</body>
+</html>
