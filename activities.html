@@ -34,7 +34,7 @@
     <div class="container mx-auto flex items-center justify-between h-24 px-6 md:px-12">
       <!-- Branding -->
       <a href="index.html" class="flex items-center h-full group">
-        <img src="vmwf.jpeg" class="w-10 h-10 rounded-full object-cover transition-transform duration-500 group-hover:scale-105 shadow-md border border-white/10">
+        <img src="newlogo.png" class="w-10 h-10 rounded-full object-cover transition-transform duration-500 group-hover:scale-105 shadow-md border border-white/10">
         <div class="ml-5 pl-5 border-l border-white/20 hidden md:block">
           <span class="heading-font font-bold text-white text-2xl tracking-tight leading-none">VISHWA MADHWAMATHA WELFARE FOUNDATION (R.)</span>
           <p class="text-[9px] text-white/80 uppercase tracking-[0.3em] font-bold mt-1">REGISTERED CHARITABLE NATIONAL ORGANISATION</p>
@@ -42,8 +42,9 @@
       </a>
       
       <!-- Navigation Links -->
-      <ul class="hidden xl:flex items-center h-full gap-12">
+      <ul class="hidden lg:flex items-center h-full gap-12">
         <li><a href="activities.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-white border-b-2 border-white pb-1 whitespace-nowrap">Activities</a></li>
+        <li><a href="index.html#gallery" class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/80 hover:text-white transition-all whitespace-nowrap">Gallery</a></li>
       </ul>
 
       <!-- Action Items -->
@@ -51,7 +52,7 @@
         <a href="access.html" id="auth-btn-act" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 hover:text-white transition-all whitespace-nowrap">Member Login</a>
         <button id="logout-btn-act" onclick="logoutAct()" class="hidden text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-orange-200 transition-all whitespace-nowrap">Sign Out</button>
         <a href="membership.html" class="bg-white text-orange-600 px-4 md:px-8 py-3.5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-gray-100 transition-all whitespace-nowrap shadow-md">Join Us</a>
-        <button id="menu-btn" class="hidden xl:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
+        <button id="menu-btn" class="lg:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
       </div>
     </div>
 
@@ -61,7 +62,7 @@
       <ul class="space-y-12 text-center">
         <li><a href="index.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-white">Home</a></li>
         <li><a href="who-we-are.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Who We Are</a></li>
-        <li><a href="activities.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Activities</a></li>
+        <li><a href="index.html#gallery" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Gallery</a></li>
         <li><a href="membership.html" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-all">Join Us</a></li>
         <li class="pt-8"><a href="access.html" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Member Login</a></li>
       </ul>
@@ -90,6 +91,14 @@
           <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Institutional Excellence</span>
           <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Hanuma-Madhwa Award</h3>
           <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Preserving our ancient knowledge through expert-led chanting, study sessions, and traditional teaching methods. Our workshops are designed to pass on the purity of our Vedas to the next generation.</p>
+          
+          <!-- Activity Archive -->
+          <div class="mt-10 pt-8 border-t border-gray-100 group-hover:border-white/10">
+            <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-600 mb-6">Yearly Archive</h4>
+            <div class="flex flex-wrap gap-4">
+              <button onclick="openArchive('hanuma_2026')" class="text-[11px] font-bold px-4 py-2 bg-gray-50 group-hover:bg-white/10 text-gray-900 group-hover:text-white rounded-lg border border-gray-100 group-hover:border-white/10 hover:border-orange-500 transition-all">2026 Archive</button>
+            </div>
+          </div>
         </div>
 
         <!-- Activity 2 -->
@@ -100,6 +109,14 @@
           <span class="text-[10px] font-black uppercase tracking-widest text-orange-600 mb-4 block">Social Service</span>
           <h3 class="heading-font text-3xl font-bold mb-6 group-hover:-translate-y-2 transition-transform">Madhwa Vijaya Award</h3>
           <p class="text-gray-500 group-hover:text-gray-400 text-sm font-light leading-relaxed">Serving our community through regular mass feeding and charitable service. We believe in the power of 'Service to Humanity is Service to God'.</p>
+          
+          <!-- Activity Archive -->
+          <div class="mt-10 pt-8 border-t border-gray-100 group-hover:border-white/10">
+            <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-600 mb-6">Yearly Archive</h4>
+            <div class="flex flex-wrap gap-4">
+              <button onclick="openArchive('vijaya_2025')" class="text-[11px] font-bold px-4 py-2 bg-gray-50 group-hover:bg-white/10 text-gray-900 group-hover:text-white rounded-lg border border-gray-100 group-hover:border-white/10 hover:border-orange-500 transition-all">2025 Archive</button>
+            </div>
+          </div>
         </div>
 
         <!-- Activity 3 -->
@@ -220,6 +237,77 @@
     }
 
     checkActAuth();
+
+    // Archive Data
+    const ARCHIVE_DATA = {
+      hanuma_2026: {
+        title: "Hanuma-Madhwa Award Archive (2026)",
+        items: [
+          { type: 'image', path: 'GALLERY/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163756.png', caption: 'Calendar Launch Ceremony' },
+          { type: 'image', path: 'GALLERY/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163811.png', caption: 'Institutional Launch Highlight' },
+          { type: 'image', path: 'GALLERY/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163820.png', caption: 'Community Event Snapshot' },
+          { type: 'video', path: 'GALLERY/Calendar launching 2026 video/WhatsApp Video 2026-04-14 at 4.58.21 PM.mp4', caption: 'Calendar Launch Official Video' }
+        ]
+      },
+      vijaya_2025: {
+        title: "Madhwa Vijaya Award Archive (2025)",
+        items: [
+          { type: 'image', path: 'GALLERY/Madhwa Vijaya honor (2025)/Screenshot 2026-04-14 165338.png', caption: 'Madhwa Vijaya Honor Ceremony' },
+          { type: 'image', path: 'GALLERY/Shobha yatre Madhwa Vijaya images (2025)/Screenshot 2026-04-14 163834.png', caption: 'Shobha Yatre Procession' },
+          { type: 'image', path: 'GALLERY/Shobha yatre Madhwa Vijaya images (2025)/Screenshot 2026-04-14 163848.png', caption: 'Community Celebration Highlights' }
+        ]
+      }
+    };
+
+    function openArchive(id) {
+      const data = ARCHIVE_DATA[id];
+      if (!data) return;
+
+      const modal = document.createElement('div');
+      modal.id = 'archive-modal';
+      modal.className = 'fixed inset-0 z-[150] bg-gray-950/95 flex items-center justify-center p-6 md:p-12 overflow-y-auto';
+      
+      let itemsHtml = data.items.map(item => {
+        if (item.type === 'image') {
+          return `
+            <div class="space-y-4">
+              <div class="aspect-video bg-gray-900 overflow-hidden border border-white/10">
+                <img src="${item.path}" class="w-full h-full object-cover">
+              </div>
+              <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">${item.caption}</p>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="space-y-4">
+              <div class="aspect-video bg-gray-900 overflow-hidden border border-white/10">
+                <video controls class="w-full h-full object-cover">
+                  <source src="${item.path}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <p class="text-[10px] text-orange-500 font-bold uppercase tracking-widest"><i class="fas fa-video mr-2"></i>${item.caption}</p>
+            </div>
+          `;
+        }
+      }).join('');
+
+      modal.innerHTML = `
+        <div class="max-w-6xl w-full">
+          <div class="flex justify-between items-end mb-16 border-b border-white/10 pb-10">
+            <div>
+              <span class="text-[10px] text-orange-600 font-black uppercase tracking-[0.4em] mb-4 block">Historical Records</span>
+              <h3 class="heading-font text-4xl text-white font-bold">${data.title}</h3>
+            </div>
+            <button onclick="this.closest('#archive-modal').remove()" class="text-white text-2xl hover:text-orange-500 transition-all"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 pb-12">
+            ${itemsHtml}
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
   </script>
 </div> <!-- End act-content-wrapper -->
 </body>
