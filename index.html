@@ -90,18 +90,21 @@
 
   <!-- Navbar -->
   <nav class="bg-orange-600 sticky top-0 z-50 border-b border-orange-500 shadow-xl">
-    <div class="container mx-auto flex items-center justify-between h-24 px-6 md:px-12">
+    <div class="container mx-auto flex items-center justify-between h-16 md:h-20 px-4 md:px-8 lg:px-12">
       <!-- Branding -->
-      <a href="index.html" class="flex items-center h-full group">
-        <img src="newlogo.png" class="w-10 h-10 rounded-full object-cover transition-transform duration-500 group-hover:scale-105 shadow-md border border-white/10">
-        <div class="ml-5 pl-5 border-l border-white/20 hidden md:block">
-          <span class="heading-font font-bold text-white text-2xl tracking-tight leading-none">VISHWA MADHWAMATHA WELFARE FOUNDATION (R.)</span>
-          <p class="text-[9px] text-white/80 uppercase tracking-[0.3em] font-bold mt-1">REGISTERED CHARITABLE NATIONAL ORGANISATION</p>
+      <a href="index.html" class="flex items-center gap-3 flex-shrink-0 group">
+        <img src="newlogo.png" class="w-9 h-9 md:w-10 md:h-10 flex-shrink-0 rounded-full object-cover transition-transform duration-500 group-hover:scale-105 shadow-md border border-white/10">
+        <div class="hidden md:block pl-3 border-l border-white/20">
+          <!-- Full Name for Ultra-Wide -->
+          <span class="heading-font font-bold text-white text-[15px] tracking-tight leading-snug whitespace-nowrap hidden 2xl:block uppercase">VISHWA MADHWAMATHA WELFARE FOUNDATION (R.)</span>
+          <!-- Concise Name for Desktop/Zoomed -->
+          <span class="heading-font font-bold text-white text-[14px] tracking-tight leading-snug whitespace-nowrap block 2xl:hidden uppercase">VMW Foundation (R.)</span>
+          <p class="text-[8px] text-white/80 uppercase tracking-[0.25em] font-bold mt-0.5 whitespace-nowrap">REGISTERED CHARITABLE NATIONAL ORGANISATION</p>
         </div>
       </a>
       
       <!-- Navigation Links -->
-      <ul class="hidden lg:flex items-center h-full gap-12">
+      <ul class="hidden xl:flex items-center gap-6 2xl:gap-10">
         <li><a href="index.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-white border-b-2 border-white pb-1 whitespace-nowrap">Home</a></li>
         <li><a href="who-we-are.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/80 hover:text-white transition-all whitespace-nowrap">Who We Are</a></li>
         <li><a href="activities.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/80 hover:text-white transition-all whitespace-nowrap">Activities</a></li>
@@ -111,11 +114,11 @@
       </ul>
 
       <!-- Action Items -->
-      <div class="flex items-center h-full gap-4 md:gap-8">
-        <a href="access.html" id="auth-btn-main" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 hover:text-white transition-all whitespace-nowrap">Member Login</a>
+      <div class="flex items-center gap-3 md:gap-5 flex-shrink-0">
+        <a href="access.html" id="auth-btn-main" class="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 hover:text-white transition-all whitespace-nowrap">Member Login</a>
         <button id="logout-btn-main" onclick="logoutMain()" class="hidden text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-orange-200 transition-all whitespace-nowrap">Sign Out</button>
-        <a href="membership.html" class="bg-white text-orange-600 px-4 md:px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-gray-100 transition-all whitespace-nowrap shadow-md">Join Us</a>
-        <button id="menu-btn" class="lg:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
+        <a href="membership.html" class="bg-white text-orange-600 px-4 md:px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-gray-100 transition-all whitespace-nowrap shadow-md">Join Us</a>
+        <button id="menu-btn" class="xl:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
       </div>
     </div>
     
@@ -225,68 +228,138 @@
       <div class="mb-20 text-center">
         <span class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mb-6 block">Visual Journey</span>
         <h2 class="heading-font text-5xl font-bold text-gray-900 leading-tight">Community Gallery</h2>
+        <p class="text-gray-400 text-sm font-light mt-6 max-w-xl mx-auto">Moments captured from our community events, celebrations, and milestones.</p>
       </div>
 
-      <!-- Category 1: Dina Darshike Launching -->
-      <div class="mb-24">
-        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">Dina Darshike (Calendar) 2026-27 Launching</h3>
+      <!-- SET: 2021 -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">2021</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
-            <img src="gallery/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163756.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110">
-            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          </div>
-          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
-            <img src="gallery/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163811.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110">
-            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          </div>
-          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
-            <img src="gallery/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163820.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110">
+            <img src="GALLERY/2021/Screenshot 2026-04-14 164616.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="2021 Gallery">
             <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
         </div>
       </div>
 
-      <!-- Category 2: Shobha Yatre -->
+      <!-- SET: 2026 -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">2026</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/2026/WhatsApp Image 2026-04-14 at 5.02.33 PM.jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="2026 Gallery">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET: CALENDAR LAUNCHING 2026 VIDEO -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">CALENDAR LAUNCHING 2026 VIDEO</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="group relative overflow-hidden bg-white shadow-xl">
+            <video controls class="w-full h-auto" poster="">
+              <source src="GALLERY/Calendar launching 2026 video/WhatsApp Video 2026-04-14 at 4.58.21 PM.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET: DASARA WISHES FROM VMWF -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">DASARA WISHES FROM VMWF</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Dasara wishes from VMWF/WhatsApp Image 2026-04-14 at 5.15.46 PM.jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Dasara Wishes">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET: DINA DARSHIKE (CALENDAR) 2026-27 LAUNCHING -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">DINA DARSHIKE (CALENDAR) 2026-27 LAUNCHING</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163756.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Dina Darshike Launching">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163811.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Dina Darshike Launching">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Dina Darshike (Calendar) 2026-27 launching/Screenshot 2026-04-14 163820.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Dina Darshike Launching">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET: HANUMA MADHWA AWARD (2025) -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">HANUMA MADHWA AWARD (2025)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="group relative overflow-hidden aspect-[4/5] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Hanuma Madhwa Award (2025)/WhatsApp Image 2026-04-14 at 5.18.50 PM.jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Hanuma Madhwa Award">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+          <div class="group relative overflow-hidden aspect-[4/5] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Hanuma Madhwa Award (2025)/WhatsApp Image 2026-04-14 at 5.18.50 PM (1).jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Hanuma Madhwa Award">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+          <div class="group relative overflow-hidden aspect-[4/5] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Hanuma Madhwa Award (2025)/WhatsApp Image 2026-04-14 at 5.18.51 PM.jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Hanuma Madhwa Award">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+          <div class="group relative overflow-hidden aspect-[4/5] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Hanuma Madhwa Award (2025)/WhatsApp Image 2026-04-14 at 5.18.51 PM (1).jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Hanuma Madhwa Award">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET: MADHWA VIJAYA HONOR (2025) -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">MADHWA VIJAYA HONOR (2025)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Madhwa Vijaya honor (2025)/Screenshot 2026-04-14 165338.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Madhwa Vijaya Honor">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET: MADHWA VIJAYA HONOR 2025 INVITATION -->
+      <div class="mb-20">
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">MADHWA VIJAYA HONOR 2025 INVITATION</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="group relative overflow-hidden aspect-[4/5] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Madhwa Vijaya honor 2025 Invitation/WhatsApp Image 2026-04-14 at 5.14.20 PM.jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Invitation">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+          <div class="group relative overflow-hidden aspect-[4/5] bg-white shadow-xl cursor-zoom-in">
+            <img src="GALLERY/Madhwa Vijaya honor 2025 Invitation/WhatsApp Image 2026-04-14 at 5.14.20 PM (1).jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Invitation">
+            <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SET: SHOBHA YATRE MADHWA VIJAYA IMAGES (2025) -->
       <div>
-        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">Shobha yatre Madhwa Vijaya images (2025)</h3>
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest">SHOBHA YATRE MADHWA VIJAYA IMAGES (2025)</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
-            <img src="gallery/Shobha yatre Madhwa Vijaya images (2025)/Screenshot 2026-04-14 163834.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110">
+            <img src="GALLERY/Shobha yatre Madhwa Vijaya images (2025)/Screenshot 2026-04-14 163834.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Shobha Yatre">
             <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
           <div class="group relative overflow-hidden aspect-[16/10] bg-white shadow-xl cursor-zoom-in">
-            <img src="gallery/Shobha yatre Madhwa Vijaya images (2025)/Screenshot 2026-04-14 163848.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110">
+            <img src="GALLERY/Shobha yatre Madhwa Vijaya images (2025)/Screenshot 2026-04-14 163848.png" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" alt="Shobha Yatre">
             <div class="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-
-  <!-- Partner Showcase / Advertisement Section -->
-  <section id="ads" class="section-padding bg-white overflow-hidden border-t border-gray-100">
-    <div class="container mx-auto px-6 md:px-12">
-      <div class="mb-16 flex items-center justify-between">
-        <div>
-          <span class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mb-6 block">Our Supporters</span>
-          <h2 class="heading-font text-4xl font-bold text-gray-900 leading-tight">Partner Showcases</h2>
-        </div>
-        <div class="hidden md:block h-px flex-1 bg-gray-100 mx-12"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div class="group relative bg-gray-50 border border-gray-100 p-4 transition-all duration-700 hover:shadow-2xl hover:border-orange-500">
-          <div class="overflow-hidden">
-            <img src="GALLERY/ADS/Screenshot 2026-04-14 164906.png" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105">
-          </div>
-        </div>
-        <div class="group relative bg-gray-50 border border-gray-100 p-4 transition-all duration-700 hover:shadow-2xl hover:border-orange-500">
-          <div class="overflow-hidden">
-            <img src="GALLERY/ADS/Screenshot 2026-04-14 165504.png" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105">
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -475,6 +548,34 @@
            </form>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Partner Showcase / Advertisement Section -->
+  <section id="ads" class="py-24 bg-gray-950 overflow-hidden border-t border-gray-800">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="mb-16 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-500 mb-6 block">Our Supporters</span>
+          <h2 class="heading-font text-4xl font-bold text-white leading-tight">Partner Showcases</h2>
+        </div>
+        <div class="hidden md:block h-px flex-1 bg-gray-800 mx-12"></div>
+        <span class="text-[9px] font-black uppercase tracking-[0.3em] text-gray-600 whitespace-nowrap">Advertise Here</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="group relative bg-gray-900 border border-gray-800 p-4 transition-all duration-700 hover:shadow-2xl hover:border-orange-500">
+          <div class="overflow-hidden">
+            <img src="GALLERY/ADS/Screenshot 2026-04-14 164906.png" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" alt="Advertisement">
+          </div>
+        </div>
+        <div class="group relative bg-gray-900 border border-gray-800 p-4 transition-all duration-700 hover:shadow-2xl hover:border-orange-500">
+          <div class="overflow-hidden">
+            <img src="GALLERY/ADS/Screenshot 2026-04-14 165504.png" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" alt="Advertisement">
+          </div>
+        </div>
+      </div>
+      <p class="text-center text-[9px] font-bold uppercase tracking-[0.3em] text-gray-700 mt-12">To advertise with us, contact vmwfsr@gmail.com | +91 96069 46623</p>
     </div>
   </section>
 

@@ -66,24 +66,39 @@
         <div class="flex items-center space-x-6">
           <img src="newlogo.png" class="w-16 h-16 shadow-lg rounded-full object-cover">
           <div>
-            <h1 class="heading-font text-2xl font-bold text-white tracking-tight uppercase">VISHWA MADHWAMATHA WELFARE FOUNDATION (R.)</h1>
-            <p class="text-[9px] font-black uppercase tracking-[0.4em] text-white/80 mt-0.5">REGISTERED CHARITABLE NATIONAL ORGANISATION</p>
+            <span class="heading-font font-bold text-white text-[15px] tracking-tight leading-snug whitespace-nowrap hidden 2xl:block uppercase">VISHWA MADHWAMATHA WELFARE FOUNDATION (R.)</span>
+            <span class="heading-font font-bold text-white text-[14px] tracking-tight leading-snug whitespace-nowrap block 2xl:hidden uppercase">VMW Foundation (R.)</span>
+            <p class="text-[9px] font-black uppercase tracking-[0.4em] text-white/80 mt-0.5 whitespace-nowrap">REGISTERED CHARITABLE NATIONAL ORGANISATION</p>
           </div>
         </div>
       <div class="flex items-center space-x-12">
-        <nav class="hidden lg:flex space-x-10 text-[10px] font-bold uppercase tracking-[0.2em]">
-          <a href="#" id="nav-jobs" onclick="showTab('jobs')" class="text-white border-b-2 border-white pb-1">Jobs</a>
-          <a href="#" id="nav-matrimony" onclick="showTab('matrimony')" class="text-white/70 hover:text-white transition-all">Matrimony</a>
-          <a href="#" id="nav-events" onclick="showTab('events')" class="text-white/70 hover:text-white transition-all">Events</a>
-          <a href="#" id="nav-tours" onclick="showTab('tours')" class="text-white/70 hover:text-white transition-all">Tours</a>
-          <a href="#" id="nav-members" onclick="showTab('members')" class="text-white/70 hover:text-white transition-all">Members</a>
-          <a href="#" id="nav-updates" onclick="showTab('updates')" class="text-white/70 hover:text-white transition-all">Updates</a>
-          <a href="#" id="nav-site-content" onclick="showTab('site-content')" class="text-white/90 hover:text-white transition-all font-black">Site Content</a>
+        <nav class="hidden xl:flex items-center space-x-6 2xl:space-x-10 text-[10px] font-bold uppercase tracking-[0.2em]">
+          <a href="#" id="nav-jobs" onclick="showTab('jobs')" class="text-white border-b-2 border-white pb-1 whitespace-nowrap">Jobs</a>
+          <a href="#" id="nav-matrimony" onclick="showTab('matrimony')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Matrimony</a>
+          <a href="#" id="nav-events" onclick="showTab('events')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Events</a>
+          <a href="#" id="nav-tours" onclick="showTab('tours')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Tours</a>
+          <a href="#" id="nav-members" onclick="showTab('members')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Members</a>
+          <a href="#" id="nav-updates" onclick="showTab('updates')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Updates</a>
+          <a href="#" id="nav-site-content" onclick="showTab('site-content')" class="text-white/90 hover:text-white transition-all font-black whitespace-nowrap">Site Content</a>
         </nav>
+        <button id="admin-menu-btn" class="xl:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
         <button onclick="logout()" class="text-[10px] font-black uppercase tracking-widest text-white/80 hover:text-white transition-all">
           <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
         </button>
       </div>
+    </div>
+
+    <!-- Mobile Menu Overlay (Admin) -->
+    <div id="admin-mobile-menu" class="fixed inset-0 bg-gray-950 z-[100] hidden flex flex-col items-center justify-center p-12 transition-all">
+      <button id="admin-close-menu" class="absolute top-8 right-10 text-white text-2xl"><i class="fas fa-times"></i></button>
+      <ul class="space-y-10 text-center">
+        <li><a href="#" onclick="showTab('jobs'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-white">Jobs</a></li>
+        <li><a href="#" onclick="showTab('matrimony'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Matrimony</a></li>
+        <li><a href="#" onclick="showTab('events'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Events</a></li>
+        <li><a href="#" onclick="showTab('members'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Members</a></li>
+        <li><a href="#" onclick="showTab('site-content'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-all">Site Content</a></li>
+        <li class="pt-8"><button onclick="logout()" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Sign Out</button></li>
+      </ul>
     </div>
   </header>
 
@@ -484,6 +499,20 @@
 
     function closeModal() { document.getElementById('modal').classList.add('hidden'); }
     function updateTicker() { /* Ticker logic can be simplified or linked to API later */ }
+
+    // Admin Mobile Menu Logic
+    const adminMenuBtn = document.getElementById('admin-menu-btn');
+    const adminCloseBtn = document.getElementById('admin-close-menu');
+    const adminMobileMenu = document.getElementById('admin-mobile-menu');
+
+    function closeAdminMenu() {
+      if(adminMobileMenu) adminMobileMenu.classList.add('hidden');
+    }
+
+    if(adminMenuBtn && adminMobileMenu) {
+      adminMenuBtn.addEventListener('click', () => adminMobileMenu.classList.remove('hidden'));
+      adminCloseBtn.addEventListener('click', () => closeAdminMenu());
+    }
   </script>
 </body>
 </html>
