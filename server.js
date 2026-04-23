@@ -102,6 +102,10 @@ const Store = {
   tours: createStoreMethods(Tour),
   updates: createStoreMethods(Update),
   gallery: createStoreMethods(Gallery),
+  registrations: {
+    get: async () => Registration.find().sort({ timestamp: -1 }),
+    add: async (data) => new Registration(data).save(),
+    update: async (id, data) => Registration.findByIdAndUpdate(id, data, { new: true }),
     delete: async (id) => Registration.findByIdAndDelete(id)
   },
   pages: createStoreMethods(PageContent)
