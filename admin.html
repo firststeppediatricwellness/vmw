@@ -463,13 +463,6 @@
     }
 
     function closeModal() { document.getElementById('modal').classList.add('hidden'); }
-    function closeAdminMenu() { if(adminMobileMenu) adminMobileMenu.classList.add('hidden'); }
-    if(adminMenuBtn && adminMobileMenu) {
-      adminMenuBtn.addEventListener('click', () => adminMobileMenu.classList.remove('hidden'));
-      adminCloseBtn.addEventListener('click', () => closeAdminMenu());
-    }
-
-    function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
     // Admin Mobile Menu Logic
     const adminMenuBtn = document.getElementById('admin-menu-btn');
@@ -479,9 +472,14 @@
     function closeAdminMenu() {
       if(adminMobileMenu) adminMobileMenu.classList.add('hidden');
     }
+
     if(adminMenuBtn && adminMobileMenu) {
-      adminMenuBtn.addEventListener('click', () => adminMobileMenu.classList.remove('hidden'));
-      adminCloseBtn.addEventListener('click', () => closeAdminMenu());
+      adminMenuBtn.addEventListener('click', () => {
+        adminMobileMenu.classList.remove('hidden');
+      });
+      if(adminCloseBtn) {
+        adminCloseBtn.addEventListener('click', () => closeAdminMenu());
+      }
     }
   </script>
 </body>
