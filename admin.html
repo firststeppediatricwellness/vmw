@@ -370,7 +370,16 @@
       document.getElementById('modal-title').innerText = item ? `Edit ${type}` : `Add ${type}`;
       editingId = item ? (item._id || item.id) : null;
       const content = document.getElementById('modal-content');
+      const modalContainer = document.querySelector('#modal > div');
+      if (modalContainer) modalContainer.className = "glass p-8 rounded-3xl shadow-2xl w-full max-w-lg mx-4 border border-white/20 relative max-h-[90vh] overflow-y-auto";
       
+      const saveBtn = document.getElementById('modal-save-btn');
+      if (saveBtn) {
+        saveBtn.innerText = "Save Changes";
+        saveBtn.disabled = false;
+        saveBtn.onclick = saveItem;
+      }
+
       let fields = [];
       if (type === 'jobs') fields = ['title', 'category', 'location', 'description', 'contactName', 'contactPhone'];
       else if (type === 'matrimony') fields = ['name', 'age', 'profession', 'location', 'description', 'contactPhone', 'parentsName'];
@@ -438,17 +447,52 @@
        const item = items.find(i => (i.id === id || i._id === id));
        if (!item) return;
        
-       if (confirm(`Approve ${item.firstName} ${item.lastName}?`)) {
-          const res = await apiFetch(`/admin/registrations/${id}`, { 
-            method: 'PATCH', 
-            body: JSON.stringify({ status: 'Active' }) 
-          });
-          
-          if (!res) {
-            item.status = 'Active';
-            localStorage.setItem('vmwf_registrations_local', JSON.stringify(items));
-          }
-          loadMembers();
+       document.getElementById('modal').classList.remove('hidden');
+       document.getElementById('modal-title').innerText = 'Review Member Application';
+       const content = document.getElementById('modal-content');
+       const modalContainer = document.querySelector('#modal > div');
+       if (modalContainer) modalContainer.className = "glass p-8 rounded-3xl shadow-2xl w-full max-w-2xl mx-4 border border-white/20 relative max-h-[90vh] overflow-y-auto";
+       
+       const fields = [
+         'firstName', 'middleName', 'lastName', 'email', 'dob', 'age', 'gender', 
+         'address', 'mobile', 'aadhaar', 'gothra', 'introducer', 
+         'membershipType', 'paymentDetails', 'username', 'password', 'status'
+       ];
+
+       content.innerHTML = `
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/50 p-6 rounded-2xl border border-white/40 shadow-inner">
+           ${fields.map(f => `
+             <div class="border-b border-gray-100 pb-2">
+               <p class="text-[9px] font-black uppercase text-orange-600 mb-1 tracking-widest">${f.replace(/([A-Z])/g, ' $1')}</p>
+               <p class="text-sm font-bold text-gray-900 break-words">${item[f] || '—'}</p>
+             </div>
+           `).join('')}
+         </div>
+       `;
+
+       const saveBtn = document.getElementById('modal-save-btn');
+       if (saveBtn) {
+          saveBtn.innerText = item.status === 'Pending' ? 'Approve & Activate' : 'Already Active';
+          saveBtn.disabled = item.status !== 'Pending';
+          saveBtn.onclick = async () => {
+             const res = await apiFetch(`/admin/registrations/${id}`, { 
+               method: 'PATCH', 
+               body: JSON.stringify({ status: 'Active' }) 
+             });
+             
+             if (!res) {
+               item.status = 'Active';
+               const allItems = JSON.parse(localStorage.getItem('vmwf_registrations_local')) || [];
+               const idx = allItems.findIndex(i => (i.id === id || i._id === id));
+               if (idx !== -1) {
+                  allItems[idx].status = 'Active';
+                  localStorage.setItem('vmwf_registrations_local', JSON.stringify(allItems));
+               }
+             }
+             alert('Member Approved Successfully!');
+             closeModal();
+             loadMembers();
+          };
        }
     }
 
