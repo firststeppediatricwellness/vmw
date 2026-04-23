@@ -56,7 +56,10 @@
     <!-- Scrolling Updates -->
     <div class="bg-gradient-orange text-white py-2 px-4 font-semibold text-xs overflow-hidden">
       <div class="container mx-auto flex items-center">
-        <span class="mr-6 whitespace-nowrap bg-white/20 px-2 py-0.5 rounded flex items-center"><i class="fas fa-bullhorn mr-2"></i> Admin Updates:</span>
+        <span class="mr-6 whitespace-nowrap bg-white/20 px-2 py-0.5 rounded flex items-center">
+          <i class="fas fa-bullhorn mr-2"></i> Admin Updates:
+          <span id="server-status" class="ml-4 px-2 py-0.5 bg-black/20 rounded-lg text-[8px] uppercase tracking-tighter opacity-70">Checking...</span>
+        </span>
         <div class="overflow-hidden h-5 flex-1 relative">
           <div id="update-text-admin" class="animate-scroll absolute whitespace-nowrap">Welcome to VMWF Admin Panel</div>
         </div>
@@ -239,55 +242,72 @@
     // Helper for API calls
     async function apiFetch(endpoint, options = {}) {
       const token = localStorage.getItem('vmwf_admin_token') || sessionStorage.getItem('vmwf_admin_token');
-      const headers = {
-        'Content-Type': 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-      };
+      const headers = { 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) };
       
       try {
         const response = await fetch(`/api${endpoint}`, { ...options, headers });
         if (response.status === 401 || response.status === 403) {
-          return null;
+           showToast('Session expired. Please log in again.', 'error');
+           logout();
+           return null;
+        }
+        if (!response.ok) {
+           const err = await response.json().catch(() => ({}));
+           throw new Error(err.message || 'API Error');
         }
         return await response.json();
       } catch (error) {
         console.error('API Error:', error);
+        showToast('Server connection failed: ' + error.message, 'error');
         return null;
       }
     }
 
-    if (sessionStorage.getItem('vmwf_admin_active')) {
-      showDashboard();
+    function showToast(msg, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `fixed bottom-10 right-10 px-8 py-4 rounded-xl shadow-2xl z-[1000] text-sm font-bold uppercase tracking-widest animate-in slide-in-from-bottom-5 duration-300 ${type === 'error' ? 'bg-red-600' : 'bg-gray-900'} text-white`;
+      toast.innerText = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
     }
+
+    if (sessionStorage.getItem('vmwf_admin_active')) showDashboard();
 
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      
-      const data = await apiFetch('/login', {
-        method: 'POST',
-        body: JSON.stringify({ username, password })
-      });
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
+      const data = await apiFetch('/login', { method: 'POST', body: JSON.stringify({ username: u, password: p }) });
 
       if (data && data.success) {
         localStorage.setItem('vmwf_admin_token', data.token);
         sessionStorage.setItem('vmwf_admin_active', 'true');
         showDashboard();
-      } else if (username === 'admin' && password === 'admin123') {
-        // Local fallback if server.js isn't reachable
-        sessionStorage.setItem('vmwf_admin_active', 'true');
-        showDashboard();
-      } else {
-        alert('Invalid Credentials');
-      }
+      } else { showToast('Invalid Credentials or Server Offline', 'error'); }
     });
 
-    function showDashboard() {
+    async function showDashboard() {
       document.getElementById('login-overlay').classList.add('hidden');
       document.getElementById('dashboard-header').classList.remove('hidden');
       document.getElementById('dashboard-main').classList.remove('hidden');
+      
+      const status = await apiFetch('/status');
+      const statusEl = document.getElementById('server-status');
+      if (status && statusEl) {
+        statusEl.innerText = `${status.mode} ${status.connected ? '• ONLINE' : '• OFFLINE'}`;
+        statusEl.className = `ml-4 px-2 py-0.5 rounded-lg text-[8px] uppercase tracking-tighter ${status.connected ? 'bg-green-500/20 text-green-200' : 'bg-red-500/20 text-red-200'}`;
+      }
+
       loadData();
+      syncTicker();
+    }
+
+    async function syncTicker() {
+      const updates = await apiFetch('/updates');
+      const ticker = document.getElementById('update-text-admin');
+      if (updates && updates.length > 0 && ticker) {
+        ticker.innerText = updates.map(u => u.description).join(' • ');
+      }
     }
 
     function logout() {
@@ -300,7 +320,6 @@
       currentTab = tab;
       document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
       document.getElementById(`tab-${tab}`).classList.remove('hidden');
-      
       document.querySelectorAll('nav a').forEach(l => {
         l.classList.remove('text-white', 'border-b-2', 'border-white');
         l.classList.add('text-white/70');
@@ -314,52 +333,43 @@
 
     async function loadData() {
       if (currentTab === 'members') return loadMembers();
-      
       const container = document.getElementById(`${currentTab}-table-container`);
+      container.innerHTML = '<div class="p-10 text-center text-gray-400">Loading data from server...</div>';
       
-      // Try API first
-      let items = await apiFetch(`/${currentTab}`);
+      const items = await apiFetch(`/${currentTab}`);
       if (!items) {
-         // Fallback to localStorage
-         items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
+         container.innerHTML = '<div class="p-10 text-center text-red-400">Connection Error. Please check your backend.</div>';
+         return;
       }
       
       let html = `<table class="w-full text-left"><thead class="bg-gray-50 border-b border-gray-100"><tr>`;
-      if (currentTab === 'updates') {
-         html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Description</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
-      } else if (currentTab === 'gallery') {
-         html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Thumbnail</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Caption</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
-      } else {
-         html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Title/Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Location</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Contact</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
-      }
-      html += `</tr></thead><tbody class="divide-y divide-gray-50">`;
+      if (currentTab === 'updates') html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Description</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      else if (currentTab === 'gallery') html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Thumbnail</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Caption</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      else html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Title/Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Location</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Contact</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
       
+      html += `</tr></thead><tbody class="divide-y divide-gray-50">`;
       items.forEach(item => {
         const id = item._id || item.id;
         html += `<tr class="hover:bg-gray-50">`;
-        if (currentTab === 'updates') {
-          html += `<td class="px-6 py-4 text-sm">${item.description}</td>`;
-        } else if (currentTab === 'gallery') {
-          html += `<td class="px-6 py-4"><img src="${item.imagePath}" class="w-12 h-12 object-cover rounded"></td><td class="px-6 py-4 text-sm">${item.caption}</td>`;
-        } else {
-          html += `<td class="px-6 py-4 font-bold">${item.title || item.name}</td><td class="px-6 py-4 text-sm">${item.location}</td><td class="px-6 py-4 text-sm">${item.contactPhone || '—'}</td>`;
-        }
+        if (currentTab === 'updates') html += `<td class="px-6 py-4 text-sm">${item.description}</td>`;
+        else if (currentTab === 'gallery') html += `<td class="px-6 py-4"><img src="${item.imagePath}" class="w-12 h-12 object-cover rounded"></td><td class="px-6 py-4 text-sm">${item.caption}</td>`;
+        else html += `<td class="px-6 py-4 font-bold">${item.title || item.name}</td><td class="px-6 py-4 text-sm">${item.location}</td><td class="px-6 py-4 text-sm">${item.contactPhone || '—'}</td>`;
         html += `<td class="px-6 py-4 flex space-x-3"><button onclick="editItem('${id}')" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem('${id}')" class="text-red-500"><i class="fas fa-trash"></i></button></td></tr>`;
       });
-      
       html += `</tbody></table>`;
-      container.innerHTML = items.length ? html : '<div class="p-10 text-center text-gray-400">No items found.</div>';
+      container.innerHTML = items.length ? html : `<div class="p-10 text-center text-gray-400">No ${currentTab} found on server.</div>`;
+      if (currentTab === 'updates') syncTicker();
     }
 
     async function loadMembers() {
       const container = document.getElementById('members-table-container');
-      let items = await apiFetch('/admin/registrations');
-      if (!items) items = JSON.parse(localStorage.getItem('vmwf_registrations_local')) || [];
+      const items = await apiFetch('/admin/registrations');
+      if (!items) return;
       
       let html = `<table class="w-full text-left"><thead class="bg-gray-50 border-b border-gray-100"><tr><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Status</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th></tr></thead><tbody class="divide-y divide-gray-50">`;
       items.forEach(item => {
         const id = item._id || item.id;
-        html += `<tr><td class="px-6 py-4">${item.firstName} ${item.lastName}</td><td class="px-6 py-4">${item.status}</td><td class="px-6 py-4"><button onclick="reviewMemberById('${id}', true)" class="text-orange-600 font-bold uppercase text-[10px]">Review</button></td></tr>`;
+        html += `<tr><td class="px-6 py-4">${item.firstName} ${item.lastName}</td><td class="px-6 py-4">${item.status}</td><td class="px-6 py-4"><button onclick="reviewMemberById('${id}')" class="text-orange-600 font-bold uppercase text-[10px]">Review</button></td></tr>`;
       });
       html += `</tbody></table>`;
       container.innerHTML = html;
@@ -374,11 +384,7 @@
       if (modalContainer) modalContainer.className = "glass p-8 rounded-3xl shadow-2xl w-full max-w-lg mx-4 border border-white/20 relative max-h-[90vh] overflow-y-auto";
       
       const saveBtn = document.getElementById('modal-save-btn');
-      if (saveBtn) {
-        saveBtn.innerText = "Save Changes";
-        saveBtn.disabled = false;
-        saveBtn.onclick = saveItem;
-      }
+      if (saveBtn) { saveBtn.innerText = "Save Changes"; saveBtn.disabled = false; saveBtn.onclick = saveItem; }
 
       let fields = [];
       if (type === 'jobs') fields = ['title', 'category', 'location', 'description', 'contactName', 'contactPhone'];
@@ -393,25 +399,12 @@
     async function saveItem() {
       const data = { };
       document.querySelectorAll('#modal-content input').forEach(f => data[f.id.replace('f-', '')] = f.value);
-
       const endpoint = `/admin/${currentTab}${editingId ? '/' + editingId : ''}`;
       const method = editingId ? 'PUT' : 'POST';
       
       const res = await apiFetch(endpoint, { method, body: JSON.stringify(data) });
-      
       if (res) {
-        closeModal();
-        loadData();
-      } else {
-        // Local fallback
-        const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
-        if (editingId) {
-          const idx = items.findIndex(i => (i.id === editingId || i._id === editingId));
-          items[idx] = { ...data, id: editingId };
-        } else {
-          items.push({ ...data, id: 'ID' + Date.now() });
-        }
-        localStorage.setItem(STORAGE_KEYS[currentTab], JSON.stringify(items));
+        showToast(`${currentTab.charAt(0).toUpperCase() + currentTab.slice(1)} saved successfully!`);
         closeModal();
         loadData();
       }
@@ -420,31 +413,21 @@
     async function deleteItem(id) {
       if (!confirm('Delete this item?')) return;
       const res = await apiFetch(`/admin/${currentTab}/${id}`, { method: 'DELETE' });
-      
       if (res) {
-        loadData();
-      } else {
-        const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
-        const filtered = items.filter(i => (i.id !== id && i._id !== id));
-        localStorage.setItem(STORAGE_KEYS[currentTab], JSON.stringify(filtered));
+        showToast('Item deleted successfully');
         loadData();
       }
     }
 
     async function editItem(id) {
-       // Search in API data first
        let items = await apiFetch(`/${currentTab}`);
-       if (!items) items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
-       
-       const item = items.find(i => (i.id === id || i._id === id));
-       openModal(currentTab, item);
+       const item = items?.find(i => (i.id === id || i._id === id));
+       if (item) openModal(currentTab, item);
     }
 
     async function reviewMemberById(id) {
        let items = await apiFetch('/admin/registrations');
-       if (!items) items = JSON.parse(localStorage.getItem('vmwf_registrations_local')) || [];
-       
-       const item = items.find(i => (i.id === id || i._id === id));
+       const item = items?.find(i => (i.id === id || i._id === id));
        if (!item) return;
        
        document.getElementById('modal').classList.remove('hidden');
@@ -461,12 +444,7 @@
 
        content.innerHTML = `
          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/50 p-6 rounded-2xl border border-white/40 shadow-inner">
-           ${fields.map(f => `
-             <div class="border-b border-gray-100 pb-2">
-               <p class="text-[9px] font-black uppercase text-orange-600 mb-1 tracking-widest">${f.replace(/([A-Z])/g, ' $1')}</p>
-               <p class="text-sm font-bold text-gray-900 break-words">${item[f] || '—'}</p>
-             </div>
-           `).join('')}
+           ${fields.map(f => `<div class="border-b border-gray-100 pb-2"><p class="text-[9px] font-black uppercase text-orange-600 mb-1 tracking-widest">${f.replace(/([A-Z])/g, ' $1')}</p><p class="text-sm font-bold text-gray-900 break-words">${item[f] || '—'}</p></div>`).join('')}
          </div>
        `;
 
@@ -479,21 +457,16 @@
                method: 'PATCH', 
                body: JSON.stringify({ status: 'Active' }) 
              });
-             
-             if (!res) {
-               item.status = 'Active';
-               const allItems = JSON.parse(localStorage.getItem('vmwf_registrations_local')) || [];
-               const idx = allItems.findIndex(i => (i.id === id || i._id === id));
-               if (idx !== -1) {
-                  allItems[idx].status = 'Active';
-                  localStorage.setItem('vmwf_registrations_local', JSON.stringify(allItems));
-               }
-             }
-             alert('Member Approved Successfully!');
-             closeModal();
-             loadMembers();
+             if (res) { showToast('Member Approved!'); closeModal(); loadMembers(); }
           };
        }
+    }
+
+    function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+    function closeAdminMenu() { if(adminMobileMenu) adminMobileMenu.classList.add('hidden'); }
+    if(adminMenuBtn && adminMobileMenu) {
+      adminMenuBtn.addEventListener('click', () => adminMobileMenu.classList.remove('hidden'));
+      adminCloseBtn.addEventListener('click', () => closeAdminMenu());
     }
 
     function closeModal() { document.getElementById('modal').classList.add('hidden'); }

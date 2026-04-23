@@ -195,11 +195,7 @@
   </div>
 
   <script>
-    // Storage key for members in localStorage
-    const MEMBERS_KEY = 'vmwf_members_data';
-    const REGISTRATIONS_KEY = 'vmwf_registrations_local'; // Local fallback for registrations
-
-    function showMsg(text, type) {
+    async function showMsg(text, type) {
       const msg = document.getElementById('login-msg');
       msg.textContent = text;
       msg.className = 'rounded-lg px-4 py-3 text-[11px] font-bold uppercase tracking-widest text-center';
@@ -223,22 +219,7 @@
       btn.style.opacity = loading ? '0.7' : '1';
     }
 
-    function handleSuccess(isAdmin) {
-      showMsg('✓ Authentication successful. Redirecting...', 'success');
-      
-      if (isAdmin) {
-        sessionStorage.setItem('vmwf_admin_active', 'active_' + Date.now());
-        // Admin always goes to admin dashboard
-        setTimeout(() => { window.location.href = 'admin.html'; }, 1000);
-      } else {
-        sessionStorage.setItem('vmwf_member_active', 'active_' + Date.now());
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirect = urlParams.get('redirect') || 'index.html';
-        setTimeout(() => { window.location.href = redirect; }, 1000);
-      }
-    }
-
-    document.getElementById('access-form').addEventListener('submit', function(e) {
+    document.getElementById('access-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const identifier = document.getElementById('identifier').value.trim();
       const password   = document.getElementById('password').value;
@@ -250,60 +231,39 @@
 
       setLoading(true);
 
-      // Small delay for UX feel
-      setTimeout(() => {
-        // ── 1. Admin Check ──────────────────────────────────────────────
-        if ((identifier === 'admin') && password === 'admin123') {
-          setLoading(false);
-          handleSuccess(true);
-          return;
-        }
-
-        // ── 2. Check seeded/localStorage members ────────────────────────
-        const members = JSON.parse(localStorage.getItem(MEMBERS_KEY)) || [];
-        const member = members.find(m => {
-          const matchId =
-            (m.username && m.username.toLowerCase() === identifier.toLowerCase()) ||
-            (m.email    && m.email.toLowerCase()    === identifier.toLowerCase()) ||
-            (m.aadhaar  && m.aadhaar                === identifier);
-          return matchId && m.password === password;
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: identifier, password })
         });
 
-        if (member) {
-          setLoading(false);
-          if (member.status === 'Active') {
-            handleSuccess(false);
-          } else {
-            showMsg('⏳ Your account is pending admin approval. Please check back soon.', 'warning');
-          }
-          return;
-        }
-
-        // ── 3. Check localStorage registrations (fallback, no server) ───
-        const regs = JSON.parse(localStorage.getItem(REGISTRATIONS_KEY)) || [];
-        const reg = regs.find(r => {
-          const matchId =
-            (r.username && r.username.toLowerCase() === identifier.toLowerCase()) ||
-            (r.email    && r.email.toLowerCase()    === identifier.toLowerCase()) ||
-            (r.aadhaar  && r.aadhaar                === identifier);
-          return matchId && r.password === password;
-        });
-
+        const data = await response.json();
         setLoading(false);
 
-        if (reg) {
-          if (reg.status === 'Active') {
-            handleSuccess(false);
+        if (response.ok && data.success) {
+          showMsg('✓ Authentication successful. Redirecting...', 'success');
+          
+          if (data.role === 'admin') {
+            localStorage.setItem('vmwf_admin_token', data.token);
+            sessionStorage.setItem('vmwf_admin_active', 'true');
+            setTimeout(() => { window.location.href = 'admin.html'; }, 800);
           } else {
-            showMsg('⏳ Your account is pending admin approval. Please check back soon.', 'warning');
+            localStorage.setItem('vmwf_member_token', data.token);
+            sessionStorage.setItem('vmwf_member_active', 'true');
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get('redirect') || 'index.html';
+            setTimeout(() => { window.location.href = redirect; }, 800);
           }
-          return;
+        } else if (response.status === 403) {
+           showMsg('⏳ Account pending admin approval.', 'warning');
+        } else {
+           showMsg('✗ ' + (data.message || 'Invalid credentials'), 'error');
         }
-
-        // ── 4. Not found ─────────────────────────────────────────────────
-        showMsg('✗ Invalid credentials. Check your username/email/Aadhaar and password.', 'error');
-
-      }, 600);
+      } catch (err) {
+        setLoading(false);
+        showMsg('✗ Server Offline. Please try again later.', 'error');
+      }
     });
   </script>
 </body>

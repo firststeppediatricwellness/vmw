@@ -301,28 +301,25 @@
         timestamp: new Date().toISOString()
       };
 
-      // ── Always save to localStorage as a local fallback ──────────────
-      const LOCAL_REGS_KEY = 'vmwf_registrations_local';
-      const existing = JSON.parse(localStorage.getItem(LOCAL_REGS_KEY)) || [];
-      existing.push(formData);
-      localStorage.setItem(LOCAL_REGS_LOCAL_KEY || LOCAL_REGS_KEY, JSON.stringify(existing));
-
-      // ── Also try the API (may fail if server not running) ────────────
+      // ── Try the API ────────────
       try {
-        await fetch('/api/register', {
+        const response = await fetch('/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
+        
+        if (response.ok) {
+          // Show credentials in success modal
+          document.getElementById('display-username').innerText = username;
+          document.getElementById('display-password').innerText = password;
+          document.getElementById('success-modal').classList.remove('hidden');
+        } else {
+          alert('Registration failed on server. Please try again.');
+        }
       } catch (err) {
-        // Server offline – localStorage already saved, proceed.
-        console.warn('Server unavailable, registration saved locally only.');
+        alert('Server unreachable. Registration could not be completed.');
       }
-
-      // Show credentials in success modal
-      document.getElementById('display-username').innerText = username;
-      document.getElementById('display-password').innerText = password;
-      document.getElementById('success-modal').classList.remove('hidden');
     }
 
     // Fix the localStorage key reference

@@ -180,13 +180,35 @@ function authenticateToken(req, res, next) {
 // Routes
 // ---------------------------------------------------------
 
+app.get('/api/status', (req, res) => {
+  res.json({ mode: MODE, connected: mongoose.connection.readyState === 1 });
+});
+
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
-  if (username === 'admin' && password === 'admin123') {
-     const token = jwt.sign({ username: 'admin' }, SECRET_KEY, { expiresIn: '24h' });
-     return res.json({ success: true, token });
+  
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    const token = jwt.sign({ username, role: 'admin' }, SECRET_KEY, { expiresIn: '12h' });
+    return res.json({ success: true, token, role: 'admin' });
   }
-  return res.status(401).json({ success: false, message: 'Invalid credentials' });
+
+  try {
+    const users = await Store.registrations.get();
+    const user = users.find(u => 
+      (u.username === username || u.email === username || u.aadhaar === username) && 
+      u.password === password
+    );
+
+    if (user) {
+      if (user.status !== 'Active') {
+        return res.status(403).json({ success: false, message: 'Account pending approval' });
+      }
+      const token = jwt.sign({ id: user._id || user.id, username: user.username, role: 'member' }, SECRET_KEY, { expiresIn: '24h' });
+      return res.json({ success: true, token, role: 'member' });
+    }
+  } catch (err) { console.error('Login error:', err); }
+
+  res.status(401).json({ success: false, message: 'Invalid credentials' });
 });
 
 // Helper to generate generic routes
