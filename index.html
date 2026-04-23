@@ -721,77 +721,15 @@
       }
     }
 
-    function loadSiteContent() {
-      const content = JSON.parse(localStorage.getItem(STORAGE_KEYS.siteContent));
-      if (!content) return;
+    const API_BASE = '/api';
 
-      // Apply Stats
-      content.stats.forEach((s, i) => {
-        const id = i + 1;
-        document.getElementById(`card-${id}-cat`).innerText = s.cat;
-        document.getElementById(`card-${id}-title`).innerText = s.title;
-        document.getElementById(`card-${id}-desc`).innerText = s.desc;
-        
-        // Contact Details
-        if (document.getElementById(`card-${id}-contact-name`)) {
-           document.getElementById(`card-${id}-contact-name`).innerText = s.contactName || "Coordinator";
-           document.getElementById(`card-${id}-contact-phone`).innerText = s.contactPhone || "";
-        }
-
-        // Images (specifically for Matrimony/Social)
-        const imgEl = document.getElementById(`card-${id}-img`);
-        if (imgEl && s.image) {
-           imgEl.src = s.image;
-           imgEl.classList.remove('hidden');
-        }
-
-        const btn = document.getElementById(`card-${id}-btn`);
-        if (s.link && s.link.includes('.html')) {
-           btn.onclick = () => { window.location.href = s.link; };
-        } else {
-           btn.onclick = () => { openListView(s.link || 'updates'); };
-        }
-      });
-
-      // Apply Actions
-      content.actions.forEach((a, i) => {
-        const id = i + 1;
-        document.getElementById(`card-action-${id}-title`).innerText = a.title;
-        document.getElementById(`card-action-${id}-subtitle`).innerText = a.subtitle;
-        
-        // Contact Details
-        if (document.getElementById(`card-action-${id}-contact-name`)) {
-           document.getElementById(`card-action-${id}-contact-name`).innerText = a.contactName || "Coordinator";
-           document.getElementById(`card-action-${id}-contact-phone`).innerText = a.contactPhone || "";
-        }
-
-        const btn = document.getElementById(`card-action-${id}-btn`);
-        if (a.link.includes('.html')) {
-           btn.href = a.link;
-           btn.onclick = null;
-        } else {
-           btn.onclick = () => { openListView(a.link); };
-        }
-      });
-
-      // Apply Contact
-      document.getElementById('contact-phone').innerText = content.contact.phone;
-      document.getElementById('contact-phone-2').innerText = content.contact.phone;
-      document.getElementById('contact-email').innerText = content.contact.email;
-      const emailEl2 = document.getElementById('contact-email-2');
-      if (emailEl2) emailEl2.innerText = content.contact.email;
-      
-      // Update news card specific ticker sync if needed
-    }
-
-    function fetchStats() {
-      seedData();
-      Object.keys(STORAGE_KEYS).forEach(key => {
-        if(key === 'updates' || key === 'regs') return;
-        const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[key])) || [];
-        const el = document.getElementById(`${key}-count`);
-        if (el) el.innerText = `${items.length < 5 ? items.length : items.length + '+'}`;
-      });
+    async function loadSiteContent() {
+      // Basic static content for footer/branding
+      document.getElementById('contact-phone').innerText = "+91 80 2234 1234";
+      document.getElementById('contact-phone-2').innerText = "+91 80 2234 1234";
+      document.getElementById('contact-email').innerText = "info@vmwfoundation.org";
+      const e2 = document.getElementById('contact-email-2');
+      if (e2) e2.innerText = "info@vmwfoundation.org";
     }
 
     let activeData = [];
@@ -804,78 +742,47 @@
          return;
       }
       activeType = type;
-      
-      const content = JSON.parse(localStorage.getItem(STORAGE_KEYS.siteContent));
-      let sectionInfo = null;
-      if (content) {
-        sectionInfo = content.stats.find(s => s.link === type) || content.actions.find(a => a.link === type);
-      }
-
       document.getElementById('list-modal').classList.remove('hidden');
       document.getElementById('modal-list-title').innerText = type.charAt(0).toUpperCase() + type.slice(1);
       
-      // Try API first
       try {
-        const response = await fetch(`/api/${type}`);
-        if (response.ok) {
-           activeData = await response.json();
+        const res = await fetch(`${API_BASE}/${type}`);
+        if (res.ok) {
+           activeData = await res.json();
+           renderModalList(activeData);
         } else {
-           activeData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
+           throw new Error('API Error');
         }
       } catch (err) {
-        activeData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
+        document.getElementById('modal-list-content').innerHTML = `<div class="col-span-full py-20 text-center text-red-500 font-bold">CONNECTION FAILED: SERVER OFFLINE</div>`;
       }
-      
-      renderModalList(activeData, sectionInfo);
     }
 
-    function closeListView() { document.getElementById('list-modal').classList.add('hidden'); }
-
-    function renderModalList(items, sectionInfo) {
+    function renderModalList(items) {
       const container = document.getElementById('modal-list-content');
-      
       if (items.length === 0) {
-        container.innerHTML = `<div class="col-span-2 text-center py-20 text-gray-400 font-medium tracking-widest text-xs uppercase">No Analytical Records Found</div>`;
+        container.innerHTML = `<div class="col-span-full py-20 text-center text-gray-400">No records found on the cloud database.</div>`;
         return;
       }
 
       container.innerHTML = items.map(item => {
         const title = item.title || item.name || item.description?.substring(0, 20) + '...';
-        const meta = item.category || item.profession || (activeType === 'updates' ? 'Latest Update' : item.membershipType);
-        const loc = item.location || (activeType === 'updates' ? 'Global' : 'Remote/Global');
-        
-        // Individual item contact - Styled prominently
-        const contact = item.contactPhone ? `
-          <div class="mt-10 pt-8 border-t border-gray-100 flex items-center justify-between">
-            <div>
-              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">${item.parentsName ? 'Guardians' : 'Primary Contact'}</p>
-              <p class="text-sm font-bold text-gray-950">${item.parentsName || item.contactName || 'Liaison Office'}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Contact Number</p>
-              <p class="text-sm font-bold text-orange-600">${item.contactPhone}</p>
-            </div>
-          </div>
-        ` : '';
-
+        const loc = item.location || 'Global';
         return `
           <div class="bg-white p-12 border border-gray-100 group hover:border-orange-500 transition-all duration-500 relative">
-            <h3 class="font-bold text-2xl mb-4 text-gray-900 uppercase tracking-tight">${activeType === 'updates' ? 'Latest Update' : title}</h3>
+            <h3 class="font-bold text-2xl mb-4 text-gray-900 uppercase tracking-tight">${title}</h3>
             <div class="flex flex-wrap gap-4 mb-8">
-              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-orange-600">${meta}</span>
-              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300">|</span>
+              <span class="text-[10px] font-black uppercase tracking-[0.2em] text-orange-600">${item.category || item.profession || 'Active'}</span>
               <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">${loc}</span>
             </div>
-            <p class="text-sm text-gray-400 line-clamp-3 mb-10 font-light leading-relaxed">${item.description || "Verified record for VMWF community."}</p>
-            
-            ${contact}
-
-            <div class="mt-6 flex justify-between items-center">
-               <span class="text-[10px] font-bold text-gray-200 uppercase tracking-widest">${item.date || 'Active Record'}</span>
-               <div class="flex gap-4">
-                 ${item.link ? `<a href="${item.link}" target="_blank" class="text-orange-600 font-black text-[10px] uppercase tracking-luxury hover:underline">Link</a>` : ''}
-                 <button onclick='showDetail("${activeType}", "${item.id}")' class="text-gray-950 font-black text-[10px] uppercase tracking-luxury hover:text-orange-600 transition-all underline underline-offset-8">Details</button>
-               </div>
+            <p class="text-sm text-gray-400 line-clamp-3 mb-10 font-light leading-relaxed">${item.description || "Verified community record."}</p>
+            ${item.contactPhone ? `
+            <div class="mt-10 pt-8 border-t border-gray-100 flex items-center justify-between">
+              <div><p class="text-[8px] font-black uppercase text-orange-600 mb-2">Contact</p><p class="text-sm font-bold text-gray-950">${item.contactName || 'Liaison'}</p></div>
+              <div class="text-right"><p class="text-[8px] font-black uppercase text-gray-400 mb-2">Phone</p><p class="text-sm font-bold text-orange-600">${item.contactPhone}</p></div>
+            </div>` : ''}
+            <div class="mt-6 text-right">
+              <button onclick='showDetail("${activeType}", "${item._id || item.id}")' class="text-gray-950 font-black text-[10px] uppercase tracking-luxury hover:text-orange-600 transition-all underline underline-offset-8">View Details</button>
             </div>
           </div>
         `;
@@ -883,104 +790,54 @@
     }
 
     function showDetail(type, id) {
-      const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
-      const item = items.find(i => i.id == id || i.id === id);
-      if (!item) return;
-
-      const title = item.title || item.name || (item.firstName + ' ' + item.lastName);
-      const detailOverlay = document.createElement('div');
-      detailOverlay.id = 'detail-overlay';
-      detailOverlay.className = 'fixed inset-0 z-[130] flex items-center justify-center bg-gray-900/40 backdrop-blur-sm p-4';
-      detailOverlay.innerHTML = `
-        <div class="bg-white p-12 max-w-lg w-full shadow-2xl relative">
-          <button onclick="this.closest('#detail-overlay').remove()" class="absolute top-8 right-8 text-gray-300 hover:text-orange-600"><i class="fas fa-times"></i></button>
-          <h4 class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mb-8">${type} Detailed View</h4>
-          <h3 class="heading-font text-4xl font-bold text-gray-900 mb-10 leading-tight">${title}</h3>
-          <p class="text-gray-500 text-lg leading-relaxed font-light mb-12">${item.description || 'Verified detailed record for VMWF community reference.'}</p>
-          
-          <div class="grid grid-cols-2 gap-10 text-[10px] font-black uppercase tracking-[0.2em] mb-12 pb-12 border-b border-gray-100">
-            <div><p class="text-gray-300 mb-2">Location</p><p class="text-gray-950">${item.location || 'Remote'}</p></div>
-            <div><p class="text-gray-300 mb-2">Category</p><p class="text-gray-950">${item.category || item.profession || 'Core'}</p></div>
-          </div>
-
-          ${item.contactPhone ? `
-          <div class="bg-gray-50 p-8 rounded-xl flex items-center justify-between">
-            <div>
-              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">${item.parentsName ? 'Parents/Guardians' : 'Primary Liaison'}</p>
-              <p class="text-lg font-bold text-gray-950">${item.parentsName || item.contactName || 'Office'}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Contact Number</p>
-              <p class="text-xl font-bold text-orange-600">${item.contactPhone}</p>
-            </div>
-          </div>
-          ` : ''}
-
-          <button onclick="this.closest('#detail-overlay').remove()" class="w-full mt-12 border border-gray-200 py-6 text-[10px] font-black uppercase tracking-luxury hover:bg-gray-50 transition-all font-bold text-gray-500">Close Access</button>
-        </div>
-      `;
-      document.body.appendChild(detailOverlay);
+       const item = activeData.find(i => (i._id === id || i.id === id));
+       if (!item) return;
+       const title = item.title || item.name || (item.firstName + ' ' + item.lastName);
+       const detailOverlay = document.createElement('div');
+       detailOverlay.id = 'detail-overlay';
+       detailOverlay.className = 'fixed inset-0 z-[130] flex items-center justify-center bg-gray-900/40 backdrop-blur-sm p-4';
+       detailOverlay.innerHTML = `
+         <div class="bg-white p-12 max-w-lg w-full shadow-2xl relative">
+           <button onclick="this.closest('#detail-overlay').remove()" class="absolute top-8 right-8 text-gray-300 hover:text-orange-600"><i class="fas fa-times"></i></button>
+           <h4 class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 mb-8">${type}</h4>
+           <h3 class="heading-font text-4xl font-bold text-gray-900 mb-10 leading-tight">${title}</h3>
+           <p class="text-gray-500 text-lg leading-relaxed font-light mb-12">${item.description || 'Verified VMWF community record.'}</p>
+           <div class="grid grid-cols-2 gap-10 text-[10px] font-black uppercase tracking-[0.2em] mb-12 pb-12 border-b border-gray-100">
+             <div><p class="text-gray-300 mb-2">Location</p><p class="text-gray-950">${item.location || 'Remote'}</p></div>
+             <div><p class="text-gray-300 mb-2">Category</p><p class="text-gray-950">${item.category || 'Core'}</p></div>
+           </div>
+           ${item.contactPhone ? `<div class="bg-gray-50 p-8 rounded-xl flex items-center justify-between"><div><p class="text-[8px] font-black uppercase text-orange-600 mb-2">Phone</p><p class="text-lg font-bold text-gray-950">${item.contactPhone}</p></div></div>` : ''}
+           <button onclick="this.closest('#detail-overlay').remove()" class="w-full mt-12 border border-gray-200 py-6 text-[10px] font-black uppercase tracking-luxury hover:bg-gray-50 transition-all font-bold text-gray-500">Close</button>
+         </div>
+       `;
+       document.body.appendChild(detailOverlay);
     }
 
-
-    function sendWhatsApp(e) {
-      e.preventDefault();
-      const n = document.getElementById('contact-name').value;
-      const s = document.getElementById('contact-subject').value;
-      const m = document.getElementById('contact-message').value;
-      const t = `Hello VMWF, My name is ${n}. %0A%0A*Subject:* ${s}%0A%0A*Message:* ${m}`;
-      window.open(`https://wa.me/919606946623?text=${t}`, '_blank');
-    }
-
-    // Configuration
-    const API_BASE = '/api';
-
-    window.onload = () => {
-      loadSiteContent();
-      loadGallery();
-      checkMainAuth();
-    };
+    function closeListView() { document.getElementById('list-modal').classList.add('hidden'); }
 
     async function loadGallery() {
       try {
-        const response = await fetch('/api/gallery');
-        if (!response.ok) return;
-        const data = await response.json();
-        if (data.length === 0) return;
-        
+        const res = await fetch(`${API_BASE}/gallery`);
+        if (!res.ok) return;
+        const data = await res.json();
         const gallerySect = document.getElementById('gallery');
-        const container = document.createElement('div');
-        container.className = 'container mx-auto px-6 md:px-12 mt-20';
-        container.innerHTML = `
-          <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest text-orange-600">Admin Highlights</h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            ${data.map(item => {
-              const isVideo = item.imagePath && item.imagePath.toLowerCase().endsWith('.mp4');
-              if (isVideo) {
-                return `<div class="group relative overflow-hidden bg-white shadow-xl"><video controls class="w-full h-auto"><source src="${item.imagePath}" type="video/mp4"></video><p class="p-4 text-[10px] font-black uppercase tracking-widest text-gray-500">${item.caption}</p></div>`;
-              }
-              return `<div class="group relative overflow-hidden bg-white shadow-xl aspect-[16/10]"><img src="${item.imagePath}" class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-700" alt="${item.caption}"><div class="absolute bottom-0 left-0 right-0 bg-white/95 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"><p class="text-[10px] font-black uppercase tracking-widest text-orange-600">${item.caption}</p></div></div>`;
-            }).join('')}
-          </div>`;
-        gallerySect.appendChild(container);
-      } catch(e) { console.error(e); }
+        if (data.length > 0) {
+          const container = document.createElement('div');
+          container.className = 'container mx-auto px-6 md:px-12 mt-20';
+          container.innerHTML = `<h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest text-orange-600">Community Gallery</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">${data.map(item => `<div class="group relative overflow-hidden bg-white shadow-xl aspect-[16/10]"><img src="${item.imagePath}" class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-700" alt="${item.caption}"><p class="p-4 text-[10px] font-black uppercase tracking-widest text-orange-600">${item.caption}</p></div>`).join('')}</div>`;
+          gallerySect.innerHTML = '';
+          gallerySect.appendChild(container);
+        }
+      } catch(e) {}
     }
 
     function checkMainAuth() {
-       const memberSession = sessionStorage.getItem('vmwf_member_active');
-       const adminSession  = sessionStorage.getItem('vmwf_admin_active');
-       const isLoggedIn    = !!(memberSession || adminSession);
-       
-       const loginBtn  = document.getElementById('auth-btn-main');
+       const isLoggedIn = !!(sessionStorage.getItem('vmwf_member_active') || sessionStorage.getItem('vmwf_admin_active'));
+       const loginBtn = document.getElementById('auth-btn-main');
        const logoutBtn = document.getElementById('logout-btn-main');
-
-       if (isLoggedIn) {
-          if (loginBtn) loginBtn.classList.add('hidden');
-          if (logoutBtn) logoutBtn.classList.remove('hidden');
-       } else {
-          if (loginBtn) loginBtn.classList.remove('hidden');
-          if (logoutBtn) logoutBtn.classList.add('hidden');
-       }
+       if (loginBtn) isLoggedIn ? loginBtn.classList.add('hidden') : loginBtn.classList.remove('hidden');
+       if (logoutBtn) isLoggedIn ? logoutBtn.classList.remove('hidden') : logoutBtn.classList.add('hidden');
     }
 
     function logoutMain() {
@@ -988,6 +845,9 @@
        sessionStorage.removeItem('vmwf_admin_active');
        window.location.reload();
     }
+
+    window.onload = () => { loadSiteContent(); loadGallery(); checkMainAuth(); };
+
 
     // Re-evaluate button visibility on resize
     window.addEventListener('resize', checkMainAuth);
