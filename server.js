@@ -16,7 +16,8 @@ const ADMIN_PASS = process.env.ADMIN_PASS || 'admin123';
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(__dirname));
 
 // ---------------------------------------------------------
@@ -163,6 +164,26 @@ setupRoutes('events', 'events');
 setupRoutes('tours', 'tours');
 setupRoutes('updates', 'updates');
 setupRoutes('gallery', 'gallery');
+
+// Secure Public Member Directory (Returns only safe fields)
+app.get('/api/members', async (req, res) => {
+  try {
+    const allMembers = await Store.registrations.get();
+    const activeMembers = allMembers
+      .filter(m => m.status === 'Active')
+      .map(m => ({
+        _id: m._id || m.id,
+        name: `${m.firstName || ''} ${m.lastName || ''}`.trim(),
+        location: m.address || m.location || 'Member',
+        profession: m.membershipType || 'Active Member',
+        description: `Verified VMWF community member since ${new Date(m.timestamp || Date.now()).getFullYear()}`,
+        date: m.timestamp ? new Date(m.timestamp).toISOString().split('T')[0] : 'Active'
+      }));
+    res.json(activeMembers);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch directory' });
+  }
+});
 
 app.get('/api/admin/registrations', authenticateToken, async (req, res) => { res.json(await Store.registrations.get()); });
 app.post('/api/register', async (req, res) => { res.status(201).json(await Store.registrations.add(req.body)); });

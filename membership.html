@@ -266,12 +266,31 @@
   </footer>
 
   <script>
+    // UI: Show selected filename
+    document.getElementById('paymentScreenshot').addEventListener('change', function(e) {
+      const fileName = e.target.files[0]?.name || "Select Image";
+      e.target.parentElement.querySelector('p').innerText = fileName;
+      e.target.parentElement.querySelector('p').classList.add('text-orange-600');
+    });
+
     async function handleSubmit(e) {
       e.preventDefault();
       
       const maritalStatus = document.querySelector('input[name="maritalStatus"]:checked')?.value;
       const email = document.getElementById('email').value;
+      const fileInput = document.getElementById('paymentScreenshot');
       
+      // Convert image to Base64
+      let paymentScreenshot = '';
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        paymentScreenshot = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(file);
+        });
+      }
+
       // Auto-generate credentials
       const firstName = document.getElementById('firstName').value.trim();
       const lastName  = document.getElementById('lastName').value.trim();
@@ -297,11 +316,11 @@
         username: username,
         password: password,
         paymentDetails: document.getElementById('paymentDetails').value,
+        paymentScreenshot: paymentScreenshot,
         status: 'Pending',
         timestamp: new Date().toISOString()
       };
 
-      // ── Try the API ────────────
       try {
         const response = await fetch('/api/register', {
           method: 'POST',
@@ -310,12 +329,11 @@
         });
         
         if (response.ok) {
-          // Show credentials in success modal
           document.getElementById('display-username').innerText = username;
           document.getElementById('display-password').innerText = password;
           document.getElementById('success-modal').classList.remove('hidden');
         } else {
-          alert('Registration failed on server. Please try again.');
+          alert('Registration failed. Ensure screenshot is less than 5MB.');
         }
       } catch (err) {
         alert('Server unreachable. Registration could not be completed.');
