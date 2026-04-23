@@ -11,6 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.JWT_SECRET || 'vmwf_secret_key_2024';
 const MONGODB_URI = process.env.MONGODB_URI;
+const ADMIN_USER = process.env.ADMIN_USER || 'admin';
+const ADMIN_PASS = process.env.ADMIN_PASS || 'admin123';
 
 // Middleware
 app.use(cors());
@@ -18,23 +20,19 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
 // ---------------------------------------------------------
-// DATA LAYER (Smart Fallback)
+// DATA LAYER (MongoDB Only)
 // ---------------------------------------------------------
-let MODE = 'JSON';
-
-if (MONGODB_URI) {
-  mongoose.connect(MONGODB_URI)
-    .then(() => {
-      console.log('✅ MODE: CLOUD (Connected to MongoDB Atlas)');
-      MODE = 'MONGODB';
-    })
-    .catch(err => {
-      console.error('❌ MongoDB connection error:', err);
-      console.log('⚠️ FALLBACK: Using Local JSON storage');
-    });
-} else {
-  console.log('ℹ️ MODE: LOCAL (Using Local JSON storage)');
+if (!MONGODB_URI) {
+  console.error('❌ FATAL ERROR: MONGODB_URI is not defined in .env');
+  process.exit(1);
 }
+
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('✅ Connected to MongoDB Atlas'))
+  .catch(err => {
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1);
+  });
 
 // ---------------------------------------------------------
 // Mongoose Models
@@ -72,93 +70,38 @@ const Gallery = mongoose.model('Gallery', new mongoose.Schema({
 }));
 
 const Registration = mongoose.model('Registration', new mongoose.Schema({
-  firstName: String, email: String, mobile: String, username: String, password: String,
-  status: { type: String, default: 'Pending' }, timestamp: { type: Date, default: Date.now }
+  firstName: String, middleName: String, lastName: String, email: String, 
+  dob: String, age: String, gender: String, address: String, 
+  mobile: String, aadhaar: String, gothra: String, introducer: String, 
+  membershipType: String, paymentDetails: String, username: String, password: String,
+  status: { type: String, default: 'Pending' }, 
+  timestamp: { type: Date, default: Date.now }
 }, { strict: false }));
 
 // ---------------------------------------------------------
-// Generic Data Store Functions
+// Data Store Abstraction (MongoDB)
 // ---------------------------------------------------------
-const DATA_PATHS = {
-  jobs: path.join(__dirname, 'data', 'jobs.json'),
-  matrimony: path.join(__dirname, 'data', 'matrimony.json'),
-  events: path.join(__dirname, 'data', 'events.json'),
-  tours: path.join(__dirname, 'data', 'tours.json'),
-  updates: path.join(__dirname, 'data', 'updates.json'),
-  gallery: path.join(__dirname, 'data', 'gallery.json'),
-  registrations: path.join(__dirname, 'data', 'registrations.json'),
-  users: path.join(__dirname, 'data', 'users.json')
-};
-
-async function readJSON(key) {
-  await fs.ensureFile(DATA_PATHS[key]);
-  const content = await fs.readFile(DATA_PATHS[key], 'utf8');
-  return content ? JSON.parse(content) : [];
-}
-
-async function writeJSON(key, data) {
-  await fs.writeJson(DATA_PATHS[key], data, { spaces: 2 });
-}
-
-function createStoreMethods(key, Model) {
+function createStoreMethods(Model) {
   return {
-    async get() {
-      return MODE === 'MONGODB' ? Model.find().sort({ date: -1 }) : readJSON(key);
-    },
-    async add(data) {
-      if (MODE === 'MONGODB') return new Model(data).save();
-      const items = await readJSON(key);
-      const newItem = { id: Date.now().toString(), ...data, date: new Date().toISOString() };
-      items.push(newItem);
-      await writeJSON(key, items);
-      return newItem;
-    },
-    async update(id, data) {
-      if (MODE === 'MONGODB') return Model.findByIdAndUpdate(id, data, { new: true });
-      const items = await readJSON(key);
-      const idx = items.findIndex(i => (i.id == id || i._id == id));
-      if (idx !== -1) { items[idx] = { ...items[idx], ...data }; await writeJSON(key, items); return items[idx]; }
-      return null;
-    },
-    async delete(id) {
-      if (MODE === 'MONGODB') return Model.findByIdAndDelete(id);
-      const items = (await readJSON(key)).filter(i => (i.id != id && i._id != id));
-      await writeJSON(key, items);
-    }
+    get: async () => Model.find().sort({ date: -1 || { timestamp: -1 } }),
+    add: async (data) => new Model(data).save(),
+    update: async (id, data) => Model.findByIdAndUpdate(id, data, { new: true }),
+    delete: async (id) => Model.findByIdAndDelete(id)
   };
 }
 
 const Store = {
-  jobs: createStoreMethods('jobs', Job),
-  matrimony: createStoreMethods('matrimony', Profile),
-  events: createStoreMethods('events', Event),
-  tours: createStoreMethods('tours', Tour),
-  updates: createStoreMethods('updates', Update),
-  gallery: createStoreMethods('gallery', Gallery),
+  jobs: createStoreMethods(Job),
+  matrimony: createStoreMethods(Profile),
+  events: createStoreMethods(Event),
+  tours: createStoreMethods(Tour),
+  updates: createStoreMethods(Update),
+  gallery: createStoreMethods(Gallery),
   registrations: {
-    async get() {
-      return MODE === 'MONGODB' ? Registration.find().sort({ timestamp: -1 }) : readJSON('registrations');
-    },
-    async add(data) {
-      if (MODE === 'MONGODB') return new Registration(data).save();
-      const regs = await readJSON('registrations');
-      const newReg = { id: 'REG' + Date.now(), ...data, status: 'Pending', timestamp: new Date().toISOString() };
-      regs.push(newReg);
-      await writeJSON('registrations', regs);
-      return newReg;
-    },
-    async update(id, data) {
-      if (MODE === 'MONGODB') return Registration.findByIdAndUpdate(id, data, { new: true });
-      const regs = await readJSON('registrations');
-      const idx = regs.findIndex(r => (r.id == id || r._id == id));
-      if (idx !== -1) { regs[idx] = { ...regs[idx], ...data }; await writeJSON('registrations', regs); return regs[idx]; }
-      return null;
-    },
-    async delete(id) {
-      if (MODE === 'MONGODB') return Registration.findByIdAndDelete(id);
-      const regs = (await readJSON('registrations')).filter(r => (r.id != id && r._id != id));
-      await writeJSON('registrations', regs);
-    }
+    get: async () => Registration.find().sort({ timestamp: -1 }),
+    add: async (data) => new Registration(data).save(),
+    update: async (id, data) => Registration.findByIdAndUpdate(id, data, { new: true }),
+    delete: async (id) => Registration.findByIdAndDelete(id)
   }
 };
 
@@ -181,7 +124,7 @@ function authenticateToken(req, res, next) {
 // ---------------------------------------------------------
 
 app.get('/api/status', (req, res) => {
-  res.json({ mode: MODE, connected: mongoose.connection.readyState === 1 });
+  res.json({ mode: 'MONGODB', connected: mongoose.connection.readyState === 1 });
 });
 
 app.post('/api/login', async (req, res) => {
