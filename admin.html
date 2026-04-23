@@ -20,7 +20,19 @@
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-    .table-container { max-height: 500px; overflow-y: auto; }
+    .table-container { 
+      max-height: 500px; 
+      overflow-y: auto; 
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (max-width: 640px) {
+      .glass { padding: 1.5rem !important; }
+      .heading-font { font-size: 1.75rem !important; }
+      .px-12 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+      .table-container table { font-size: 11px; }
+      td, th { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+    }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -81,8 +93,6 @@
           <a href="#" id="nav-events" onclick="showTab('events')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Events</a>
           <a href="#" id="nav-tours" onclick="showTab('tours')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Tours</a>
           <a href="#" id="nav-updates" onclick="showTab('updates')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Updates</a>
-          <a href="#" id="nav-gallery" onclick="showTab('gallery')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Gallery</a>
-          <a href="#" id="nav-pages" onclick="showTab('pages')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Pages</a>
           <a href="#" id="nav-members" onclick="showTab('members')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Members</a>
         </nav>
         <button id="admin-menu-btn" class="xl:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
@@ -101,8 +111,6 @@
         <li><a href="#" onclick="showTab('events'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Events</a></li>
         <li><a href="#" onclick="showTab('tours'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Tours</a></li>
         <li><a href="#" onclick="showTab('updates'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Updates</a></li>
-        <li><a href="#" onclick="showTab('gallery'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Gallery</a></li>
-        <li><a href="#" onclick="showTab('pages'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Pages</a></li>
         <li><a href="#" onclick="showTab('members'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Members</a></li>
         <li class="pt-8"><button onclick="logout()" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Sign Out</button></li>
       </ul>
@@ -195,31 +203,6 @@
       <div id="updates-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
     </div>
 
-    <!-- Tab: Gallery -->
-    <div id="tab-gallery" class="tab-content hidden transition-all">
-      <div class="flex justify-between items-center mb-10">
-        <div>
-          <h3 class="heading-font text-3xl font-bold text-gray-800 mb-1">Community Gallery</h3>
-          <p class="text-gray-500">Manage photos and videos on the gallery section</p>
-        </div>
-        <button onclick="openModal('gallery')" class="bg-gradient-orange text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-xl transition-all">
-          <i class="fas fa-plus mr-2"></i>Add Gallery Item
-        </button>
-      </div>
-      <div id="gallery-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
-    </div>
-
-    <div id="tab-pages" class="tab-content hidden transition-all">
-      <div class="flex justify-between items-center mb-10">
-        <div>
-          <h3 class="heading-font text-3xl font-bold text-gray-800 mb-1">Dynamic Page Content</h3>
-          <p class="text-gray-500">Manage custom sections like "Who We Are" or "Founder Message".</p>
-        </div>
-        <button onclick="openModal('pages')" class="bg-gradient-orange text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-xl transition-all">
-          <i class="fas fa-plus mr-2"></i>Create New Section
-        </button>
-      </div>
-      <div id="pages-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
     </div>
 
   </main>
@@ -499,7 +482,7 @@
        ];
 
        content.innerHTML = `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/50 p-6 rounded-2xl border border-white/40 shadow-inner mb-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white/50 p-4 sm:p-6 rounded-2xl border border-white/40 shadow-inner mb-8">
             ${fields.map(f => `<div class="border-b border-gray-100 pb-2"><p class="text-[9px] font-black uppercase text-orange-600 mb-1 tracking-widest">${f.replace(/([A-Z])/g, ' $1')}</p><p class="text-sm font-bold text-gray-900 break-words">${item[f] || '—'}</p></div>`).join('')}
           </div>
           ${item.paymentScreenshot ? `
