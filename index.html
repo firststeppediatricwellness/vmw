@@ -57,6 +57,7 @@
     .tracking-luxury { letter-spacing: 0.1em; }
 
     /* Login Overlays */
+    /* Login Overlays */
     #login-overlay {
        background: rgba(255, 255, 255, 0.98);
        backdrop-filter: blur(12px);
@@ -115,7 +116,7 @@
 
       <!-- Action Items -->
       <div class="flex items-center gap-3 md:gap-5 flex-shrink-0">
-        <a href="access.html" id="auth-btn-main" class="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 hover:text-white transition-all whitespace-nowrap">Member Login</a>
+        <a href="access.html" id="auth-btn-main" class="hidden md:inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 hover:text-white transition-all whitespace-nowrap">Member Login</a>
         <button id="logout-btn-main" onclick="logoutMain()" class="hidden text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-orange-200 transition-all whitespace-nowrap">Sign Out</button>
         <a href="membership.html" class="bg-white text-orange-600 px-4 md:px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-gray-100 transition-all whitespace-nowrap shadow-md">Join Us</a>
         <button id="menu-btn" class="xl:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
@@ -154,7 +155,7 @@
   </section>
 
   <!-- Latest Updates (Consulting Style) -->
-  <div class="bg-orange-600 text-white py-4 overflow-hidden border-y border-orange-500 cursor-pointer" onclick="window.location.href='access.html'">
+  <div class="bg-orange-600 text-white py-4 overflow-hidden border-y border-orange-500 cursor-pointer" onclick="openListView('updates')">
     <div class="container mx-auto flex items-center px-6">
       <span class="text-[10px] uppercase tracking-luxury font-black mr-12 whitespace-nowrap">Updates:</span>
       <div class="overflow-hidden flex-1 relative h-4">
@@ -209,7 +210,7 @@
            <button id="card-3-btn" class="text-[10px] font-black uppercase tracking-luxury text-gray-950 group-hover:text-white underline underline-offset-8 decoration-orange-500 group-hover:decoration-white">Connect Now →</button>
         </div>
         <!-- Dashboard Card 4 -->
-        <div class="bg-white p-12 group hover:bg-orange-600 transition-all duration-700 border-r border-gray-100 last:border-0 relative cursor-pointer">
+        <div class="bg-white p-12 group hover:bg-orange-600 transition-all duration-700 border-r border-gray-100 last:border-0 relative cursor-pointer" onclick="openListView('updates')">
            <div class="locked-indicator guest-only"><i class="fas fa-lock"></i></div>
            <h5 id="card-4-cat" class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-600 group-hover:text-white/60 mb-8">Intelligence</h5>
            <h3 class="heading-font text-3xl font-bold text-gray-900 group-hover:text-white mb-6"><span id="card-4-title">Govt. Schemes & News</span></h3>
@@ -217,7 +218,7 @@
               <span id="card-4-contact-name">Coordinator</span>: <span id="card-4-contact-phone">+91 96069 46623</span>
            </div>
            <p id="card-4-desc" class="text-sm text-gray-500 group-hover:text-white/80 font-light leading-relaxed mb-10">Stay updated on government schemes and community news that matters to you.</p>
-           <button id="card-4-btn" onclick="window.location.href='access.html'" class="text-[10px] font-black uppercase tracking-luxury text-gray-950 group-hover:text-white underline underline-offset-8 decoration-orange-500 group-hover:decoration-white">Stay Informed →</button>
+           <button id="card-4-btn" class="text-[10px] font-black uppercase tracking-luxury text-gray-950 group-hover:text-white underline underline-offset-8 decoration-orange-500 group-hover:decoration-white">Stay Informed →</button>
         </div>
       </div>
     </div>
@@ -362,7 +363,6 @@
 
     </div>
   </section>
-
   <!-- Donation: Strategic Support -->
   <section class="section-padding bg-white relative">
     <div class="container mx-auto px-6 md:px-12">
@@ -696,13 +696,19 @@
     }
 
     function seedSiteContent() {
-      if (!localStorage.getItem(STORAGE_KEYS.siteContent)) {
+      let content = JSON.parse(localStorage.getItem(STORAGE_KEYS.siteContent));
+      if (content && content.stats[3] && content.stats[3].link === '#') {
+         content.stats[3].link = 'updates';
+         localStorage.setItem(STORAGE_KEYS.siteContent, JSON.stringify(content));
+      }
+
+      if (!content) {
         const defaultContent = {
           stats: [
             { cat: "Empowerment", title: "Employment Portal", count: "220+", desc: "Exclusive job opportunities for our community members across various sectors with cultural compatibility in mind.", link: "jobs", contactName: "Coordinator", contactPhone: "+91 96069 46623" },
             { cat: "Social", title: "Matrimonial Service", count: "550+", desc: "Find the perfect match from our community with our trusted matrimonial service that respects tradition and values.", link: "matrimony", contactName: "Coordinator", contactPhone: "+91 96069 46623" },
             { cat: "Connectivity", title: "Global Directory", count: "10,000+", desc: "Comprehensive directory of community members to help you connect, network, and build meaningful relationships.", link: "members", contactName: "Coordinator", contactPhone: "+91 96069 46623" },
-            { cat: "Updates", title: "Govt. Schemes & News", count: "Live", desc: "Stay updated on government schemes, assistance programs, and community news that matters to you.", link: "#", contactName: "Coordinator", contactPhone: "+91 96069 46623" }
+            { cat: "Updates", title: "Govt. Schemes & News", count: "Live", desc: "Stay updated on government schemes, assistance programs, and community news that matters to you.", link: "updates", contactName: "Coordinator", contactPhone: "+91 96069 46623" }
           ],
           actions: [
             { subtitle: "Gatherings & Celebrations", title: "Events", link: "events", contactName: "Coordinator", contactPhone: "+91 96069 46623" },
@@ -740,10 +746,10 @@
         }
 
         const btn = document.getElementById(`card-${id}-btn`);
-        if (s.link.includes('.html') || s.link.startsWith('#')) {
+        if (s.link && s.link.includes('.html')) {
            btn.onclick = () => { window.location.href = s.link; };
         } else {
-           btn.onclick = () => { openListView(s.link); };
+           btn.onclick = () => { openListView(s.link || 'updates'); };
         }
       });
 
@@ -772,7 +778,8 @@
       document.getElementById('contact-phone').innerText = content.contact.phone;
       document.getElementById('contact-phone-2').innerText = content.contact.phone;
       document.getElementById('contact-email').innerText = content.contact.email;
-      document.getElementById('contact-email-2').innerText = content.contact.email;
+      const emailEl2 = document.getElementById('contact-email-2');
+      if (emailEl2) emailEl2.innerText = content.contact.email;
       
       // Update news card specific ticker sync if needed
     }
@@ -790,24 +797,35 @@
     let activeData = [];
     let activeType = '';
 
-    function openListView(type) {
+    async function openListView(type) {
       if (!sessionStorage.getItem('vmwf_member_active') && !sessionStorage.getItem('vmwf_admin_active')) {
+         alert("Access Restricted: You have to be a member to access these sections.");
          window.location.href = 'access.html?redirect=index.html';
          return;
       }
       activeType = type;
+      
       const content = JSON.parse(localStorage.getItem(STORAGE_KEYS.siteContent));
       let sectionInfo = null;
-
       if (content) {
-        // Find in stats or actions
         sectionInfo = content.stats.find(s => s.link === type) || content.actions.find(a => a.link === type);
       }
 
       document.getElementById('list-modal').classList.remove('hidden');
       document.getElementById('modal-list-title').innerText = type.charAt(0).toUpperCase() + type.slice(1);
       
-      activeData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
+      // Try API first
+      try {
+        const response = await fetch(`/api/${type}`);
+        if (response.ok) {
+           activeData = await response.json();
+        } else {
+           activeData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
+        }
+      } catch (err) {
+        activeData = JSON.parse(localStorage.getItem(STORAGE_KEYS[type])) || [];
+      }
+      
       renderModalList(activeData, sectionInfo);
     }
 
@@ -822,19 +840,19 @@
       }
 
       container.innerHTML = items.map(item => {
-        const title = item.title || item.name || (item.firstName + ' ' + item.lastName);
-        const meta = item.category || item.profession || item.membershipType;
-        const loc = item.location || 'Remote/Global';
+        const title = item.title || item.name || item.description?.substring(0, 20) + '...';
+        const meta = item.category || item.profession || (activeType === 'updates' ? 'Latest Update' : item.membershipType);
+        const loc = item.location || (activeType === 'updates' ? 'Global' : 'Remote/Global');
         
         // Individual item contact - Styled prominently
         const contact = item.contactPhone ? `
           <div class="mt-10 pt-8 border-t border-gray-100 flex items-center justify-between">
             <div>
-              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">Primary Contact</p>
-              <p class="text-sm font-bold text-gray-950">${item.contactName || 'Ananya B'}</p>
+              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">${item.parentsName ? 'Guardians' : 'Primary Contact'}</p>
+              <p class="text-sm font-bold text-gray-950">${item.parentsName || item.contactName || 'Liaison Office'}</p>
             </div>
             <div class="text-right">
-              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Phone Number</p>
+              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Contact Number</p>
               <p class="text-sm font-bold text-orange-600">${item.contactPhone}</p>
             </div>
           </div>
@@ -842,19 +860,22 @@
 
         return `
           <div class="bg-white p-12 border border-gray-100 group hover:border-orange-500 transition-all duration-500 relative">
-            <h3 class="font-bold text-2xl mb-4 text-gray-900 uppercase tracking-tight">${title}</h3>
+            <h3 class="font-bold text-2xl mb-4 text-gray-900 uppercase tracking-tight">${activeType === 'updates' ? 'Latest Update' : title}</h3>
             <div class="flex flex-wrap gap-4 mb-8">
               <span class="text-[10px] font-black uppercase tracking-[0.2em] text-orange-600">${meta}</span>
               <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300">|</span>
               <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">${loc}</span>
             </div>
-            <p class="text-sm text-gray-400 line-clamp-3 mb-10 font-light leading-relaxed">${item.description || "Corporate summary unavailable."}</p>
+            <p class="text-sm text-gray-400 line-clamp-3 mb-10 font-light leading-relaxed">${item.description || "Verified record for VMWF community."}</p>
             
             ${contact}
 
             <div class="mt-6 flex justify-between items-center">
                <span class="text-[10px] font-bold text-gray-200 uppercase tracking-widest">${item.date || 'Active Record'}</span>
-               <button onclick='showDetail("${activeType}", "${item.id}")' class="text-gray-950 font-black text-[10px] uppercase tracking-luxury hover:text-orange-600 transition-all underline underline-offset-8">Details</button>
+               <div class="flex gap-4">
+                 ${item.link ? `<a href="${item.link}" target="_blank" class="text-orange-600 font-black text-[10px] uppercase tracking-luxury hover:underline">Link</a>` : ''}
+                 <button onclick='showDetail("${activeType}", "${item.id}")' class="text-gray-950 font-black text-[10px] uppercase tracking-luxury hover:text-orange-600 transition-all underline underline-offset-8">Details</button>
+               </div>
             </div>
           </div>
         `;
@@ -885,8 +906,8 @@
           ${item.contactPhone ? `
           <div class="bg-gray-50 p-8 rounded-xl flex items-center justify-between">
             <div>
-              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">Primary Liaison</p>
-              <p class="text-lg font-bold text-gray-950">${item.contactName || 'Ananya B'}</p>
+              <p class="text-[8px] font-black uppercase tracking-[0.3em] text-orange-600 mb-2">${item.parentsName ? 'Parents/Guardians' : 'Primary Liaison'}</p>
+              <p class="text-lg font-bold text-gray-950">${item.parentsName || item.contactName || 'Office'}</p>
             </div>
             <div class="text-right">
               <p class="text-[8px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Contact Number</p>
@@ -915,20 +936,68 @@
     const API_BASE = '/api';
 
     window.onload = () => {
+      seedData();
       loadSiteContent();
+      loadGallery();
       checkMainAuth();
     };
 
+    async function loadGallery() {
+      let data = [];
+      try {
+        const response = await fetch('/api/gallery');
+        if (response.ok) data = await response.json();
+        else data = JSON.parse(localStorage.getItem('vmwf_gallery_data')) || [];
+      } catch(e) {
+        data = JSON.parse(localStorage.getItem('vmwf_gallery_data')) || [];
+      }
+      
+      if (data.length === 0) return;
+      
+      const gallerySect = document.getElementById('gallery');
+      const container = document.createElement('div');
+      container.className = 'container mx-auto px-6 md:px-12 mt-20';
+      container.innerHTML = `
+        <h3 class="heading-font text-2xl font-bold mb-10 text-gray-800 border-l-4 border-orange-500 pl-6 uppercase tracking-widest text-orange-600">Admin Highlights</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          ${data.map(item => {
+            const isVideo = item.imagePath && item.imagePath.toLowerCase().endsWith('.mp4');
+            if (isVideo) {
+              return `
+                <div class="group relative overflow-hidden bg-white shadow-xl">
+                  <video controls class="w-full h-auto"><source src="${item.imagePath}" type="video/mp4"></video>
+                  <p class="p-4 text-[10px] font-black uppercase tracking-widest text-gray-500">${item.caption}</p>
+                </div>
+              `;
+            }
+            return `
+              <div class="group relative overflow-hidden bg-white shadow-xl aspect-[16/10]">
+                <img src="${item.imagePath}" class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-700" alt="${item.caption}">
+                <div class="absolute bottom-0 left-0 right-0 bg-white/95 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                  <p class="text-[10px] font-black uppercase tracking-widest text-orange-600">${item.caption}</p>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+      gallerySect.appendChild(container);
+    }
+
     function checkMainAuth() {
        const memberSession = sessionStorage.getItem('vmwf_member_active');
-       const adminSession = sessionStorage.getItem('vmwf_admin_active');
+       const adminSession  = sessionStorage.getItem('vmwf_admin_active');
+       const isLoggedIn    = !!(memberSession || adminSession);
        
-       if (memberSession || adminSession) {
-          document.getElementById('auth-btn-main').classList.add('hidden');
-          document.getElementById('logout-btn-main').classList.remove('hidden');
+       const loginBtn  = document.getElementById('auth-btn-main');
+       const logoutBtn = document.getElementById('logout-btn-main');
+
+       if (isLoggedIn) {
+          if (loginBtn) loginBtn.classList.add('hidden');
+          if (logoutBtn) logoutBtn.classList.remove('hidden');
        } else {
-          document.getElementById('auth-btn-main').classList.remove('hidden');
-          document.getElementById('logout-btn-main').classList.add('hidden');
+          if (loginBtn) loginBtn.classList.remove('hidden');
+          if (logoutBtn) logoutBtn.classList.add('hidden');
        }
     }
 
@@ -937,7 +1006,9 @@
        sessionStorage.removeItem('vmwf_admin_active');
        window.location.reload();
     }
+
+    // Re-evaluate button visibility on resize
+    window.addEventListener('resize', checkMainAuth);
   </script>
-</div> <!-- End main-content-wrapper -->
 </body>
 </html>

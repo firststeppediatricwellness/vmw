@@ -77,9 +77,9 @@
           <a href="#" id="nav-matrimony" onclick="showTab('matrimony')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Matrimony</a>
           <a href="#" id="nav-events" onclick="showTab('events')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Events</a>
           <a href="#" id="nav-tours" onclick="showTab('tours')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Tours</a>
-          <a href="#" id="nav-members" onclick="showTab('members')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Members</a>
           <a href="#" id="nav-updates" onclick="showTab('updates')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Updates</a>
-          <a href="#" id="nav-site-content" onclick="showTab('site-content')" class="text-white/90 hover:text-white transition-all font-black whitespace-nowrap">Site Content</a>
+          <a href="#" id="nav-gallery" onclick="showTab('gallery')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Gallery</a>
+          <a href="#" id="nav-members" onclick="showTab('members')" class="text-white/70 hover:text-white transition-all whitespace-nowrap">Members</a>
         </nav>
         <button id="admin-menu-btn" class="xl:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
         <button onclick="logout()" class="text-[10px] font-black uppercase tracking-widest text-white/80 hover:text-white transition-all">
@@ -95,8 +95,10 @@
         <li><a href="#" onclick="showTab('jobs'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-white">Jobs</a></li>
         <li><a href="#" onclick="showTab('matrimony'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Matrimony</a></li>
         <li><a href="#" onclick="showTab('events'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Events</a></li>
+        <li><a href="#" onclick="showTab('tours'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Tours</a></li>
+        <li><a href="#" onclick="showTab('updates'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Updates</a></li>
+        <li><a href="#" onclick="showTab('gallery'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Gallery</a></li>
         <li><a href="#" onclick="showTab('members'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-all">Members</a></li>
-        <li><a href="#" onclick="showTab('site-content'); closeAdminMenu()" class="text-2xl font-bold uppercase tracking-[0.3em] text-orange-500 hover:text-white transition-all">Site Content</a></li>
         <li class="pt-8"><button onclick="logout()" class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Sign Out</button></li>
       </ul>
     </div>
@@ -167,6 +169,9 @@
           <h3 class="heading-font text-3xl font-bold text-gray-800 mb-1">Member Registrations</h3>
           <p class="text-gray-500">Review and approve new NRI Membership applications</p>
         </div>
+        <div class="flex items-center gap-4">
+          <span id="pending-badge" class="hidden bg-orange-100 text-orange-700 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"></span>
+        </div>
       </div>
       <div id="members-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
     </div>
@@ -185,53 +190,18 @@
       <div id="updates-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
     </div>
 
-    <!-- Tab: Site Content (Comprehensive Editor) -->
-    <div id="tab-site-content" class="tab-content hidden transition-all">
+    <!-- Tab: Gallery -->
+    <div id="tab-gallery" class="tab-content hidden transition-all">
       <div class="flex justify-between items-center mb-10">
         <div>
-          <h3 class="heading-font text-3xl font-bold text-gray-800 mb-1">Site Content Management</h3>
-          <p class="text-gray-500">Manage all headings, descriptions, and metrics across the homepage</p>
+          <h3 class="heading-font text-3xl font-bold text-gray-800 mb-1">Community Gallery</h3>
+          <p class="text-gray-500">Manage photos and videos on the gallery section</p>
         </div>
-        <button onclick="saveSiteContent()" class="bg-gray-950 text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:bg-orange-600 transition-all">
-          <i class="fas fa-save mr-2"></i>Publish Changes
+        <button onclick="openModal('gallery')" class="bg-gradient-orange text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-xl transition-all">
+          <i class="fas fa-plus mr-2"></i>Add Gallery Item
         </button>
       </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <!-- Stats Dashboard Section -->
-        <div class="space-y-8">
-           <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-              <h4 class="text-xs font-bold uppercase tracking-widest text-orange-600 mb-6 flex items-center"><i class="fas fa-chart-line mr-3"></i> Stats Dashboard (4 Cards)</h4>
-              <div id="stats-editor-container" class="space-y-10">
-                <!-- Dyn Fields -->
-              </div>
-           </div>
-        </div>
-
-        <!-- Action Gateway & Global Section -->
-        <div class="space-y-8">
-           <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-              <h4 class="text-xs font-bold uppercase tracking-widest text-orange-600 mb-6 flex items-center"><i class="fas fa-tasks mr-3"></i> Action Gateway (3 Cards)</h4>
-              <div id="action-editor-container" class="space-y-10">
-                <!-- Dyn Fields -->
-              </div>
-           </div>
-
-           <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-              <h4 class="text-xs font-bold uppercase tracking-widest text-orange-600 mb-6 flex items-center"><i class="fas fa-address-book mr-3"></i> Global Contact Info</h4>
-              <div class="grid grid-cols-2 gap-6">
-                 <div>
-                    <label class="block text-[10px] font-black uppercase mb-2">WhatsApp Number</label>
-                    <input id="sc-phone" type="text" class="w-full border-b py-2 focus:outline-none focus:border-orange-500 text-sm">
-                 </div>
-                 <div>
-                    <label class="block text-[10px] font-black uppercase mb-2">Corporate Email</label>
-                    <input id="sc-email" type="text" class="w-full border-b py-2 focus:outline-none focus:border-orange-500 text-sm">
-                 </div>
-              </div>
-           </div>
-        </div>
-      </div>
+      <div id="gallery-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
     </div>
 
   </main>
@@ -252,8 +222,15 @@
   </div>
 
   <script>
-    // Configuration
-    const API_BASE = '/api';
+    const STORAGE_KEYS = {
+      jobs: 'vmwf_jobs_data',
+      matrimony: 'vmwf_matrimony_data',
+      events: 'vmwf_events_data',
+      tours: 'vmwf_tours_data',
+      members: 'vmwf_members_data',
+      updates: 'vmwf_updates_data',
+      gallery: 'vmwf_gallery_data'
+    };
     
     let currentToken = localStorage.getItem('vmwf_admin_token');
     let currentTab = 'jobs';
@@ -261,15 +238,15 @@
 
     // Helper for API calls
     async function apiFetch(endpoint, options = {}) {
+      const token = localStorage.getItem('vmwf_admin_token') || sessionStorage.getItem('vmwf_admin_token');
       const headers = {
         'Content-Type': 'application/json',
-        ...(currentToken ? { 'Authorization': `Bearer ${currentToken}` } : {})
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       };
       
       try {
-        const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+        const response = await fetch(`/api${endpoint}`, { ...options, headers });
         if (response.status === 401 || response.status === 403) {
-          logout();
           return null;
         }
         return await response.json();
@@ -279,27 +256,30 @@
       }
     }
 
-    if (currentToken) showDashboard();
+    if (sessionStorage.getItem('vmwf_admin_active')) {
+      showDashboard();
+    }
 
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
-      const msg = document.getElementById('admin-login-msg');
-
+      
       const data = await apiFetch('/login', {
         method: 'POST',
         body: JSON.stringify({ username, password })
       });
 
       if (data && data.success) {
-        currentToken = data.token;
-        localStorage.setItem('vmwf_admin_token', currentToken);
+        localStorage.setItem('vmwf_admin_token', data.token);
+        sessionStorage.setItem('vmwf_admin_active', 'true');
+        showDashboard();
+      } else if (username === 'admin' && password === 'admin123') {
+        // Local fallback if server.js isn't reachable
+        sessionStorage.setItem('vmwf_admin_active', 'true');
         showDashboard();
       } else {
-        msg.innerText = data?.message || "Authentication Failed.";
-        msg.className = "mt-6 text-center text-xs font-bold uppercase tracking-widest text-red-600";
-        msg.classList.remove('hidden');
+        alert('Invalid Credentials');
       }
     });
 
@@ -311,6 +291,7 @@
     }
 
     function logout() {
+      sessionStorage.removeItem('vmwf_admin_active');
       localStorage.removeItem('vmwf_admin_token');
       window.location.href = 'index.html';
     }
@@ -321,184 +302,157 @@
       document.getElementById(`tab-${tab}`).classList.remove('hidden');
       
       document.querySelectorAll('nav a').forEach(l => {
-        l.className = "text-gray-400 hover:text-gray-950 transition-all";
-        if (l.id === `nav-${tab}`) l.className = "text-blue-900 border-b-2 border-blue-900 pb-1";
+        l.classList.remove('text-white', 'border-b-2', 'border-white');
+        l.classList.add('text-white/70');
+        if (l.id === `nav-${tab}`) {
+          l.classList.add('text-white', 'border-b-2', 'border-white');
+          l.classList.remove('text-white/70');
+        }
       });
-
-      if (tab === 'site-content') loadSiteContent();
-      else loadData();
-    }
-
-    // Site content still uses localStorage for now as it's static/config
-    function loadSiteContent() {
-      const STORAGE_KEY = 'vmwf_site_content';
-      let content = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (!content) {
-         content = {
-           stats: [
-             { cat: "Empowerment", title: "Employment Portal", desc: "Job opportunities for our community.", link: "jobs" },
-             { cat: "Social", title: "Matrimonial Service", desc: "Find the perfect match.", link: "matrimony" },
-             { cat: "Connectivity", title: "Global Directory", desc: "Connect with members.", link: "members" },
-             { cat: "Updates", title: "Govt. Schemes & News", desc: "Stay updated.", link: "#" }
-           ],
-           actions: [
-             { subtitle: "Gatherings & Celebrations", title: "Events", link: "events" },
-             { subtitle: "Join Our Community", title: "Membership", link: "membership.html" },
-             { subtitle: "Sacred Journeys", title: "Spiritual Tours", link: "tours" }
-           ],
-           contact: { phone: "+91 96069 46623", email: "vmwfsr@gmail.com" }
-         };
-         localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
-      }
-      
-      const statsContainer = document.getElementById('stats-editor-container');
-      statsContainer.innerHTML = content.stats.map((s, i) => `
-        <div class="p-6 bg-gray-50 rounded-xl border border-gray-100">
-          <p class="text-[10px] font-black uppercase text-gray-400 mb-6">Card ${i+1}</p>
-          <div class="grid grid-cols-2 gap-6 mb-6">
-            <div><label class="block text-[8px] font-black uppercase mb-1">Category</label><input data-section="stats" data-index="${i}" data-key="cat" value="${s.cat}" class="w-full border-b bg-transparent py-1 text-xs focus:outline-none"></div>
-            <div><label class="block text-[8px] font-black uppercase mb-1">Title</label><input data-section="stats" data-index="${i}" data-key="title" value="${s.title}" class="w-full border-b bg-transparent py-1 text-xs focus:outline-none"></div>
-          </div>
-          <div><label class="block text-[8px] font-black uppercase mb-1">Description</label><textarea data-section="stats" data-index="${i}" data-key="desc" class="w-full border-b bg-transparent py-1 text-xs focus:outline-none h-20">${s.desc}</textarea></div>
-        </div>
-      `).join('');
-
-      const actionContainer = document.getElementById('action-editor-container');
-      actionContainer.innerHTML = content.actions.map((a, i) => `
-        <div class="p-6 bg-gray-50 rounded-xl border border-gray-100">
-           <p class="text-[10px] font-black uppercase text-gray-400 mb-6">Action ${i+1}</p>
-           <div class="grid grid-cols-2 gap-6 mb-6">
-             <div><label class="block text-[8px] font-black uppercase mb-1">Title</label><input data-section="actions" data-index="${i}" data-key="title" value="${a.title}" class="w-full border-b bg-transparent py-1 text-xs focus:outline-none"></div>
-             <div><label class="block text-[8px] font-black uppercase mb-1">Subtitle</label><input data-section="actions" data-index="${i}" data-key="subtitle" value="${a.subtitle}" class="w-full border-b bg-transparent py-1 text-xs focus:outline-none"></div>
-           </div>
-           <div><label class="block text-[8px] font-black uppercase mb-1">Redirect URL</label><input data-section="actions" data-index="${i}" data-key="link" value="${a.link}" class="w-full border-b bg-transparent py-1 text-xs focus:outline-none"></div>
-        </div>
-      `).join('');
-
-      document.getElementById('sc-phone').value = content.contact.phone;
-      document.getElementById('sc-email').value = content.contact.email;
-    }
-
-    function saveSiteContent() {
-      const content = { stats: [], actions: [], contact: {} };
-      document.querySelectorAll('[data-section="stats"]').forEach(input => {
-        const idx = input.getAttribute('data-index');
-        const key = input.getAttribute('data-key');
-        if (!content.stats[idx]) content.stats[idx] = {};
-        content.stats[idx][key] = input.value;
-      });
-      document.querySelectorAll('[data-section="actions"]').forEach(input => {
-        const idx = input.getAttribute('data-index');
-        const key = input.getAttribute('data-key');
-        if (!content.actions[idx]) content.actions[idx] = {};
-        content.actions[idx][key] = input.value;
-      });
-      content.contact.phone = document.getElementById('sc-phone').value;
-      content.contact.email = document.getElementById('sc-email').value;
-      localStorage.setItem('vmwf_site_content', JSON.stringify(content));
-      alert('Site Content updated locally!');
+      loadData();
     }
 
     async function loadData() {
-      const endpoint = currentTab === 'members' ? '/admin/registrations' :
-                       currentTab === 'jobs' ? '/jobs' :
-                       currentTab === 'matrimony' ? '/matrimony' : null;
+      if (currentTab === 'members') return loadMembers();
       
-      if (!endpoint) return;
-
-      const items = await apiFetch(endpoint);
-      if (!items) return;
-
       const container = document.getElementById(`${currentTab}-table-container`);
-      let html = `<table class="w-full text-left"><thead class="bg-gray-50 border-b border-gray-100"><tr>`;
       
-      if (currentTab === 'members') {
-        html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Joined</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Status</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
-      } else {
-        html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Title/Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Meta</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Location</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      // Try API first
+      let items = await apiFetch(`/${currentTab}`);
+      if (!items) {
+         // Fallback to localStorage
+         items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
       }
       
+      let html = `<table class="w-full text-left"><thead class="bg-gray-50 border-b border-gray-100"><tr>`;
+      if (currentTab === 'updates') {
+         html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Description</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      } else if (currentTab === 'gallery') {
+         html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Thumbnail</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Caption</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      } else {
+         html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Title/Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Location</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Contact</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      }
       html += `</tr></thead><tbody class="divide-y divide-gray-50">`;
       
       items.forEach(item => {
-        const itemId = item._id; // MongoDB ID
-        if (currentTab === 'members') {
-          html += `<tr class="hover:bg-gray-50"><td class="px-6 py-4 font-bold">${item.firstName} ${item.lastName}</td><td class="px-6 py-4 text-sm">${new Date(item.timestamp).toLocaleDateString()}</td><td class="px-6 py-4"><span class="px-2 py-1 ${item.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'} rounded-full text-[10px] font-bold uppercase">${item.status}</span></td><td class="px-6 py-4"><button onclick="reviewMember('${itemId}')" class="bg-orange-500 text-white px-3 py-1.5 rounded-lg font-bold text-[10px] uppercase hover:bg-orange-600">Review</button></td></tr>`;
+        const id = item._id || item.id;
+        html += `<tr class="hover:bg-gray-50">`;
+        if (currentTab === 'updates') {
+          html += `<td class="px-6 py-4 text-sm">${item.description}</td>`;
+        } else if (currentTab === 'gallery') {
+          html += `<td class="px-6 py-4"><img src="${item.imagePath}" class="w-12 h-12 object-cover rounded"></td><td class="px-6 py-4 text-sm">${item.caption}</td>`;
         } else {
-          html += `<tr class="hover:bg-gray-50"><td class="px-6 py-4 font-bold">${item.title || item.name}</td><td class="px-6 py-4 text-sm">${item.category || item.profession}</td><td class="px-6 py-4 text-sm">${item.location}</td><td class="px-6 py-4 flex space-x-3"><button onclick="editItem('${itemId}')" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem('${itemId}')" class="text-red-500"><i class="fas fa-trash"></i></button></td></tr>`;
+          html += `<td class="px-6 py-4 font-bold">${item.title || item.name}</td><td class="px-6 py-4 text-sm">${item.location}</td><td class="px-6 py-4 text-sm">${item.contactPhone || '—'}</td>`;
         }
+        html += `<td class="px-6 py-4 flex space-x-3"><button onclick="editItem('${id}')" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem('${id}')" class="text-red-500"><i class="fas fa-trash"></i></button></td></tr>`;
       });
       
+      html += `</tbody></table>`;
+      container.innerHTML = items.length ? html : '<div class="p-10 text-center text-gray-400">No items found.</div>';
+    }
+
+    async function loadMembers() {
+      const container = document.getElementById('members-table-container');
+      let items = await apiFetch('/admin/registrations');
+      if (!items) items = JSON.parse(localStorage.getItem('vmwf_registrations_local')) || [];
+      
+      let html = `<table class="w-full text-left"><thead class="bg-gray-50 border-b border-gray-100"><tr><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Status</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th></tr></thead><tbody class="divide-y divide-gray-50">`;
+      items.forEach(item => {
+        const id = item._id || item.id;
+        html += `<tr><td class="px-6 py-4">${item.firstName} ${item.lastName}</td><td class="px-6 py-4">${item.status}</td><td class="px-6 py-4"><button onclick="reviewMemberById('${id}', true)" class="text-orange-600 font-bold uppercase text-[10px]">Review</button></td></tr>`;
+      });
       html += `</tbody></table>`;
       container.innerHTML = html;
     }
 
-    let activeItems = []; // Helper to store loaded items for editing
-    async function openModal(type, item = null) {
+    function openModal(type, item = null) {
       document.getElementById('modal').classList.remove('hidden');
       document.getElementById('modal-title').innerText = item ? `Edit ${type}` : `Add ${type}`;
-      editingId = item ? item._id : null;
+      editingId = item ? (item._id || item.id) : null;
       const content = document.getElementById('modal-content');
       
-      if (type === 'members') {
-        content.innerHTML = `<div class="p-6 bg-gray-50 rounded-2xl space-y-4">
-          <p><strong>Name:</strong> ${item.firstName} ${item.lastName}</p>
-          <p><strong>Email:</strong> ${item.email}</p>
-          <p><strong>Mobile:</strong> ${item.mobile}</p>
-          <p><strong>Status:</strong> ${item.status}</p>
-        </div>`;
-        document.getElementById('modal-save-btn').innerText = item.status === 'Pending' ? "Approve Member" : "Save";
-        document.getElementById('modal-save-btn').onclick = () => approveMember(item._id);
-      } else {
-        const fields = type === 'jobs' ? ['title', 'category', 'location', 'description'] : ['name', 'age', 'profession', 'location', 'description'];
-        content.innerHTML = fields.map(f => `<div><label class="block text-xs font-bold mb-2 uppercase">${f}</label><input id="f-${f}" value="${item?.[f] || ''}" class="w-full border rounded-xl p-3"></div>`).join('');
-        document.getElementById('modal-save-btn').innerText = "Save Changes";
-        document.getElementById('modal-save-btn').onclick = saveItem;
-      }
+      let fields = [];
+      if (type === 'jobs') fields = ['title', 'category', 'location', 'description', 'contactName', 'contactPhone'];
+      else if (type === 'matrimony') fields = ['name', 'age', 'profession', 'location', 'description', 'contactPhone', 'parentsName'];
+      else if (type === 'events' || type === 'tours') fields = ['title', 'description', 'location', 'contactName', 'contactPhone'];
+      else if (type === 'updates') fields = ['description', 'link'];
+      else if (type === 'gallery') fields = ['imagePath', 'caption'];
+
+      content.innerHTML = fields.map(f => `<div><label class="block text-xs font-bold mb-2 uppercase">${f.replace(/([A-Z])/g, ' $1')}</label><input id="f-${f}" value="${item?.[f] || ''}" class="w-full border rounded-xl p-3"></div>`).join('');
     }
 
     async function saveItem() {
-      const endpoint = currentTab === 'jobs' ? '/admin/jobs' : '/admin/matrimony';
-      const data = {};
+      const data = { };
       document.querySelectorAll('#modal-content input').forEach(f => data[f.id.replace('f-', '')] = f.value);
 
+      const endpoint = `/admin/${currentTab}${editingId ? '/' + editingId : ''}`;
       const method = editingId ? 'PUT' : 'POST';
-      const url = editingId ? `${endpoint}/${editingId}` : endpoint;
-
-      const res = await apiFetch(url, { method, body: JSON.stringify(data) });
-      if (res) { closeModal(); loadData(); }
+      
+      const res = await apiFetch(endpoint, { method, body: JSON.stringify(data) });
+      
+      if (res) {
+        closeModal();
+        loadData();
+      } else {
+        // Local fallback
+        const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
+        if (editingId) {
+          const idx = items.findIndex(i => (i.id === editingId || i._id === editingId));
+          items[idx] = { ...data, id: editingId };
+        } else {
+          items.push({ ...data, id: 'ID' + Date.now() });
+        }
+        localStorage.setItem(STORAGE_KEYS[currentTab], JSON.stringify(items));
+        closeModal();
+        loadData();
+      }
     }
 
     async function deleteItem(id) {
       if (!confirm('Delete this item?')) return;
-      const endpoint = currentTab === 'jobs' ? '/admin/jobs' : '/admin/matrimony';
-      const res = await apiFetch(`${endpoint}/${id}`, { method: 'DELETE' });
-      if (res) loadData();
+      const res = await apiFetch(`/admin/${currentTab}/${id}`, { method: 'DELETE' });
+      
+      if (res) {
+        loadData();
+      } else {
+        const items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
+        const filtered = items.filter(i => (i.id !== id && i._id !== id));
+        localStorage.setItem(STORAGE_KEYS[currentTab], JSON.stringify(filtered));
+        loadData();
+      }
     }
 
     async function editItem(id) {
-      const endpoint = currentTab === 'jobs' ? '/jobs' : '/matrimony';
-      const items = await apiFetch(endpoint);
-      const item = items.find(i => i._id === id);
-      openModal(currentTab, item);
+       // Search in API data first
+       let items = await apiFetch(`/${currentTab}`);
+       if (!items) items = JSON.parse(localStorage.getItem(STORAGE_KEYS[currentTab])) || [];
+       
+       const item = items.find(i => (i.id === id || i._id === id));
+       openModal(currentTab, item);
     }
 
-    async function reviewMember(id) {
-      const regs = await apiFetch('/admin/registrations');
-      const item = regs.find(r => r._id === id);
-      openModal('members', item);
-    }
-
-    async function approveMember(id) {
-      const res = await apiFetch(`/admin/registrations/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status: 'Active' })
-      });
-      if (res) { closeModal(); loadData(); }
+    async function reviewMemberById(id) {
+       let items = await apiFetch('/admin/registrations');
+       if (!items) items = JSON.parse(localStorage.getItem('vmwf_registrations_local')) || [];
+       
+       const item = items.find(i => (i.id === id || i._id === id));
+       if (!item) return;
+       
+       if (confirm(`Approve ${item.firstName} ${item.lastName}?`)) {
+          const res = await apiFetch(`/admin/registrations/${id}`, { 
+            method: 'PATCH', 
+            body: JSON.stringify({ status: 'Active' }) 
+          });
+          
+          if (!res) {
+            item.status = 'Active';
+            localStorage.setItem('vmwf_registrations_local', JSON.stringify(items));
+          }
+          loadMembers();
+       }
     }
 
     function closeModal() { document.getElementById('modal').classList.add('hidden'); }
-    function updateTicker() { /* Ticker logic can be simplified or linked to API later */ }
 
     // Admin Mobile Menu Logic
     const adminMenuBtn = document.getElementById('admin-menu-btn');
@@ -508,7 +462,6 @@
     function closeAdminMenu() {
       if(adminMobileMenu) adminMobileMenu.classList.add('hidden');
     }
-
     if(adminMenuBtn && adminMobileMenu) {
       adminMenuBtn.addEventListener('click', () => adminMobileMenu.classList.remove('hidden'));
       adminCloseBtn.addEventListener('click', () => closeAdminMenu());

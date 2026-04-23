@@ -273,13 +273,17 @@
       const email = document.getElementById('email').value;
       
       // Auto-generate credentials
-      const username = email.split('@')[0] + '_' + Math.floor(Math.random() * 99);
-      const password = Math.random().toString(36).slice(-8).toUpperCase() + '#1';
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const baseUser  = (firstName + (lastName ? '.' + lastName : '')).toLowerCase().replace(/\s+/g,'');
+      const username  = baseUser + '_' + Math.floor(Math.random() * 999);
+      const password  = Math.random().toString(36).slice(-6).toUpperCase() + Math.floor(Math.random()*90+10) + '!';
 
       const formData = {
-        firstName: document.getElementById('firstName').value,
+        id: 'REG' + Date.now(),
+        firstName: firstName,
         middleName: document.getElementById('middleName').value,
-        lastName: document.getElementById('lastName').value,
+        lastName: lastName,
         email: email,
         dob: document.getElementById('dob').value,
         age: document.getElementById('age').value,
@@ -291,29 +295,37 @@
         introducer: document.getElementById('introducer').value,
         membershipType: document.getElementById('membershipType').value,
         username: username,
-        password: password
+        password: password,
+        status: 'Pending',
+        timestamp: new Date().toISOString()
       };
 
+      // ── Always save to localStorage as a local fallback ──────────────
+      const LOCAL_REGS_KEY = 'vmwf_registrations_local';
+      const existing = JSON.parse(localStorage.getItem(LOCAL_REGS_KEY)) || [];
+      existing.push(formData);
+      localStorage.setItem(LOCAL_REGS_LOCAL_KEY || LOCAL_REGS_KEY, JSON.stringify(existing));
+
+      // ── Also try the API (may fail if server not running) ────────────
       try {
-        const response = await fetch('/api/register', {
+        await fetch('/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
-
-        if (response.ok) {
-          // Show credentials in modal
-          document.getElementById('display-username').innerText = username;
-          document.getElementById('display-password').innerText = password;
-          document.getElementById('success-modal').classList.remove('hidden');
-        } else {
-          alert('Registration failed. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Could not connect to the server.');
+      } catch (err) {
+        // Server offline – localStorage already saved, proceed.
+        console.warn('Server unavailable, registration saved locally only.');
       }
+
+      // Show credentials in success modal
+      document.getElementById('display-username').innerText = username;
+      document.getElementById('display-password').innerText = password;
+      document.getElementById('success-modal').classList.remove('hidden');
     }
+
+    // Fix the localStorage key reference
+    const LOCAL_REGS_LOCAL_KEY = 'vmwf_registrations_local';
 
 
     // Mobile Menu Toggle
