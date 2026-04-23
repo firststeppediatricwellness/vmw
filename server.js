@@ -22,16 +22,11 @@ app.use(express.static(__dirname));
 // ---------------------------------------------------------
 // DATA LAYER (MongoDB Only)
 // ---------------------------------------------------------
-if (!MONGODB_URI) {
-  console.error('❌ FATAL ERROR: MONGODB_URI is not defined in .env');
-  process.exit(1);
-}
-
-mongoose.connect(MONGODB_URI)
+mongoose.connect(MONGODB_URI || '')
   .then(() => console.log('✅ Connected to MongoDB Atlas'))
   .catch(err => {
-    console.error('❌ MongoDB connection error:', err);
-    process.exit(1);
+    console.error('❌ MongoDB Connection Error:', err.message);
+    console.log('⚠️ Server is running but database is DISCONNECTED.');
   });
 
 // ---------------------------------------------------------
