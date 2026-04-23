@@ -75,17 +75,17 @@
   <!-- Premium Title Section -->
   <section class="bg-gray-50 py-32 border-b border-gray-100">
     <div class="container mx-auto px-6 md:px-12 text-center">
-      <h4 class="text-xs font-bold uppercase tracking-[0.5em] text-orange-600 mb-8">Our Foundation</h4>
-      <h1 class="heading-font text-6xl md:text-7xl font-bold text-gray-900 mb-10 leading-tight">Who We Are</h1>
-      <p class="text-gray-500 max-w-2xl mx-auto text-xl font-light leading-relaxed">Rooted in tradition, building a global welfare network for the Madhwa community.</p>
+      <h4 id="page-subtitle-small" class="text-xs font-bold uppercase tracking-[0.5em] text-orange-600 mb-8">Our Foundation</h4>
+      <h1 id="page-title" class="heading-font text-6xl md:text-7xl font-bold text-gray-900 mb-10 leading-tight">Who We Are</h1>
+      <p id="page-subtitle" class="text-gray-500 max-w-2xl mx-auto text-xl font-light leading-relaxed">Rooted in tradition, building a global welfare network for the Madhwa community.</p>
     </div>
   </section>
 
   <!-- Main Narrative Section -->
   <section class="section-padding bg-white">
     <div class="container mx-auto px-6 md:px-12 max-w-6xl">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center mb-32">
-        <div>
+      <div id="cms-body-container" class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center mb-32">
+        <div id="page-body">
           <h2 class="heading-font text-5xl font-bold mb-10 text-gray-950 leading-tight">Our Foundation & Beliefs</h2>
           <p class="text-gray-600 mb-8 leading-loose text-lg font-light">Vishwa Madhwamatha Welfare Foundation (VMWF) is a non-profit organization dedicated to the enrichment of our community. Rooted in the profound teachings of Sri Madhwacharya, we strive to bridge the gap between ancient wisdom and modern welfare.</p>
           <p class="text-gray-600 mb-12 leading-loose text-lg font-light">Our foundation acts as a spiritual and social anchor for thousands of families worldwide. We believe that true progress comes from a balanced approach: preserving our cultural identity while excelling in the professional world.</p>
@@ -195,6 +195,25 @@
         link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
       });
     }
+    window.addEventListener('resize', checkSubAuth);
+
+    // CMS Loader
+    async function loadCMS() {
+       try {
+          const res = await fetch('/api/content/who-we-are');
+          if (res.ok) {
+             const data = await res.json();
+             if (data.title) document.getElementById('page-title').innerText = data.title;
+             if (data.subtitle) document.getElementById('page-subtitle').innerText = data.subtitle;
+             if (data.body) document.getElementById('page-body').innerHTML = data.body.replace(/\n/g, '<br/>');
+             if (data.bannerImage) {
+                const img = document.querySelector('#cms-body-container img');
+                if (img) img.src = data.bannerImage;
+             }
+          }
+       } catch(e) {}
+    }
+    loadCMS();
 
     checkSubAuth();
   </script>

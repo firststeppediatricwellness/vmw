@@ -61,8 +61,17 @@ const Update = mongoose.model('Update', new mongoose.Schema({
 }));
 
 const Gallery = mongoose.model('Gallery', new mongoose.Schema({
-  imagePath: String, caption: String,
+  image: String, caption: String, category: { type: String, default: 'General' },
   date: { type: String, default: () => new Date().toISOString().split('T')[0] }
+}));
+
+const PageContent = mongoose.model('PageContent', new mongoose.Schema({
+  slug: { type: String, unique: true },
+  title: String,
+  subtitle: String,
+  body: String,
+  bannerImage: String,
+  lastUpdated: { type: Date, default: Date.now }
 }));
 
 const Registration = mongoose.model('Registration', new mongoose.Schema({
@@ -164,6 +173,25 @@ setupRoutes('events', 'events');
 setupRoutes('tours', 'tours');
 setupRoutes('updates', 'updates');
 setupRoutes('gallery', 'gallery');
+
+// CMS: Page Content Routes
+app.get('/api/content/:slug', async (req, res) => {
+  try {
+    const doc = await PageContent.findOne({ slug: req.params.slug });
+    res.json(doc || { message: 'Not found' });
+  } catch (err) { res.status(500).send(err); }
+});
+
+app.patch('/api/admin/content/:slug', authenticateToken, async (req, res) => {
+  try {
+    const doc = await PageContent.findOneAndUpdate(
+      { slug: req.params.slug },
+      { ...req.body, lastUpdated: new Date() },
+      { upsert: true, new: true }
+    );
+    res.json(doc);
+  } catch (err) { res.status(500).send(err); }
+});
 
 // Secure Public Member Directory (Returns only safe fields)
 app.get('/api/members', async (req, res) => {

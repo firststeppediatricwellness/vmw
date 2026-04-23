@@ -73,9 +73,16 @@
   <!-- Premium Activity Header -->
   <section class="bg-gray-50 py-32 border-b border-gray-100">
     <div class="container mx-auto px-6 md:px-12 text-center">
-      <h4 class="text-xs font-bold uppercase tracking-[0.5em] text-orange-600 mb-8">Community Impact</h4>
-      <h1 class="heading-font text-6xl md:text-7xl font-bold text-gray-900 mb-10 leading-tight">Foundation Activities</h1>
-      <p class="text-gray-500 max-w-2xl mx-auto text-xl font-light leading-relaxed">Engaging our community through diverse spiritual, social, and cultural events across the globe.</p>
+      <h4 id="page-subtitle-small" class="text-xs font-bold uppercase tracking-[0.5em] text-orange-600 mb-8">Community Impact</h4>
+      <h1 id="page-title" class="heading-font text-6xl md:text-7xl font-bold text-gray-900 mb-10 leading-tight">Foundation Activities</h1>
+      <p id="page-subtitle" class="text-gray-500 max-w-2xl mx-auto text-xl font-light leading-relaxed">Engaging our community through diverse spiritual, social, and cultural events across the globe.</p>
+    </div>
+  </section>
+
+  <!-- Introduction Header Section -->
+  <section class="py-16 bg-white border-b border-gray-100">
+    <div class="container mx-auto px-6 md:px-12 text-center max-w-3xl">
+      <div id="page-body" class="text-gray-600 text-lg font-light leading-relaxed"></div>
     </div>
   </section>
 
@@ -237,6 +244,20 @@
       });
     }
 
+    // CMS Loader
+    async function loadCMS() {
+       try {
+          const res = await fetch('/api/content/activities');
+          if (res.ok) {
+             const data = await res.json();
+             if (data.title) document.getElementById('page-title').innerText = data.title;
+             if (data.subtitle) document.getElementById('page-subtitle').innerText = data.subtitle;
+             if (data.body) document.getElementById('page-body').innerHTML = data.body.replace(/\n/g, '<br/>');
+          }
+       } catch(e) {}
+    }
+    loadCMS();
+    
     checkActAuth();
 
     // Archive Data
