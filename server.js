@@ -102,12 +102,9 @@ const Store = {
   tours: createStoreMethods(Tour),
   updates: createStoreMethods(Update),
   gallery: createStoreMethods(Gallery),
-  registrations: {
-    get: async () => Registration.find().sort({ timestamp: -1 }),
-    add: async (data) => new Registration(data).save(),
-    update: async (id, data) => Registration.findByIdAndUpdate(id, data, { new: true }),
     delete: async (id) => Registration.findByIdAndDelete(id)
-  }
+  },
+  pages: createStoreMethods(PageContent)
 };
 
 // ---------------------------------------------------------
@@ -173,6 +170,7 @@ setupRoutes('events', 'events');
 setupRoutes('tours', 'tours');
 setupRoutes('updates', 'updates');
 setupRoutes('gallery', 'gallery');
+setupRoutes('pages', 'pages');
 
 // CMS: Page Content Routes
 app.get('/api/content/:slug', async (req, res) => {

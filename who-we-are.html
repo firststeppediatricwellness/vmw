@@ -159,15 +159,16 @@
 
     // Session & Auth Logic
     function checkSubAuth() {
-       const memberSession = sessionStorage.getItem('vmwf_member_active');
-       const adminSession = sessionStorage.getItem('vmwf_admin_active');
+       const isLoggedIn = !!(sessionStorage.getItem('vmwf_member_active') || sessionStorage.getItem('vmwf_admin_active'));
+       const loginBtn = document.getElementById('auth-btn-sub');
+       const logoutBtn = document.getElementById('logout-btn-sub');
        
-       if (memberSession || adminSession) {
-          document.getElementById('auth-btn-sub').classList.add('hidden');
-          document.getElementById('logout-btn-sub').classList.remove('hidden');
-       } else {
-          document.getElementById('auth-btn-sub').classList.remove('hidden');
-          document.getElementById('logout-btn-sub').classList.add('hidden');
+       if (loginBtn) {
+         loginBtn.style.display = isLoggedIn ? 'none' : 'inline-block';
+       }
+       if (logoutBtn) {
+         logoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
+         logoutBtn.classList.toggle('hidden', !isLoggedIn);
        }
     }
 

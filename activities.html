@@ -207,15 +207,16 @@
 
     // Session & Auth Logic
     function checkActAuth() {
-       const memberSession = sessionStorage.getItem('vmwf_member_active');
-       const adminSession = sessionStorage.getItem('vmwf_admin_active');
+       const isLoggedIn = !!(sessionStorage.getItem('vmwf_member_active') || sessionStorage.getItem('vmwf_admin_active'));
+       const loginBtn = document.getElementById('auth-btn-act');
+       const logoutBtn = document.getElementById('logout-btn-act');
        
-       if (memberSession || adminSession) {
-          document.getElementById('auth-btn-act').classList.add('hidden');
-          document.getElementById('logout-btn-act').classList.remove('hidden');
-       } else {
-          document.getElementById('auth-btn-act').classList.remove('hidden');
-          document.getElementById('logout-btn-act').classList.add('hidden');
+       if (loginBtn) {
+         loginBtn.style.display = isLoggedIn ? 'none' : 'inline-block';
+       }
+       if (logoutBtn) {
+         logoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
+         logoutBtn.classList.toggle('hidden', !isLoggedIn);
        }
     }
 

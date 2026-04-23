@@ -724,12 +724,17 @@
     const API_BASE = '/api';
 
     async function loadSiteContent() {
-      // Basic static content for footer/branding
-      document.getElementById('contact-phone').innerText = "+91 80 2234 1234";
-      document.getElementById('contact-phone-2').innerText = "+91 80 2234 1234";
-      document.getElementById('contact-email').innerText = "info@vmwfoundation.org";
-      const e2 = document.getElementById('contact-email-2');
-      if (e2) e2.innerText = "info@vmwfoundation.org";
+      // Fetch Ticker Updates
+      try {
+        const res = await fetch(`${API_BASE}/updates`);
+        if (res.ok) {
+           const updates = await res.json();
+           const tickerEl = document.getElementById('ticker-content');
+           if (updates.length > 0 && tickerEl) {
+              tickerEl.innerText = updates.map(u => u.description).join(' | ');
+           }
+        }
+      } catch(e) {}
     }
 
     let activeData = [];
@@ -836,8 +841,14 @@
        const isLoggedIn = !!(sessionStorage.getItem('vmwf_member_active') || sessionStorage.getItem('vmwf_admin_active'));
        const loginBtn = document.getElementById('auth-btn-main');
        const logoutBtn = document.getElementById('logout-btn-main');
-       if (loginBtn) isLoggedIn ? loginBtn.classList.add('hidden') : loginBtn.classList.remove('hidden');
-       if (logoutBtn) isLoggedIn ? logoutBtn.classList.remove('hidden') : logoutBtn.classList.add('hidden');
+       
+       if (loginBtn) {
+         loginBtn.style.display = isLoggedIn ? 'none' : 'inline-block';
+       }
+       if (logoutBtn) {
+         logoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
+         logoutBtn.classList.toggle('hidden', !isLoggedIn);
+       }
     }
 
     function logoutMain() {

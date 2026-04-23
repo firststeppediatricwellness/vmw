@@ -209,24 +209,17 @@
       <div id="gallery-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
     </div>
 
-    <!-- Tab: Pages -->
     <div id="tab-pages" class="tab-content hidden transition-all">
-      <div class="mb-10">
-        <h3 class="heading-font text-3xl font-bold text-gray-800 mb-1">Dynamic Page Content</h3>
-        <p class="text-gray-500">Edit text and banners for "Who We Are" and "Activities" pages</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-           <h4 class="font-bold text-xl mb-4">Who we are</h4>
-           <p class="text-sm text-gray-500 mb-6">Edit the mission, vision and history text.</p>
-           <button onclick="editPage('who-we-are')" class="w-full bg-gray-950 text-white py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest">Edit Page Content</button>
+      <div class="flex justify-between items-center mb-10">
+        <div>
+          <h3 class="heading-font text-3xl font-bold text-gray-800 mb-1">Dynamic Page Content</h3>
+          <p class="text-gray-500">Manage custom sections like "Who We Are" or "Founder Message".</p>
         </div>
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-           <h4 class="font-bold text-xl mb-4">Activities</h4>
-           <p class="text-sm text-gray-500 mb-6">Edit the description of community services.</p>
-           <button onclick="editPage('activities')" class="w-full bg-gray-950 text-white py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest">Edit Page Content</button>
-        </div>
+        <button onclick="openModal('pages')" class="bg-gradient-orange text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-xl transition-all">
+          <i class="fas fa-plus mr-2"></i>Create New Section
+        </button>
       </div>
+      <div id="pages-table-container" class="table-container bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
     </div>
 
   </main>
@@ -365,9 +358,15 @@
       }
       
       let html = `<table class="w-full text-left"><thead class="bg-gray-50 border-b border-gray-100"><tr>`;
-      if (currentTab === 'updates') html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Description</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
-      else if (currentTab === 'gallery') html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Thumbnail</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Caption</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
-      else html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Title/Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Location</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Contact</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      if (currentTab === 'updates') {
+        html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Description</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      } else if (currentTab === 'gallery') {
+        html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Thumbnail</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Caption</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      } else if (currentTab === 'pages') {
+        html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Slug</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Title</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      } else {
+        html += `<th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Title/Name</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Location</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Contact</th><th class="px-6 py-4 font-bold text-gray-700 uppercase tracking-wider text-xs">Actions</th>`;
+      }
       
       html += `</tr></thead><tbody class="divide-y divide-gray-50">`;
       items.forEach(item => {
@@ -375,6 +374,7 @@
         html += `<tr class="hover:bg-gray-50">`;
         if (currentTab === 'updates') html += `<td class="px-6 py-4 text-sm">${item.description}</td>`;
         else if (currentTab === 'gallery') html += `<td class="px-6 py-4"><img src="${item.image}" class="w-12 h-12 object-cover rounded shadow-sm"></td><td class="px-6 py-4 text-sm">${item.caption}</td>`;
+        else if (currentTab === 'pages') html += `<td class="px-6 py-4 text-xs font-mono font-bold">${item.slug}</td><td class="px-6 py-4 text-sm">${item.title}</td>`;
         else html += `<td class="px-6 py-4 font-bold">${item.title || item.name}</td><td class="px-6 py-4 text-sm">${item.location}</td><td class="px-6 py-4 text-sm">${item.contactPhone || '—'}</td>`;
         html += `<td class="px-6 py-4 flex space-x-3"><button onclick="editItem('${id}')" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteItem('${id}')" class="text-red-500"><i class="fas fa-trash"></i></button></td></tr>`;
       });
@@ -414,7 +414,7 @@
       else if (type === 'events' || type === 'tours') fields = ['title', 'description', 'location', 'contactName', 'contactPhone'];
       else if (type === 'updates') fields = ['description', 'link'];
       else if (type === 'gallery') fields = ['image', 'caption'];
-      else if (type === 'page') fields = ['title', 'subtitle', 'body', 'bannerImage'];
+      else if (type === 'pages') fields = ['slug', 'title', 'subtitle', 'body', 'bannerImage'];
 
       content.innerHTML = fields.map(f => {
         const label = f.replace(/([A-Z])/g, ' $1').toUpperCase();
@@ -426,13 +426,6 @@
         }
         return `<div><label class="block text-xs font-bold mb-2">${label}</label><input id="f-${f}" value="${item?.[f] || ''}" class="w-full border rounded-xl p-3 text-sm"></div>`;
       }).join('');
-    }
-
-    async function editPage(slug) {
-       currentTab = 'page';
-       editingId = slug;
-       const doc = await apiFetch(`/content/${slug}`);
-       openModal('page', doc || { title: '', subtitle: '', body: '', bannerImage: '' });
     }
 
     async function saveItem() {
@@ -525,16 +518,38 @@
 
        const saveBtn = document.getElementById('modal-save-btn');
        if (saveBtn) {
-          saveBtn.innerText = item.status === 'Pending' ? 'Approve & Activate' : 'Already Active';
-          saveBtn.disabled = item.status !== 'Pending';
-          saveBtn.onclick = async () => {
-             const res = await apiFetch(`/admin/registrations/${id}`, { 
-               method: 'PATCH', 
-               body: JSON.stringify({ status: 'Active' }) 
-             });
-             if (res) { showToast('Member Approved!'); closeModal(); loadMembers(); }
-          };
+          if (item.status === 'Active') {
+            saveBtn.innerText = 'Deactivate (Suspend)';
+            saveBtn.className = "flex-1 bg-gray-900 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:bg-black transition-all";
+            saveBtn.onclick = async () => {
+               if(!confirm('Are you sure you want to suspend this member? They will lose access to the portal.')) return;
+               const res = await apiFetch(`/admin/registrations/${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'Suspended' }) });
+               if (res) { showToast('Member Suspended'); closeModal(); loadMembers(); }
+            };
+          } else {
+            saveBtn.innerText = 'Approve & Activate';
+            saveBtn.className = "flex-1 bg-gradient-orange text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all";
+            saveBtn.onclick = async () => {
+               const res = await apiFetch(`/admin/registrations/${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'Active' }) });
+               if (res) { showToast('Member Approved!'); closeModal(); loadMembers(); }
+            };
+          }
        }
+
+       // Add Delete Button 🚩
+       const deleteContainer = document.createElement('div');
+       deleteContainer.className = "mt-6 pt-6 border-t border-gray-100 text-center";
+       deleteContainer.innerHTML = `
+         <button id="modal-delete-member" class="text-[10px] font-black uppercase tracking-widest text-red-500 hover:text-red-700 transition-all">
+           <i class="fas fa-trash-alt mr-2"></i>Permanently Delete Member Record
+         </button>
+       `;
+       content.appendChild(deleteContainer);
+       document.getElementById('modal-delete-member').onclick = async () => {
+          if(!confirm('🚨 CRITICAL: Are you sure you want to PERMANENTLY delete this member? This action cannot be undone.')) return;
+          const res = await apiFetch(`/admin/registrations/${id}`, { method: 'DELETE' });
+          if (res) { showToast('Member Deleted Permanentely'); closeModal(); loadMembers(); }
+       };
     }
 
     function closeModal() { document.getElementById('modal').classList.add('hidden'); }
