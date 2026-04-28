@@ -36,7 +36,7 @@
         <img src="newlogo.png" class="w-9 h-9 md:w-10 md:h-10 flex-shrink-0 rounded-full object-cover transition-transform duration-500 group-hover:scale-105 shadow-md border border-white/10">
         <div class="hidden md:block pl-3 border-l border-white/20">
           <span class="heading-font font-bold text-white text-[15px] tracking-tight leading-snug whitespace-nowrap hidden 2xl:block uppercase">VISHWA MADHWAMATHA WELFARE FOUNDATION (R.)</span>
-          <span class="heading-font font-bold text-white text-[14px] tracking-tight leading-snug whitespace-nowrap block 2xl:hidden uppercase">VMW Foundation (R.)</span>
+          <span class="heading-font font-bold text-white text-[14px] tracking-tight leading-snug whitespace-nowrap block 2xl:hidden uppercase">Vishwa Madhwamatha Welfare Foundation (R.)</span>
           <p class="text-[8px] text-white/80 uppercase tracking-[0.25em] font-bold mt-0.5 whitespace-nowrap">REGISTERED CHARITABLE NATIONAL ORGANISATION</p>
         </div>
       </a>
@@ -159,6 +159,20 @@
 
     // Session & Auth Logic
     function checkSubAuth() {
+       // Mobile Menu Toggle
+       const menuBtn = document.getElementById('menu-btn');
+       const closeBtn = document.getElementById('close-menu');
+       const mobileMenu = document.getElementById('mobile-menu');
+
+       if(menuBtn && mobileMenu && !menuBtn.dataset.initialized) {
+         menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+         closeBtn.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+         mobileMenu.querySelectorAll('a').forEach(link => {
+           link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+         });
+         menuBtn.dataset.initialized = 'true';
+       }
+
        const isLoggedIn = !!(sessionStorage.getItem('vmwf_member_active') || sessionStorage.getItem('vmwf_admin_active'));
        const loginBtn = document.getElementById('auth-btn-sub');
        const logoutBtn = document.getElementById('logout-btn-sub');
@@ -170,6 +184,34 @@
          logoutBtn.style.display = isLoggedIn ? 'inline-block' : 'none';
          logoutBtn.classList.toggle('hidden', !isLoggedIn);
        }
+
+       const mobileLoginLink = document.querySelector('#mobile-menu a[href="access.html"]');
+       if (mobileLoginLink) {
+         if (isLoggedIn) {
+           let username = 'Member';
+           const token = localStorage.getItem('vmwf_member_token') || localStorage.getItem('vmwf_admin_token');
+           if (token) {
+             try {
+               const payload = JSON.parse(atob(token.split('.')[1]));
+               if (payload.username) username = payload.username;
+             } catch(e) {}
+           }
+           mobileLoginLink.innerHTML = `<i class="fas fa-user text-orange-500 mr-2"></i>Logged in as: ${username}`;
+           mobileLoginLink.href = 'javascript:void(0)';
+           
+           if (!document.getElementById('mobile-logout-btn')) {
+             const logoutLi = document.createElement('li');
+             logoutLi.className = 'pt-4';
+             logoutLi.innerHTML = `<button id="mobile-logout-btn" onclick="logoutSub()" class="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-white transition-all">Sign Out</button>`;
+             mobileLoginLink.parentElement.parentElement.appendChild(logoutLi);
+           }
+         } else {
+           mobileLoginLink.innerHTML = 'Member Login';
+           mobileLoginLink.href = 'access.html';
+           const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+           if (mobileLogoutBtn) mobileLogoutBtn.parentElement.remove();
+         }
+       }
     }
 
     function openLoginModalAction() {
@@ -180,21 +222,6 @@
        sessionStorage.removeItem('vmwf_member_active');
        sessionStorage.removeItem('vmwf_admin_active');
        window.location.reload();
-    }
-
-
-
-    // Mobile Menu Toggle
-    const menuBtn = document.getElementById('menu-btn');
-    const closeBtn = document.getElementById('close-menu');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    if(menuBtn && mobileMenu) {
-      menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
-      closeBtn.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-      mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-      });
     }
     window.addEventListener('resize', checkSubAuth);
 
