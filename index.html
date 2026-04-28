@@ -398,6 +398,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
             <div class="absolute bottom-10 left-10">
               <h3 class="text-2xl font-bold text-white uppercase tracking-tight leading-tight">Madhweshanugraha <br>Honor and Award</h3>
+              <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 mt-2">Explore Awards</p>
             </div>
           </div>
 
@@ -409,6 +410,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
             <div class="absolute bottom-10 left-10">
               <h3 class="text-2xl font-bold text-white uppercase tracking-tight leading-tight">Bheema Madhwesha <br>Honor and Award</h3>
+              <p class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 mt-2">Explore Awards</p>
             </div>
           </div>
 
@@ -985,7 +987,13 @@
       const years = Object.keys(galleryData[category] || {});
       
       if (years.length === 0) {
-        alert("This gallery category will be updated soon with latest records.");
+        const photosGrid = document.getElementById('photos-list');
+        photosGrid.innerHTML = `<div class="col-span-full py-20 text-center"><p class="text-gray-500 font-light text-lg">This gallery category will be updated soon with latest records.</p></div>`;
+        document.getElementById('gallery-categories').classList.add('hidden');
+        document.getElementById('gallery-years').classList.add('hidden');
+        document.getElementById('gallery-photos').classList.remove('hidden');
+        document.getElementById('gallery-breadcrumbs').classList.remove('hidden');
+        document.getElementById('breadcrumb-category').innerText = category;
         return;
       }
 
